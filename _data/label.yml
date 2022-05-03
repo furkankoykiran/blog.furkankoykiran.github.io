@@ -1,0 +1,19 @@
+# The label text of site.
+
+panel:
+  lastmod: Son Güncellemeler
+  trending_tags: Trend Etiketler
+  toc: İçindekiler
+
+post:
+  relate_posts: Daha Fazla okuma
+  share: Paylaş
+  button:
+    next: Daha Yeni
+    previous: Daha Eski
+
+search_hint: Arama   # text show on search bar
+
+pin_prompt: Sabitlendi    # pinned prompt
+
+read_time_unit: dk okunma süresi   # see posts' time to read
