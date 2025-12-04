@@ -311,9 +311,9 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha,prefix={{branch}}-
+            type=semver,pattern={% raw %}{{version}}{% endraw %}
+            type=semver,pattern={% raw %}{{major}}.{{minor}}{% endraw %}
+            type=sha,prefix={% raw %}{{branch}}{% endraw %}-
       
       - name: Build and push Docker image
         uses: docker/build-push-action@v5

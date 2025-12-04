@@ -1288,7 +1288,7 @@ async def check_workers():
     
     except Exception as e:
         return Response(
-            content=f'{{"status": "error", "error": "{e}"}}',
+            content=f'{% raw %}{{"status": "error", "error": "{e}"}}{% endraw %}',
             status_code=500
         )
 ```

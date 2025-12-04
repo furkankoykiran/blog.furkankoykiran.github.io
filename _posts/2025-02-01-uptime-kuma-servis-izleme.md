@@ -425,10 +425,10 @@ Kendi endpoint'inize bildirim göndermek için:
         "Authorization": "Bearer YOUR_TOKEN"
     },
     "body": {
-        "monitor": "{{MONITOR_NAME}}",
-        "status": "{{STATUS}}",
-        "message": "{{MESSAGE}}",
-        "time": "{{TIME}}"
+        "monitor": "{% raw %}{{MONITOR_NAME}}{% endraw %}",
+        "status": "{% raw %}{{STATUS}}{% endraw %}",
+        "message": "{% raw %}{{MESSAGE}}{% endraw %}",
+        "time": "{% raw %}{{TIME}}{% endraw %}"
     }
 }
 ```

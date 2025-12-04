@@ -1482,7 +1482,7 @@ docker logs container_name 2>&1 | jq '.level, .message'
 docker network inspect bridge
 
 # Container IP adresi
-docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name
+docker inspect -f '{% raw %}{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}{% endraw %}' container_name
 
 # Port mapping kontrolü
 docker port container_name
@@ -1591,8 +1591,8 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={% raw %}{{version}}{% endraw %}
+            type=semver,pattern={% raw %}{{major}}.{{minor}}{% endraw %}
             type=sha
       
       - name: Build and push
