@@ -1,10 +1,11 @@
 ---
 title: "Solana Program Development with Rust"
+description: "Complete guide to Solana program development using Rust and Anchor framework. Learn account model, PDAs, token programs, testing, and deployment strategies."
 date: "2024-07-08 10:00:00 +0300"
 categories: [Solana Development, Blockchain]
 tags: [solana, rust, anchor, blockchain, smart-contracts, web3, programming]
 image:
-  src: /assets/img/posts/anchor-framework-components.png
+  path: /assets/img/posts/anchor-framework-components.png
   alt: "Solana Anchor Framework Architecture"
 ---
 
@@ -14,8 +15,8 @@ Solana has emerged as one of the fastest and most scalable blockchain platforms,
 
 In this comprehensive guide, we'll explore Solana program development using Rust and the Anchor framework. You'll learn about Solana's account model, program structure, how to use Anchor to build secure and efficient programs, and deploy them to the Solana blockchain. Whether you're coming from Ethereum smart contract development or starting fresh with blockchain programming, this tutorial will provide you with a solid foundation for building on Solana.
 
-![Solana Full Stack Development](/assets/img/posts/solana-rust-anchor-full-stack.png)
-*Figure 1: Complete Solana development stack with Rust and Anchor*
+![Solana Full Stack Development](/assets/img/posts/solana-rust-anchor-full-stack.png){: w="700" h="400" .shadow }
+_Complete Solana development stack with Rust and Anchor_
 
 ## Why Solana and Rust?
 
@@ -30,6 +31,9 @@ Solana's architecture offers several key benefits that make it attractive for de
 3. **Proof of History (PoH)**: A unique consensus mechanism that timestamps transactions, allowing validators to process blocks without constant communication.
 
 4. **Parallel Transaction Processing**: Solana's Sealevel runtime can execute transactions in parallel, maximizing efficiency.
+
+> Solana's parallel processing and PoH consensus enable significantly higher throughput than traditional blockchains.
+{: .prompt-info }
 
 ### Why Rust?
 
@@ -115,6 +119,10 @@ avm use latest
 # Verify Anchor installation
 anchor --version
 ```
+{: .nolineno }
+
+> Anchor significantly simplifies Solana development. Make sure to install the latest version for the best features and security patches.
+{: .prompt-tip }
 
 ### Configuring Solana CLI
 
@@ -134,9 +142,13 @@ solana airdrop 2
 # Check balance
 solana balance
 ```
+{: .nolineno }
 
-![Anchor Project Initialization](/assets/img/posts/anchor-project-initialization.png)
-*Figure 3: Creating a new Anchor project*
+> Use devnet for development and testing. Never store mainnet private keys in plaintext files.
+{: .prompt-warning }
+
+![Anchor Project Initialization](/assets/img/posts/anchor-project-initialization.png){: w="700" h="400" .shadow }
+_Creating a new Anchor project_
 
 ## Introduction to Anchor Framework
 
@@ -148,8 +160,8 @@ Anchor is a framework for Solana program development that provides:
 - **Testing Framework**: Integrated testing environment with TypeScript/JavaScript support
 - **Error Handling**: Structured error handling system
 
-![What is Anchor](/assets/img/posts/what-is-anchor-solana.png)
-*Figure 4: Anchor framework overview and benefits*
+![What is Anchor](/assets/img/posts/what-is-anchor-solana.png){: w="700" h="400" .shadow }
+_Anchor framework overview and benefits_
 
 ### Creating Your First Anchor Project
 
@@ -171,6 +183,7 @@ cd counter_program
 # │   └── counter_program.ts
 # └── migrations/          # Deployment scripts
 ```
+{: .nolineno }
 
 ### Anchor.toml Configuration
 
@@ -192,6 +205,7 @@ wallet = "~/.config/solana/id.json"
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
 ```
+{: file="Anchor.toml" }
 
 ## Building a Counter Program
 
@@ -304,6 +318,10 @@ pub enum ErrorCode {
     CounterUnderflow,
 }
 ```
+{: file="lib.rs" }
+
+> Always use checked arithmetic operations (checked_add, checked_sub) to prevent integer overflow/underflow vulnerabilities.
+{: .prompt-warning }
 
 ### Understanding the Code
 
@@ -328,8 +346,8 @@ pub enum ErrorCode {
 - Must implement serialization traits
 - Uses `InitSpace` for automatic size calculation
 
-![Anchor Framework Components](/assets/img/posts/anchor-framework-components.png)
-*Figure 5: Detailed breakdown of Anchor framework components*
+![Anchor Framework Components](/assets/img/posts/anchor-framework-components.png){: w="800" h="500" .shadow }
+_Detailed breakdown of Anchor framework components_
 
 ## Building and Deploying
 
@@ -347,6 +365,7 @@ anchor build
 # Get the program ID
 solana address -k target/deploy/counter_program-keypair.json
 ```
+{: .nolineno }
 
 ### Update Program ID
 
@@ -356,18 +375,24 @@ After building, update the program ID in two places:
 // In programs/counter_program/src/lib.rs
 declare_id!("YOUR_PROGRAM_ID_HERE");
 ```
+{: file="lib.rs" }
 
 ```toml
 # In Anchor.toml
 [programs.devnet]
 counter_program = "YOUR_PROGRAM_ID_HERE"
 ```
+{: file="Anchor.toml" }
 
 Rebuild after updating:
 
 ```bash
 anchor build
 ```
+{: .nolineno }
+
+> Always update the program ID in both lib.rs and Anchor.toml after the first build, then rebuild before deployment.
+{: .prompt-tip }
 
 ### Deploy to Devnet
 
@@ -381,6 +406,7 @@ solana program show YOUR_PROGRAM_ID
 # Check program size and upgrade authority
 solana program show YOUR_PROGRAM_ID --programs
 ```
+{: .nolineno }
 
 ## Writing Tests
 
@@ -542,6 +568,10 @@ describe("counter_program", () => {
   });
 });
 ```
+{: file="counter_program.ts" }
+
+> Comprehensive testing is crucial in Solana development. Test both success and failure cases, including unauthorized access attempts.
+{: .prompt-warning }
 
 ### Running Tests
 
@@ -748,6 +778,9 @@ pub struct UserCreated {
 ```
 
 ## Security Best Practices
+
+> Security is paramount in Solana development! Always validate accounts, use checked arithmetic, and implement proper access control.
+{: .prompt-danger }
 
 ### 1. Account Validation
 
