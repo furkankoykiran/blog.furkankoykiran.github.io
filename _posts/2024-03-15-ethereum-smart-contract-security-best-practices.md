@@ -1,5 +1,6 @@
 ---
 title: "Ethereum Smart Contract Security Best Practices"
+description: "Complete guide to Ethereum smart contract security. Learn reentrancy prevention, access control, integer overflow protection, and professional audit techniques."
 date: "2024-03-15"
 categories:
   - "blockchain"
@@ -14,7 +15,7 @@ tags:
   - "defi"
   - "audit"
 image:
-  src: "/assets/img/posts/ethereum-smart-contract-security.png"
+  path: "/assets/img/posts/ethereum-smart-contract-security.png"
   alt: "Ethereum Smart Contract Security Best Practices"
 ---
 
@@ -31,7 +32,11 @@ The history of Ethereum is filled with costly exploits:
 
 These incidents underscore a harsh reality: **in blockchain, code is law**. There's no "undo" button.
 
-![Ethereum security visualization](/assets/img/posts/ethereum-smart-contract-security.png)
+![Ethereum security visualization](/assets/img/posts/ethereum-smart-contract-security.png){: w="700" h="400" .shadow }
+_Ethereum smart contract security architecture and common vulnerabilities_
+
+> Smart contract vulnerabilities can lead to irreversible financial losses. Always conduct thorough audits before mainnet deployment.
+{: .prompt-danger }
 
 ## Common Vulnerabilities and How to Prevent Them
 
@@ -74,13 +79,17 @@ function withdraw() public {
     uint256 amount = balances[msg.sender];
     require(amount > 0, "Insufficient balance");
     
-    // ✅ Update state BEFORE external call (Checks-Effects-Interactions pattern)
+    // Update state BEFORE external call (Checks-Effects-Interactions pattern)
     balances[msg.sender] = 0;
     
     (bool sent, ) = msg.sender.call{value: amount}("");
     require(sent, "Transfer failed");
 }
 ```
+{: file="SecureVault.sol" }
+
+> Always update state variables before making external calls to prevent reentrancy attacks. This is the Checks-Effects-Interactions pattern.
+{: .prompt-tip }
 
 **Best Practice:** Always follow the **Checks-Effects-Interactions** pattern:
 1. **Checks**: Validate conditions (`require` statements)
@@ -155,10 +164,14 @@ Improper access control allows unauthorized users to execute privileged function
 address public owner;
 
 function withdraw() public {
-    // ❌ Anyone can drain the contract!
+    // Anyone can drain the contract!
     payable(owner).transfer(address(this).balance);
 }
 ```
+{: file="VulnerableContract.sol" }
+
+> Never leave privileged functions without access control modifiers. Use OpenZeppelin's Ownable or AccessControl contracts.
+{: .prompt-warning }
 
 **Secure Implementation:**
 
@@ -171,6 +184,7 @@ contract SecureContract is Ownable {
     }
 }
 ```
+{: file="SecureContract.sol" }
 
 **Advanced Access Control with Roles:**
 
@@ -282,6 +296,9 @@ function distribute() public {
 
 If `investors` array grows too large, the function becomes uncallable due to gas limits.
 
+> Unbounded loops can cause gas limit DoS attacks. Always use the pull payment pattern for distributing funds to multiple addresses.
+{: .prompt-warning }
+
 **Secure Pattern (Pull over Push):**
 
 ```solidity
@@ -334,36 +351,42 @@ function randomWinner() public {
 
 ### Development Phase
 
-✅ **Use Latest Solidity Version:** Benefit from compiler security improvements  
-✅ **Import Audited Libraries:** OpenZeppelin, Solmate, etc.  
-✅ **Follow Checks-Effects-Interactions Pattern**  
-✅ **Implement Access Control:** Use `Ownable`, `AccessControl`  
-✅ **Add Reentrancy Guards:** `ReentrancyGuard` modifier  
-✅ **Use SafeMath (pre-0.8.0):** Prevent overflow/underflow  
-✅ **Validate Input Parameters:** `require()` statements everywhere  
-✅ **Emit Events:** For critical state changes (aids monitoring)  
+- **Use Latest Solidity Version:** Benefit from compiler security improvements  
+- **Import Audited Libraries:** OpenZeppelin, Solmate, etc.  
+- **Follow Checks-Effects-Interactions Pattern**  
+- **Implement Access Control:** Use `Ownable`{: .filepath}, `AccessControl`{: .filepath}  
+- **Add Reentrancy Guards:** `ReentrancyGuard` modifier  
+- **Use SafeMath (pre-0.8.0):** Prevent overflow/underflow  
+- **Validate Input Parameters:** `require()` statements everywhere  
+- **Emit Events:** For critical state changes (aids monitoring)  
 
 ### Testing Phase
 
-✅ **Write Comprehensive Unit Tests:** Aim for 100% code coverage  
-✅ **Fuzz Testing:** Use Echidna, Foundry's fuzzer  
-✅ **Integration Tests:** Test contract interactions  
-✅ **Gas Optimization Tests:** Measure gas usage  
+- **Write Comprehensive Unit Tests:** Aim for 100% code coverage  
+- **Fuzz Testing:** Use Echidna, Foundry's fuzzer  
+- **Integration Tests:** Test contract interactions  
+- **Gas Optimization Tests:** Measure gas usage
+
+> Aim for 100% code coverage in your test suite. Critical financial functions should have multiple test scenarios including edge cases.
+{: .prompt-tip }
 
 ### Pre-Deployment Phase
 
-✅ **External Audit:** Hire professional auditors (ConsenSys, Trail of Bits, etc.)  
-✅ **Bug Bounty Program:** Incentivize white-hat hackers  
-✅ **Static Analysis:** Slither, Mythril, MythX  
-✅ **Symbolic Execution:** Manticore, HEVM  
-✅ **Formal Verification:** Certora, Runtime Verification  
+- **External Audit:** Hire professional auditors (ConsenSys, Trail of Bits, etc.)  
+- **Bug Bounty Program:** Incentivize white-hat hackers  
+- **Static Analysis:** Slither, Mythril, MythX  
+- **Symbolic Execution:** Manticore, HEVM  
+- **Formal Verification:** Certora, Runtime Verification
+
+> Never deploy contracts handling significant value without a professional security audit. Audit costs are minimal compared to potential exploit losses.
+{: .prompt-danger }
 
 ### Post-Deployment Phase
 
-✅ **Monitoring:** Track contract activity with The Graph, Tenderly  
-✅ **Incident Response Plan:** Prepare emergency procedures  
-✅ **Upgradability Strategy:** Proxy patterns if needed  
-✅ **Insurance:** Consider coverage from Nexus Mutual, Armor  
+- **Monitoring:** Track contract activity with The Graph, Tenderly  
+- **Incident Response Plan:** Prepare emergency procedures  
+- **Upgradability Strategy:** Proxy patterns if needed  
+- **Insurance:** Consider coverage from Nexus Mutual, Armor  
 
 ## Essential Security Tools
 
@@ -427,6 +450,10 @@ contract SecureToken is ERC20, Ownable, Pausable {
     }
 }
 ```
+{: file="EmergencyToken.sol" }
+
+> Circuit breaker patterns allow you to pause contracts during security incidents. Essential for high-value DeFi protocols.
+{: .prompt-info }
 
 ## Audit Checklist Questions
 
