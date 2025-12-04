@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Auto close issues/pr that did not follow template
-      uses: roots/issue-closer@v1.1
+      uses: roots/issue-closer@v1.2
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         issue-pattern: "(\\[x\\]|\\[X\\]) I have read"
