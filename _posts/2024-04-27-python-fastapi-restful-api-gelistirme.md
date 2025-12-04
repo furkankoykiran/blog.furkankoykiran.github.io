@@ -1,5 +1,6 @@
 ---
 title: "Python FastAPI ile RESTful API Geliştirme"
+description: "FastAPI ile modern REST API geliştirme rehberi. Async endpoint'ler, Pydantic validasyon, JWT authentication, SQLAlchemy ORM ve production deployment stratejileri."
 date: "2024-04-27"
 categories:
   - "backend"
@@ -13,7 +14,7 @@ tags:
   - "api-design"
   - "backend"
 image:
-  src: "/assets/img/posts/fastapi-microservices-architecture.png"
+  path: "/assets/img/posts/fastapi-microservices-architecture.png"
   alt: "FastAPI Microservices Architecture"
 ---
 
@@ -36,6 +37,9 @@ FastAPI, Python 3.6+ için modern, hızlı (yüksek performanslı) bir web frame
 
 ### Gerekli Paketler
 
+> Python 3.8 veya üzeri sürüm kullanmanız önerilir. FastAPI, modern Python tip bildirimleri gerektirir.
+{: .prompt-tip }
+
 ```bash
 # Temel kurulum
 pip install fastapi
@@ -49,6 +53,7 @@ pip install passlib[bcrypt]
 pip install sqlalchemy
 pip install alembic
 ```
+{: .nolineno }
 
 ### İlk API
 
@@ -102,6 +107,10 @@ async def create_post(post: Post):
     post.id = 1  # Database'den gelecek
     return post
 ```
+{: file="main.py" }
+
+> Swagger UI otomatik dokümantasyonuna `http://localhost:8000/docs` adresinden ulaşabilirsiniz.
+{: .prompt-info }
 
 ### Uygulamayı Çalıştırma
 
@@ -115,6 +124,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 # HTTPS ile
 uvicorn main:app --ssl-keyfile=./key.pem --ssl-certfile=./cert.pem
 ```
+{: .nolineno }
 
 ## Pydantic ile Veri Modelleme
 
@@ -204,6 +214,7 @@ class PostInDB(PostBase):
 class PostResponse(PostInDB):
     author: UserResponse
 ```
+{: file="schemas/models.py" }
 
 ## Database Entegrasyonu
 
@@ -291,6 +302,10 @@ def get_db():
     finally:
         db.close()
 ```
+{: file="database.py" }
+
+> SQLAlchemy'yi async olarak kullanmak için `databases` veya `sqlalchemy[asyncio]` paketlerini kullanabilirsiniz.
+{: .prompt-tip }
 
 ### CRUD İşlemleri
 
@@ -379,6 +394,7 @@ class PostRepository:
             (Post.title.ilike(f"%{query}%")) | (Post.content.ilike(f"%{query}%"))
         ).filter(Post.published == True).offset(skip).limit(limit).all()
 ```
+{: file="repositories/post.py" }
 
 ## Router'lar ile API Organizasyonu
 
@@ -506,6 +522,7 @@ async def register_user(
 app.include_router(posts_router)
 app.include_router(users_router)
 ```
+{: file="routers/__init__.py" }
 
 ## Authentication ve Authorization
 
@@ -646,6 +663,10 @@ async def read_users_me(current_user: User = Depends(get_current_active_user)):
     """Mevcut kullanıcı bilgilerini getir"""
     return current_user
 ```
+{: file="services/auth.py" }
+
+> SECRET_KEY'i asla kodda saklamayın! Ortam değişkenlerinden okuyun ve güçlü, rastgele bir değer kullanın.
+{: .prompt-danger }
 
 ## Dosya Upload ve İşleme
 
@@ -746,6 +767,10 @@ async def upload_post_image(
         "filename": safe_filename
     }
 ```
+{: file="routers/upload.py" }
+
+> Dosya upload işlemlerinde mutlaka boyut ve tip kontrolü yapın. Kötü amaçlı dosyalar güvenlik riski oluşturabilir.
+{: .prompt-warning }
 
 ## Background Tasks
 
@@ -796,6 +821,7 @@ async def publish_post(
     
     return {"message": "Post yayınlandı", "post_id": post_id}
 ```
+{: file="routers/posts.py" }
 
 ## Middleware ve CORS
 
@@ -805,6 +831,9 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 import time
 import logging
+
+> CORS ayarlarını production'da mutlaka kısıtlayın. Tüm origin'lere izin vermek güvenlik riski oluşturur.
+{: .prompt-warning }
 
 # CORS ayarları
 app.add_middleware(
@@ -843,6 +872,7 @@ async def log_requests(request, call_next):
     logger.info(f"Response status: {response.status_code}")
     return response
 ```
+{: file="middleware.py" }
 
 ## Exception Handling
 
@@ -890,6 +920,7 @@ async def general_exception_handler(request: Request, exc: Exception):
         content={"message": "Sunucu hatası oluştu"}
     )
 ```
+{: file="exceptions.py" }
 
 ## Testing
 
@@ -949,6 +980,10 @@ def test_login(test_user):
     assert response.status_code == 200
     assert "access_token" in response.json()
 ```
+{: file="tests/test_api.py" }
+
+> Test coverage'ı en az %80 tutmaya çalışın. FastAPI'nin TestClient'i ile test yazmak oldukça kolaydır.
+{: .prompt-tip }
 
 ## Production Deployment
 
@@ -976,6 +1011,7 @@ EXPOSE 8000
 # Start application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
 ```
+{: file="Dockerfile" }
 
 ```yaml
 # docker-compose.yml
@@ -1006,6 +1042,7 @@ services:
 volumes:
   postgres_data:
 ```
+{: file="docker-compose.yml" }
 
 ### Nginx ile Reverse Proxy
 
@@ -1032,6 +1069,7 @@ server {
     }
 }
 ```
+{: file="/etc/nginx/sites-available/fastapi" .nolineno }
 
 ## En İyi Pratikler
 
@@ -1070,6 +1108,7 @@ myproject/
 ├── Dockerfile
 └── docker-compose.yml
 ```
+{: .nolineno }
 
 ### 2. Konfigürasyon Yönetimi
 
@@ -1094,6 +1133,7 @@ def get_settings():
 
 settings = get_settings()
 ```
+{: file="config.py" }
 
 ### 3. Dependency Injection
 
