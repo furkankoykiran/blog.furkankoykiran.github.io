@@ -1,5 +1,6 @@
 ---
 title: "Web3.py ile Ethereum Blockchain Etkileşimi"
+description: "Python Web3.py kütüphanesi ile Ethereum blockchain geliştirme rehberi. Wallet bağlantısı, transaction gönderme, smart contract etkileşimi ve DApp development."
 date: "2024-05-30"
 categories:
   - "web3-development"
@@ -13,7 +14,7 @@ tags:
   - "dapp"
   - "development"
 image:
-  src: "/assets/img/posts/web3py-ethereum-development.png"
+  path: "/assets/img/posts/web3py-ethereum-development.png"
   alt: "Web3.py ile Ethereum Blockchain Development"
 ---
 
@@ -48,6 +49,10 @@ pip install python-dotenv
 pip install eth-account
 pip install eth-utils
 ```
+{: .nolineno }
+
+> Web3.py 6.x sürümünü kullanmanızı öneririz. Eski sürümlerle API farklılıkları olabilir.
+{: .prompt-tip }
 
 ### İlk Bağlantı Kurulumu
 
@@ -72,9 +77,13 @@ if w3.is_connected():
 else:
     print("❌ Bağlantı başarısız!")
 ```
+{: file="connect_ethereum.py" }
 
-![Web3 Developer Workflow](/assets/img/posts/web3py-developer-workflow.png)
-*Web3.py ile geliştirme sürecinin genel akışı*
+> Infura veya Alchemy API key'lerinizi `.env`{: .filepath} dosyasında saklayın ve `.gitignore`{: .filepath}'a ekleyin.
+{: .prompt-danger }
+
+![Web3 Developer Workflow](/assets/img/posts/web3py-developer-workflow.png){: w="800" h="500" .shadow }
+_Web3.py ile geliştirme sürecinin genel akışı_
 
 ### Provider Türleri ve Kullanım Senaryoları
 
@@ -361,9 +370,13 @@ def send_eip1559_transaction(w3, from_private_key, to_address, amount_eth):
     
     return tx_hash.hex()
 ```
+{: file="send_transaction.py" }
 
-![Python Web3 Blockchain](/assets/img/posts/python-web3-blockchain.png)
-*Python ve Web3 teknolojilerinin entegrasyonu*
+> Gas fee'leri daima kontrol edin! Yüksek network congestion'da işlemler çok pahalı olabilir.
+{: .prompt-warning }
+
+![Python Web3 Blockchain](/assets/img/posts/python-web3-blockchain.png){: w="800" h="500" .shadow }
+_Python ve Web3 teknolojilerinin entegrasyonu_
 
 ## Smart Contract Etkileşimi
 
@@ -590,9 +603,10 @@ def listen_to_transfer_events(w3, contract_address, from_block='latest'):
         except Exception as e:
             print(f"❌ Event listening hatası: {e}")
 ```
+{: file="event_listener.py" }
 
-![Web3 Application Architecture](/assets/img/posts/web3-application-architecture.png)
-*Web3 uygulamalarının mimari yapısı ve bileşenleri*
+![Web3 Application Architecture](/assets/img/posts/web3-application-architecture.png){: w="800" h="500" .shadow }
+_Web3 uygulamalarının mimari yapısı ve bileşenleri_
 
 ## İleri Seviye Teknikler
 
