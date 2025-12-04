@@ -1,10 +1,11 @@
 ---
 title: "Docker ile Python Uygulaması Containerization"
+description: "Docker ile Python uygulaması containerization rehberi. Multi-stage builds, Docker Compose, Kubernetes deployment ve production best practices."
 date: "2024-10-14 09:30:00 +0300"
 categories: [DevOps, Python]
 tags: [docker, python, containerization, devops, deployment, microservices, kubernetes]
 image:
-  src: /assets/img/posts/docker-python-containerization-architecture.png
+  path: /assets/img/posts/docker-python-containerization-architecture.png
   alt: "Docker ile Python Uygulaması Containerization Mimarisi"
 ---
 
