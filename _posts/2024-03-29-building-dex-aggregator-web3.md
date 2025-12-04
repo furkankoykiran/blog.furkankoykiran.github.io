@@ -1,10 +1,11 @@
 ---
 title: "Building a DEX Aggregator with Web3"
+description: "Complete guide to building a production-ready DEX aggregator. Learn price comparison, route optimization, smart contract integration, and Web3 frontend development."
 date: "2024-03-29 14:20:00 +0300"
 categories: [DeFi Development, Web3]
 tags: [defi, dex, uniswap, web3, trading, aggregator, smart-contracts, ethereum]
 image:
-  src: /assets/img/posts/dex-aggregator-architecture-diagram.jpeg
+  path: /assets/img/posts/dex-aggregator-architecture-diagram.jpeg
   alt: "DEX Aggregator Architecture"
 ---
 
@@ -71,6 +72,10 @@ const ethInput = 1;
 const usdcOutput = calculateOutputAmount(ethInput, ethReserve, usdcReserve);
 console.log(`Output: ${usdcOutput} USDC`); // ~1994 USDC
 ```
+{: file="amm-calculations.js" }
+
+> Understanding AMM mechanics is crucial for building a DEX aggregator. The constant product formula determines how prices change with trade size.
+{: .prompt-tip }
 
 ### Price Impact and Slippage
 
@@ -102,9 +107,13 @@ console.log(largeTradeImpact);
 }
 */
 ```
+{: file="price-impact.js" }
 
-![DEX Evolution and Analytics](/assets/img/posts/dex-evolution-analytics-visualization.png)
-*Figure 1: DEX market evolution showing liquidity fragmentation across protocols*
+> Large trades can experience significant price impact (8%+). DEX aggregators split orders across multiple pools to minimize this.
+{: .prompt-warning }
+
+![DEX Evolution and Analytics](/assets/img/posts/dex-evolution-analytics-visualization.png){: w="700" h="400" .shadow }
+_Figure 1: DEX market evolution showing liquidity fragmentation across protocols_
 
 ## Architecture Overview
 
@@ -242,6 +251,7 @@ class UniswapV2Fetcher {
 
 module.exports = UniswapV2Fetcher;
 ```
+{: file="uniswapV2Fetcher.js" }
 
 ### SushiSwap Integration
 
@@ -345,6 +355,10 @@ class PriceAggregator {
 
 module.exports = PriceAggregator;
 ```
+{: file="priceAggregator.js" }
+
+> Fetching prices from multiple DEXs in parallel using Promise.all() significantly reduces response time compared to sequential fetching.
+{: .prompt-tip }
 
 ### Usage Example
 
@@ -439,6 +453,10 @@ class GasOptimizedAggregator extends PriceAggregator {
 
 module.exports = GasOptimizedAggregator;
 ```
+{: file="gasOptimizedAggregator.js" }
+
+> Gas costs can significantly impact small trades. Always factor in transaction costs when comparing DEX prices, especially during high network congestion.
+{: .prompt-warning }
 
 ## Smart Contract for Trade Execution
 
@@ -533,6 +551,10 @@ contract DEXAggregator {
     }
 }
 ```
+{: file="DEXAggregator.sol" }
+
+> Smart contract aggregators should include safety features like slippage protection, deadline checks, and emergency withdrawal functions.
+{: .prompt-info }
 
 ### Deploy Script
 
@@ -567,9 +589,10 @@ main().catch((error) => {
     process.exitCode = 1;
 });
 ```
+{: file="deploy.js" }
 
-![DEX Liquidity Routing](/assets/img/posts/dex-liquidity-routing-mechanism.jpg)
-*Figure 3: Liquidity routing mechanism across multiple DEX pools*
+![DEX Liquidity Routing](/assets/img/posts/dex-liquidity-routing-mechanism.jpg){: w="700" h="400" .shadow }
+_Figure 3: Liquidity routing mechanism across multiple DEX pools_
 
 ## Frontend Implementation
 
@@ -732,6 +755,10 @@ class MultiHopRouter {
     }
 }
 ```
+{: file="multiHopRouter.js" }
+
+> Multi-hop routing through intermediate tokens like WETH or USDC can provide better prices than direct swaps, especially for exotic token pairs.
+{: .prompt-tip }
 
 ## Testing and Debugging
 
@@ -794,16 +821,20 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 ```
+{: file="server.js" }
 
 ## Conclusion
 
+> Building a DEX aggregator provides deep understanding of DeFi mechanics, smart contract integration, and Web3 development. Start with testnet and gradually add features.
+{: .prompt-info }
+
 You've now built a functional DEX aggregator that:
 
-✅ Compares prices across multiple DEXs in real-time  
-✅ Optimizes for gas costs and net returns  
-✅ Supports multi-hop routing for better prices  
-✅ Provides a user-friendly Web3 interface  
-✅ Executes trades securely via smart contracts  
+- Compares prices across multiple DEXs in real-time  
+- Optimizes for gas costs and net returns  
+- Supports multi-hop routing for better prices  
+- Provides a user-friendly Web3 interface  
+- Executes trades securely via smart contracts  
 
 ### Key Takeaways
 
@@ -815,10 +846,13 @@ You've now built a functional DEX aggregator that:
 ### Next Steps
 
 - Add support for Uniswap V3 concentrated liquidity
-- Implement cross-chain aggregation (Ethereum ↔ BSC ↔ Polygon)
+- Implement cross-chain aggregation (Ethereum, BSC, Polygon)
 - Build MEV protection mechanisms
 - Add limit orders and advanced trading features
 - Integrate with more DEXs (Curve, Balancer, etc.)
+
+> Always test DEX aggregators thoroughly on testnet before mainnet deployment. Real money is at stake and bugs can be costly.
+{: .prompt-danger }
 
 ### Resources
 
