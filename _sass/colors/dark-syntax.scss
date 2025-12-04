@@ -19,7 +19,9 @@
 
   /* syntax highlight colors from https://raw.githubusercontent.com/jwarby/pygments-css/master/monokai.css */
   .highlight pre { background-color: var(--highlight-bg-color); }
+
   .highlight .hll { background-color: var(--highlight-bg-color); }
+
   .highlight .c { color: #75715e; } /* Comment */
   .highlight .err { color: #960050; background-color: #1e0010; } /* Error */
   .highlight .k { color: #66d9ef; } /* Keyword */

@@ -4,28 +4,28 @@
 
 $(function() {
 
-  const btnSbTrigger = $("#sidebar-trigger");
-  const btnSearchTrigger = $("#search-trigger");
-  const btnCancel = $("#search-cancel");
-  const btnClear = $("#search-cleaner");
+  const btnSbTrigger = $('#sidebar-trigger');
+  const btnSearchTrigger = $('#search-trigger');
+  const btnCancel = $('#search-cancel');
+  const btnClear = $('#search-cleaner');
 
-  const main = $("#main");
-  const topbarTitle = $("#topbar-title");
-  const searchWrapper = $("#search-wrapper");
-  const resultWrapper = $("#search-result-wrapper");
-  const results = $("#search-results");
-  const input = $("#search-input");
-  const hints = $("#search-hints");
+  const main = $('#main');
+  const topbarTitle = $('#topbar-title');
+  const searchWrapper = $('#search-wrapper');
+  const resultWrapper = $('#search-result-wrapper');
+  const results = $('#search-results');
+  const input = $('#search-input');
+  const hints = $('#search-hints');
 
   const scrollBlocker = (function () {
     let offset = 0;
     return {
       block() {
         offset = window.scrollY;
-        $("html,body").scrollTop(0);
+        $('html,body').scrollTop(0);
       },
       release() {
-        $("html,body").scrollTop(offset);
+        $('html,body').scrollTop(offset);
       },
       getOffset() {
         return offset;
@@ -39,18 +39,18 @@ $(function() {
   const mobileSearchBar = (function () {
     return {
       on() {
-        btnSbTrigger.addClass("unloaded");
-        topbarTitle.addClass("unloaded");
-        btnSearchTrigger.addClass("unloaded");
-        searchWrapper.addClass("d-flex");
-        btnCancel.addClass("loaded");
+        btnSbTrigger.addClass('unloaded');
+        topbarTitle.addClass('unloaded');
+        btnSearchTrigger.addClass('unloaded');
+        searchWrapper.addClass('d-flex');
+        btnCancel.addClass('loaded');
       },
       off() {
-        btnCancel.removeClass("loaded");
-        searchWrapper.removeClass("d-flex");
-        btnSbTrigger.removeClass("unloaded");
-        topbarTitle.removeClass("unloaded");
-        btnSearchTrigger.removeClass("unloaded");
+        btnCancel.removeClass('loaded');
+        searchWrapper.removeClass('d-flex');
+        btnSbTrigger.removeClass('unloaded');
+        topbarTitle.removeClass('unloaded');
+        btnSearchTrigger.removeClass('unloaded');
       }
     };
   }());
@@ -63,25 +63,25 @@ $(function() {
         if (!visible) {
           // the block method must be called before $(#main) unloaded.
           scrollBlocker.block();
-          resultWrapper.removeClass("unloaded");
-          main.addClass("unloaded");
+          resultWrapper.removeClass('unloaded');
+          main.addClass('unloaded');
           visible = true;
         }
       },
       off() {
         if (visible) {
           results.empty();
-          if (hints.hasClass("unloaded")) {
-            hints.removeClass("unloaded");
+          if (hints.hasClass('unloaded')) {
+            hints.removeClass('unloaded');
           }
-          resultWrapper.addClass("unloaded");
-          btnClear.removeClass("visible");
-          main.removeClass("unloaded");
+          resultWrapper.addClass('unloaded');
+          btnClear.removeClass('visible');
+          main.removeClass('unloaded');
 
           // now the release method must be called after $(#main) display
           scrollBlocker.release();
 
-          input.val("");
+          input.val('');
           visible = false;
         }
       },
@@ -94,7 +94,7 @@ $(function() {
 
 
   function isMobileView() {
-    return btnCancel.hasClass("loaded");
+    return btnCancel.hasClass('loaded');
   }
 
   btnSearchTrigger.click(function() {
@@ -109,45 +109,45 @@ $(function() {
   });
 
   input.focus(function() {
-    searchWrapper.addClass("input-focus");
+    searchWrapper.addClass('input-focus');
   });
 
   input.focusout(function() {
-    searchWrapper.removeClass("input-focus");
+    searchWrapper.removeClass('input-focus');
   });
 
-  input.on("keyup", function(e) {
-    if (e.keyCode === 8 && input.val() === "") {
+  input.on('keyup', function(e) {
+    if (e.keyCode === 8 && input.val() === '') {
       if (!isMobileView()) {
         resultSwitch.off();
       } else {
-        hints.removeClass("unloaded");
+        hints.removeClass('unloaded');
       }
     } else {
-      if (input.val() !== "") {
+      if (input.val() !== '') {
         resultSwitch.on();
 
-        if (!btnClear.hasClass("visible")) {
-          btnClear.addClass("visible");
+        if (!btnClear.hasClass('visible')) {
+          btnClear.addClass('visible');
         }
 
         if (isMobileView()) {
-          hints.addClass("unloaded");
+          hints.addClass('unloaded');
         }
       }
     }
   });
 
-  btnClear.on("click", function() {
-    input.val("");
+  btnClear.on('click', function() {
+    input.val('');
     if (isMobileView()) {
-      hints.removeClass("unloaded");
+      hints.removeClass('unloaded');
       results.empty();
     } else {
       resultSwitch.off();
     }
     input.focus();
-    btnClear.removeClass("visible");
+    btnClear.removeClass('visible');
   });
 
 });

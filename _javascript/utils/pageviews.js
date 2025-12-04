@@ -19,26 +19,26 @@ const getInitStatus = (function () {
 
 const PvOpts = (function () {
   function getContent(selector) {
-    return $(selector).attr("content");
+    return $(selector).attr('content');
   }
 
   function hasContent(selector) {
     let content = getContent(selector);
-    return (typeof content !== "undefined" && content !== false);
+    return (typeof content !== 'undefined' && content !== false);
   }
 
   return {
     getProxyMeta() {
-      return getContent("meta[name=pv-proxy-endpoint]");
+      return getContent('meta[name=pv-proxy-endpoint]');
     },
     getLocalMeta() {
-      return getContent("meta[name=pv-cache-path]");
+      return getContent('meta[name=pv-cache-path]');
     },
     hasProxyMeta() {
-      return hasContent("meta[name=pv-proxy-endpoint]");
+      return hasContent('meta[name=pv-proxy-endpoint]');
     },
     hasLocalMeta() {
-      return hasContent("meta[name=pv-cache-path]");
+      return hasContent('meta[name=pv-cache-path]');
     }
   };
 
@@ -46,14 +46,14 @@ const PvOpts = (function () {
 
 const PvStorage = (function () {
   const Keys = {
-    KEY_PV: "pv",
-    KEY_PV_SRC: "pv_src",
-    KEY_CREATION: "pv_created_date"
+    KEY_PV: 'pv',
+    KEY_PV_SRC: 'pv_src',
+    KEY_CREATION: 'pv_created_date'
   };
 
   const Source = {
-    LOCAL: "same-origin",
-    PROXY: "cors"
+    LOCAL: 'same-origin',
+    PROXY: 'cors'
   };
 
   function get(key) {
@@ -98,7 +98,7 @@ const PvStorage = (function () {
       return get(Keys.KEY_PV_SRC) === Source.PROXY;
     },
     newerThan(pv) {
-      return PvStorage.getCache().totalsForAllResults["ga:pageviews"] > pv.totalsForAllResults["ga:pageviews"];
+      return PvStorage.getCache().totalsForAllResults['ga:pageviews'] > pv.totalsForAllResults['ga:pageviews'];
     },
     inspectKeys() {
       if (localStorage.length !== PvStorage.keysCount()) {
@@ -136,7 +136,7 @@ function countUp(min, max, destId) {
 function countPV(path, rows) {
   let count = 0;
 
-  if (typeof rows !== "undefined" ) {
+  if (typeof rows !== 'undefined' ) {
     for (let i = 0; i < rows.length; ++i) {
       const gaPath = rows[parseInt(i, 10)][0];
       if (gaPath === path) { /* path format see: site.permalink */
@@ -156,45 +156,45 @@ function tacklePV(rows, path, elem, hasInit) {
   if (!hasInit) {
     elem.text(new Intl.NumberFormat().format(count));
   } else {
-    const initCount = parseInt(elem.text().replace(/,/g, ""), 10);
+    const initCount = parseInt(elem.text().replace(/,/g, ''), 10);
     if (count > initCount) {
-      countUp(initCount, count, elem.attr("id"));
+      countUp(initCount, count, elem.attr('id'));
     }
   }
 }
 
 function displayPageviews(data) {
-  if (typeof data === "undefined") {
+  if (typeof data === 'undefined') {
     return;
   }
 
   let hasInit = getInitStatus();
   const rows = data.rows; /* could be undefined */
 
-  if ($("#post-list").length > 0) { /* the Home page */
-    $(".post-preview").each(function() {
-      const path = $(this).find("a").attr("href");
-      tacklePV(rows, path, $(this).find(".pageviews"), hasInit);
+  if ($('#post-list').length > 0) { /* the Home page */
+    $('.post-preview').each(function() {
+      const path = $(this).find('a').attr('href');
+      tacklePV(rows, path, $(this).find('.pageviews'), hasInit);
     });
 
-  } else if ($(".post").length > 0) { /* the post */
+  } else if ($('.post').length > 0) { /* the post */
     const path = window.location.pathname;
-    tacklePV(rows, path, $("#pv"), hasInit);
+    tacklePV(rows, path, $('#pv'), hasInit);
   }
 }
 
 function fetchProxyPageviews() {
   if (PvOpts.hasProxyMeta()) {
     $.ajax({
-      type: "GET",
+      type: 'GET',
       url: PvOpts.getProxyMeta(),
-      dataType: "jsonp",
-      jsonpCallback: "displayPageviews",
+      dataType: 'jsonp',
+      jsonpCallback: 'displayPageviews',
       success: (data) => {
         PvStorage.saveProxyCache(JSON.stringify(data));
       },
       error: (jqXHR, textStatus, errorThrown) => {
-        console.log("Failed to load pageviews from proxy server: " + errorThrown);
+        console.log('Failed to load pageviews from proxy server: ' + errorThrown);
       }
     });
   }
@@ -216,7 +216,7 @@ function fetchLocalPageviews(hasCache = false) {
 }
 
 $(function() {
-  if ($(".pageviews").length <= 0) {
+  if ($('.pageviews').length <= 0) {
     return;
   }
 

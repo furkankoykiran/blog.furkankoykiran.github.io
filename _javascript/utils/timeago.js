@@ -4,7 +4,7 @@
 
 $(function() {
 
-  const timeagoElem = $(".timeago");
+  const timeagoElem = $('.timeago');
 
   let toRefresh = timeagoElem.length;
 
@@ -13,22 +13,22 @@ $(function() {
   function timeago(iso, preposition) {
     let now = new Date();
     let past = new Date(iso);
-    let prep = (typeof preposition !== "undefined" ? `${preposition} ` : "");
+    let prep = (typeof preposition !== 'undefined' ? `${preposition} ` : '');
 
     if (past.getFullYear() !== now.getFullYear()) {
       toRefresh -= 1;
-      return prep + past.toLocaleString("tr-TR", {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
+      return prep + past.toLocaleString('tr-TR', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
       });
     }
 
     if (past.getMonth() !== now.getMonth()) {
       toRefresh -= 1;
-      return prep + past.toLocaleString("tr-TR", {
-        month: "short",
-        day: "numeric"
+      return prep + past.toLocaleString('tr-TR', {
+        month: 'short',
+        day: 'numeric'
       });
     }
 
@@ -37,33 +37,33 @@ $(function() {
     let day = Math.floor(seconds / 86400);
     if (day >= 1) {
       toRefresh -= 1;
-      return day + " day" + (day > 1 ? "s" : "") + " ago";
+      return day + ' day' + (day > 1 ? 's' : '') + ' ago';
     }
 
     let hour = Math.floor(seconds / 3600);
     if (hour >= 1) {
-      return hour + " hour" + (hour > 1 ? "s" : "") + " ago";
+      return hour + ' hour' + (hour > 1 ? 's' : '') + ' ago';
     }
 
     let minute = Math.floor(seconds / 60);
     if (minute >= 1) {
-      return minute + " minute" + (minute > 1 ? "s" : "") + " ago";
+      return minute + ' minute' + (minute > 1 ? 's' : '') + ' ago';
     }
 
-    return "az önce";
+    return 'az önce';
   }
 
   function updateTimeago() {
-    $(".timeago").each(function() {
-      if ($(this).children("i").length > 0) {
-        let node = $(this).children("i");
+    $('.timeago').each(function() {
+      if ($(this).children('i').length > 0) {
+        let node = $(this).children('i');
         let date = node.text(); /* ISO Date: "YYYY-MM-DDTHH:MM:SSZ" */
-        $(this).text(timeago(date, $(this).attr("prep")));
+        $(this).text(timeago(date, $(this).attr('prep')));
         $(this).append(node);
       }
     });
 
-    if (toRefresh === 0 && typeof intervalId !== "undefined") {
+    if (toRefresh === 0 && typeof intervalId !== 'undefined') {
       clearInterval(intervalId); /* stop interval */
     }
     return toRefresh;

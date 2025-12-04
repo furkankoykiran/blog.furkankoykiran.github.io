@@ -41,6 +41,7 @@
     &:not(:first-child) {
       position: relative;
       left: 4px;
+
       &::after {
         left: 67px;
       }
@@ -67,8 +68,8 @@
       }
 
       &:nth-child(odd) {
-        background-color: var(--main-wrapper-bg, #fff);
-        background-image: linear-gradient(to left, #fff, #fbfbfb, #fbfbfb, #fbfbfb, #fff);
+        background-color: var(--main-wrapper-bg, #ffffff);
+        background-image: linear-gradient(to left, #ffffff, #fbfbfb, #fbfbfb, #fbfbfb, #ffffff);
       }
 
       &::after {
@@ -98,6 +99,7 @@
   .date {
     white-space: nowrap;
     display: inline-block;
+
     &.month {
       width: 1.4rem;
       text-align: center;
@@ -120,9 +122,10 @@
         z-index: 1;
       }
     }
+
     &.day {
       font-size: 85%;
-      font-family: 'Lato', sans-serif;
+      font-family: Lato, sans-serif;
       text-align: center;
       margin-right: -2px;
       width: 1.2rem;
@@ -136,6 +139,7 @@
 @media all and (max-width: 576px) {
   #archives {
     margin-top: -1rem;
+
     ul {
       letter-spacing: 0;
     }

@@ -11,14 +11,14 @@
   --btn-border-color: #e9ecef;
   --text-color: #34343c;
   --heading-color: black;
-  --blockquote-border-color: #eee;
+  --blockquote-border-color: #eeeeee;
   --blockquote-text-color: #9a9a9a;
   --link-color: #2a408e;
   --link-underline-color: #dee2e6;
   --text-muted-color: gray;
   --tb-odd-bg: #fbfcfd;
   --tb-border-color: #eaeaea;
-  --button-bg: #fff;
+  --button-bg: #ffffff;
   --btn-backtotop-color: #686868;
   --btn-backtotop-border-color: #f1f1f1;
   --btn-box-shadow: #eaeaea;
@@ -28,13 +28,13 @@
   /* Sidebar */
   --sidebar-bg: radial-gradient(
     circle,
-    rgba(42, 30, 107, 1) 0%,
-    rgba(35, 37, 46, 1) 100%);
+    rgb(42 30 107 / 100%) 0%,
+    rgb(35 37 46 / 100%) 100%);
   --nav-cursor-color: #fcfcfc;
 
   /* Topbar */
   --topbar-wrapper-bg: white;
-  --topbar-text-color: rgb(78, 78, 78);
+  --topbar-text-color: rgb(78 78 78);
   --search-wrapper-bg: #f5f5f5;
   --search-tag-bg: #f8f9fa;
   --search-icon-color: #c2c6cc;
@@ -55,18 +55,18 @@
   /* Posts */
   --btn-share-hover-color: var(--link-color);
   --card-border-color: #f1f1f1;
-  --card-box-shadow: rgba(234, 234, 234, 0.7686274509803922);
+  --card-box-shadow: rgb(234 234 234 / 76.9%);
   --label-color: #616161;
-  --relate-post-date: rgba(30, 55, 70, 0.4);
-  --tag-bg: rgba(0, 0, 0, 0.075);
+  --relate-post-date: rgb(30 55 70 / 40%);
+  --tag-bg: rgb(0 0 0 / 7.5%);
   --tag-border: #dee2e6;
   --tag-shadow: var(--btn-border-color);
-  --tag-hover: rgb(222, 226, 230);
+  --tag-hover: rgb(222 226 230);
   --categories-hover-bg: var(--btn-border-color);
   --dash-color: silver;
 
   /* Archive */
-  --timeline-color: rgba(0, 0, 0, 0.075);
+  --timeline-color: rgb(0 0 0 / 7.5%);
   --timeline-node-bg: #c2c6cc;
   --timeline-year-dot-color: #ffffff;
 

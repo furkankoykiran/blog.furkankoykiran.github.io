@@ -4,27 +4,27 @@
 
 $(function() {
 
-  const topbarTitle = $("#topbar-title");
-  const postTitle = $("div.post>h1");
+  const topbarTitle = $('#topbar-title');
+  const postTitle = $('div.post>h1');
 
   const DEFAULT = topbarTitle.text().trim();
 
   let title = (postTitle.length > 0) ?
-    postTitle.text().trim() : $("h1").text().trim();
+    postTitle.text().trim() : $('h1').text().trim();
 
-  if ($("#page-category").length || $("#page-tag").length) {
+  if ($('#page-category').length || $('#page-tag').length) {
     /* The title in Category or Tag page will be "<title> <count_of_posts>" */
     if (/\s/.test(title)) {
-      title = title.replace(/[0-9]/g, "").trim();
+      title = title.replace(/[0-9]/g, '').trim();
     }
   }
 
   /* Replace topbar title while scroll screens. */
   $(window).scroll(function () {
-    if ($("#post-list").length /* in Home page */
-      || postTitle.is(":hidden") /* is tab pages */
-      || topbarTitle.is(":hidden") /* not mobile screens */
-      || $("#sidebar.sidebar-expand").length) { /* when the sidebar trigger is clicked */
+    if ($('#post-list').length /* in Home page */
+      || postTitle.is(':hidden') /* is tab pages */
+      || topbarTitle.is(':hidden') /* not mobile screens */
+      || $('#sidebar.sidebar-expand').length) { /* when the sidebar trigger is clicked */
       return false;
     }
 
@@ -41,7 +41,7 @@ $(function() {
 
   /* Click title remove hover effect. */
   topbarTitle.click(function() {
-    $("body,html").animate({scrollTop: 0}, 800);
+    $('body,html').animate({scrollTop: 0}, 800);
   });
 
 });

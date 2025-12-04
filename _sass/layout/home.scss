@@ -4,6 +4,7 @@
 
 .pagination {
   font-size: 1rem;
+
   a:hover {
     text-decoration: none;
   }
@@ -17,18 +18,18 @@
       text-align: center;
       display: -webkit-box;
       display: flex;
-      -webkit-box-pack: center;
       justify-content: center;
-      -webkit-box-align: center;
       align-items: center;
       border-radius: 50%;
       border: 1px solid var(--btn-paginator-border-color);
-      font-family: 'Lato', sans-serif;
+      font-family: Lato, sans-serif;
       background-color: var(--button-bg);
+
       &:hover {
         background-color: var(--btn-paginator-hover-color);
       }
     }
+
     &.active {
       .page-link {
         background-color: var(--btn-active-bg);
@@ -37,18 +38,22 @@
         color: var(--btn-text-color);
       }
     }
+
     &.disabled {
       cursor: not-allowed;
+
       .page-link {
-        color: rgba(108, 117, 125, 0.57);
+        color: rgb(108 117 125 / 57%);
         border-color: var(--btn-paginator-border-color);
         background-color: var(--button-bg);
       }
     }
+
     &:first-child .page-link,
     &:last-child .page-link {
       border-radius: 50%;
     }
+
     &:not(:last-child) {
       margin-right: 0.7rem;
     }
@@ -78,6 +83,7 @@
       i {
         font-size: 0.73rem;
       }
+
       span:not(:last-child) {
         margin-right: 1.2rem;
       }
@@ -87,6 +93,7 @@
       margin-top: 0.6rem;
       margin-bottom: 0.6rem;
       color: var(--post-list-text-color);
+
       > p {
         /* Make preview shorter on the homepage */
         margin: 0;
@@ -104,6 +111,7 @@
         padding-left: 3px;
         color: var(--pin-color);
       }
+
       > span {
         display: none;
       }
@@ -125,6 +133,7 @@
 
   #post-list {
     margin-top: 1.5rem;
+
     .post-preview .post-meta {
       .pin {
         background: var(--pin-bg);
@@ -144,6 +153,7 @@
 
   .pagination {
     font-size: 0.85rem;
+
     .page-item .page-link {
       width: 2.2rem;
       height: 2.2rem;

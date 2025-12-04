@@ -22,8 +22,11 @@ export default defineConfig([
     languageOptions: {
       globals: {
         ...globals.serviceworker,
+        $: 'readonly',
         ClipboardJS: 'readonly',
+        CountUp: 'readonly',
         GLightbox: 'readonly',
+        lozad: 'readonly',
         Theme: 'readonly',
         dayjs: 'readonly',
         mermaid: 'readonly',

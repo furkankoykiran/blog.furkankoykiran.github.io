@@ -5,14 +5,14 @@
 $(function() {
 
   const sidebarUtil = (function () {
-    const ATTR_DISPLAY = "sidebar-display";
+    const ATTR_DISPLAY = 'sidebar-display';
     let isExpanded = false;
-    const body = $("body");
+    const body = $('body');
 
     return {
       toggle() {
         if (isExpanded === false) {
-          body.attr(ATTR_DISPLAY, "");
+          body.attr(ATTR_DISPLAY, '');
         } else {
           body.removeAttr(ATTR_DISPLAY);
         }
@@ -23,8 +23,8 @@ $(function() {
 
   }());
 
-  $("#sidebar-trigger").click(sidebarUtil.toggle);
+  $('#sidebar-trigger').click(sidebarUtil.toggle);
 
-  $("#mask").click(sidebarUtil.toggle);
+  $('#mask').click(sidebarUtil.toggle);
 
 });

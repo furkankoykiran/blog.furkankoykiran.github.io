@@ -42,7 +42,7 @@ $(function() {
 
 
   /* markup the image links */
-  $(`${IMG_SCOPE} a`).has("img").addClass('img-link');
+  $(`${IMG_SCOPE} a`).has('img').addClass('img-link');
 
 });
 

@@ -18,7 +18,7 @@
 
 @mixin dot($pl: 0.2rem, $pr: 0.4rem) {
   content: "\2022";
-  color: rgba(158, 158, 158, 0.8);
+  color: rgb(158 158 158 / 80%);
   padding-left: $pl;
   padding-right: $pr;
 }
@@ -73,7 +73,7 @@
 
     &:hover {
       background: #2a408e;
-      color: #fff;
+      color: #ffffff;
       border-color: #2a408e;
     }
 
@@ -129,6 +129,7 @@
     position: relative;
     top: 2rem;
   }
+
   to {
     opacity: 1;
     position: relative;
@@ -137,15 +138,17 @@
 }
 
 #toc-wrapper {
-  border-left: 1px solid rgba(158, 158, 158, 0.17);
+  border-left: 1px solid rgb(158 158 158 / 17%);
   position: -webkit-sticky;
   position: sticky;
   top: 4rem;
   transition: top 0.2s ease-in-out;
   animation: fade-up 0.8s;
+
   &.topbar-down {
     top: 6rem;
   }
+
   > span {
     @include panel-label;
   }
@@ -167,6 +170,7 @@
   > h3 {
     @include label(1.1rem, 600);
   }
+
   .card {
     border-color: var(--card-border-color);
     background-color: var(--card-bg);
@@ -174,13 +178,15 @@
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
+
     h3 {
       color: var(--text-color);
     }
+
     &:hover {
       -webkit-transform: translate3d(0, -3px, 0);
       transform: translate3d(0, -3px, 0);
-      box-shadow: 0 10px 15px -4px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 15px -4px rgb(0 0 0 / 15%);
     }
   }
 
@@ -205,6 +211,7 @@
   ul {
     list-style-type: none;
     padding-inline-start: 1.5rem;
+
     > li::before {
       background: #c2c9d4;
       width: 5px;
@@ -221,6 +228,8 @@
 
 #post-extend-wrapper {
   min-height: 2rem;
+
+  /* stylelint-disable-next-line selector-id-pattern */
   #disqus_thread {
     margin-bottom: 2rem;
   }
@@ -240,33 +249,42 @@
 
   .share-icons {
     font-size: 1.2rem;
+
     a {
       &:not(:last-child) {
         margin-right: 0.25rem;
       }
+
       &:hover {
         text-decoration: none;
+
         > i {
           @extend %btn-share-hovor;
         }
       }
     }
+
     > i {
       padding-top: 0.35rem;
+
       &:hover {
         @extend %btn-share-hovor;
       }
     }
+
     .fab {
       &.fa-twitter {
         @include btn-sharing-color(rgba(29, 161, 242, 1));
       }
+
       &.fa-facebook-square {
         @include btn-sharing-color(rgb(66, 95, 156));
       }
+
       &.fa-telegram {
         @include btn-sharing-color(rgb(39, 159, 217));
       }
+
       &.fa-weibo {
         @include btn-sharing-color(rgb(229, 20, 43));
       }
@@ -290,8 +308,10 @@
 
 .license-wrapper {
   line-height: 1.2rem;
+
   > a {
     font-weight: 600;
+
     &:hover {
       @extend %link-hover;
     }
@@ -306,6 +326,7 @@
   .post-tail-bottom {
     -ms-flex-wrap: wrap-reverse !important;
     flex-wrap: wrap-reverse !important;
+
     >div:first-child {
       width: 100%;
       margin-top: 1rem;
@@ -316,6 +337,7 @@
     @include ml-mr(-1.25rem);
 
     border-radius: 0;
+
     &::before { // the lang badge
       right: 1rem;
     }
@@ -335,9 +357,8 @@
       >div:not(:first-child)::before {
         @include dot(0.5rem, 0.2rem);
       }
+
       &.flex-column {
-        -webkit-box-orient: horizontal !important;
-        -webkit-box-direction: normal !important;
         -ms-flex-direction: row !important;
         flex-direction: row !important;
       }
