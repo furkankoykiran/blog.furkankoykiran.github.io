@@ -1,10 +1,11 @@
 ---
 title: "Building a Flash Loan Arbitrage Bot"
+description: "Complete guide to building flash loan arbitrage bots on Ethereum. Learn Aave integration, DEX price monitoring, smart contract development, and automated profit extraction strategies."
 date: "2024-04-11 14:30:00 +0300"
 categories: [DeFi, Arbitrage]
 tags: [defi, flash-loans, arbitrage, aave, ethereum, bot, trading, smart-contracts]
 image:
-  src: /assets/img/posts/flash-loan-arbitrage-simplified-diagram.png
+  path: /assets/img/posts/flash-loan-arbitrage-simplified-diagram.png
   alt: "Flash Loan Arbitrage Bot Architecture Diagram"
 ---
 
@@ -44,8 +45,8 @@ Arbitrage is the practice of exploiting price differences of the same asset acro
 3. Repay the loan plus a small fee
 4. Keep the profit
 
-![Flash Loan Transaction Workflow](/assets/img/posts/flash-loan-transaction-workflow.png)
-*Figure 1: Complete flash loan transaction workflow showing borrow, execute, and repay cycle*
+![Flash Loan Transaction Workflow](/assets/img/posts/flash-loan-transaction-workflow.png){: w="800" h="500" .shadow }
+_Figure 1: Complete flash loan transaction workflow showing borrow, execute, and repay cycle_
 
 ## Understanding Aave Flash Loans
 
@@ -94,14 +95,17 @@ function executeOperation(
 // Step 6: Aave automatically takes repayment from your contract
 ```
 
-![Flash Loan Attack Analysis Framework](/assets/img/posts/flash-loan-attack-analysis-framework.png)
-*Figure 2: Technical architecture showing flash loan execution flow and security considerations*
+![Flash Loan Attack Analysis Framework](/assets/img/posts/flash-loan-attack-analysis-framework.png){: w="800" h="500" .shadow }
+_Figure 2: Technical architecture showing flash loan execution flow and security considerations_
 
 ## Setting Up the Development Environment
 
 Before we start coding, let's set up our development environment with all necessary tools and dependencies.
 
 ### Prerequisites
+
+> Use Node.js version 16 or higher for best compatibility with Hardhat and ethers.js libraries.
+{: .prompt-tip }
 
 ```bash
 # Install Node.js and npm (v16 or higher)
@@ -144,10 +148,9 @@ flash-loan-arbitrage-bot/
 
 ### Configuration
 
-Create a `.env` file in your project root:
+Create a `.env`{: .filepath} file in your project root:
 
 ```bash
-# .env file
 ALCHEMY_API_KEY=your_alchemy_api_key
 PRIVATE_KEY=your_wallet_private_key
 ETHERSCAN_API_KEY=your_etherscan_api_key
@@ -159,8 +162,12 @@ SUSHISWAP_ROUTER=0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F
 WETH_ADDRESS=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
 DAI_ADDRESS=0x6B175474E89094C44Da98b954EedeAC495271d0F
 ```
+{: file=".env" .nolineno }
 
-Configure `hardhat.config.js`:
+> Never commit your private keys to version control! Add .env to your .gitignore file.
+{: .prompt-danger }
+
+Configure `hardhat.config.js`{: .filepath}:
 
 ```javascript
 require("@nomiclabs/hardhat-waffle");
@@ -195,6 +202,7 @@ module.exports = {
   }
 };
 ```
+{: file="hardhat.config.js" }
 
 ## Building the Flash Loan Smart Contract
 
@@ -473,8 +481,12 @@ contract FlashLoanArbitrage is Ownable {
     receive() external payable {}
 }
 ```
+{: file="contracts/FlashLoanArbitrage.sol" }
 
 ### Key Contract Features
+
+> This contract uses OpenZeppelin's audited libraries for enhanced security and reliability.
+{: .prompt-info }
 
 **Security First**: The contract uses OpenZeppelin's `Ownable` for access control, ensuring only the owner can initiate arbitrage operations.
 
@@ -662,9 +674,10 @@ if (require.main === module) {
 
 module.exports = { scanForOpportunities, calculateArbitrageProfit };
 ```
+{: file="scripts/arbitrage-scanner.js" }
 
-![Cross-Exchange Arbitrage Strategy](/assets/img/posts/cross-exchange-arbitrage-strategy.png)
-*Figure 3: Cross-exchange arbitrage strategy showing price differences and execution flow*
+![Cross-Exchange Arbitrage Strategy](/assets/img/posts/cross-exchange-arbitrage-strategy.png){: w="800" h="500" .shadow }
+_Figure 3: Cross-exchange arbitrage strategy showing price differences and execution flow_
 
 ## Executing Arbitrage Operations
 
@@ -707,6 +720,7 @@ main()
         process.exit(1);
     });
 ```
+{: file="scripts/deploy.js" }
 
 ### Execution Script
 
@@ -801,6 +815,7 @@ if (require.main === module) {
 
 module.exports = { executeArbitrage };
 ```
+{: file="scripts/execute-arbitrage.js" }
 
 ## Testing the Bot
 
@@ -925,6 +940,7 @@ describe("FlashLoanArbitrage", function () {
     });
 });
 ```
+{: file="test/FlashLoanArbitrage.test.js" }
 
 ### Running Tests
 
@@ -941,10 +957,17 @@ REPORT_GAS=true npx hardhat test
 # Run tests with console logs
 npx hardhat test --logs
 ```
+{: .nolineno }
+
+> Always test on a forked mainnet before deploying real funds to catch potential issues with actual DEX liquidity.
+{: .prompt-warning }
 
 ## Handling Slippage and Fees
 
 One of the biggest challenges in arbitrage is accounting for slippage and transaction fees that can quickly eat into profits.
+
+> Slippage protection is critical! Even small price movements during transaction execution can turn profitable trades into losses.
+{: .prompt-warning }
 
 ### Calculating Minimum Output Amounts
 
@@ -1101,6 +1124,9 @@ struct ArbitrageParams {
 
 Protect your transactions from front-running:
 
+> Without MEV protection, your profitable trades can be front-run by bots, resulting in losses. Always use Flashbots or similar services for production.
+{: .prompt-danger }
+
 ```javascript
 // Use Flashbots RPC to send private transactions
 const { FlashbotsBundleProvider } = require("@flashbots/ethers-provider-bundle");
@@ -1143,8 +1169,12 @@ async function sendPrivateTransaction(tx) {
 ### Common Pitfalls to Avoid
 
 **1. Insufficient Slippage Protection**
+
+> Never set minimum output to 0! This allows your transaction to be sandwich attacked with 100% slippage.
+{: .prompt-danger }
+
 ```javascript
-// ❌ Bad: No slippage protection
+// Bad: No slippage protection
 swapExactTokensForTokens(amount, 0, path, to, deadline);
 
 // ✅ Good: Set minimum output based on market conditions
@@ -1153,6 +1183,10 @@ swapExactTokensForTokens(amount, minOutput, path, to, deadline);
 ```
 
 **2. Ignoring Gas Costs**
+
+> Gas costs can easily exceed profits on small arbitrage opportunities. Always calculate break-even thresholds.
+{: .prompt-tip }
+
 ```javascript
 // Always check if profit > gas costs
 const estimatedGasCost = gasPrice.mul(gasLimit);
@@ -1223,6 +1257,9 @@ setInterval(monitorBotHealth, 5 * 60 * 1000);
 
 ### Pre-Deployment Checklist
 
+> Complete all testing steps before deploying to mainnet. Skipping steps can result in loss of funds.
+{: .prompt-warning }
+
 ```bash
 # 1. Audit your smart contract
 npm install -g mythril
@@ -1245,6 +1282,7 @@ npx hardhat run scripts/deploy.js --network mainnet
 # 7. Verify on mainnet
 npx hardhat verify --network mainnet DEPLOYED_ADDRESS
 ```
+{: .nolineno }
 
 ### Production Configuration
 
@@ -1286,6 +1324,7 @@ module.exports = {
     }
 };
 ```
+{: file="production-config.js" }
 
 ## Conclusion
 
