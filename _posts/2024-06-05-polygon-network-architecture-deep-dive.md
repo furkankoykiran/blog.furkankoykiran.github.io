@@ -1,5 +1,6 @@
 ---
 title: "Polygon Network Architecture Deep Dive"
+description: "Polygon (Matic) Layer 2 scaling solution architecture guide. Plasma framework, PoS bridge, validator system, gas optimization, and Ethereum compatibility."
 date: "2024-06-05"
 categories:
   - "layer2"
@@ -13,7 +14,7 @@ tags:
   - "matic"
   - "gas-optimization"
 image:
-  src: "/assets/img/posts/polygon-network-architecture.png"
+  path: "/assets/img/posts/polygon-network-architecture.png"
   alt: "Polygon Network Architecture Diagram"
 ---
 
@@ -24,6 +25,9 @@ Polygon (formerly Matic Network) has emerged as one of the most popular Layer 2 
 Polygon is a protocol and framework for building and connecting Ethereum-compatible blockchain networks. It transforms Ethereum into a multi-chain system (similar to Polkadot, Cosmos, Avalanche) while leveraging Ethereum's security, vibrant ecosystem, and established network effects.
 
 ### Key Features
+
+> Polygon processes over 3 million transactions daily, making it one of the most active blockchain networks.
+{: .prompt-info }
 
 - **High Throughput**: Up to 65,000 transactions per second
 - **Low Cost**: Transaction fees as low as $0.0001
@@ -95,6 +99,10 @@ contract PolygonStaking {
     }
 }
 ```
+{: file="PolygonStaking.sol" }
+
+> Polygon validators earn rewards from transaction fees and block rewards, making it an attractive option for MATIC holders.
+{: .prompt-tip }
 
 ### 3. Polygon Networks Layer
 
@@ -138,6 +146,7 @@ module.exports = {
   }
 };
 ```
+{: file="hardhat.config.js" }
 
 ## How Polygon Achieves Scalability
 
