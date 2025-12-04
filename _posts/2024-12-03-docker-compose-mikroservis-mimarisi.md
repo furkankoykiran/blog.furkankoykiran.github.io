@@ -1,5 +1,6 @@
 ---
 title: "Docker ve Docker Compose ile Mikroservis Mimarisi Geliştirme"
+description: "Docker Compose ile tam mikroservis mimarisi. Container orchestration, service discovery, load balancing ve production deployment."
 date: 2024-12-03 09:00:00 +0300
 categories: [DevOps, Infrastructure]
 tags: [docker, docker-compose, microservices, container, deployment, orchestration]

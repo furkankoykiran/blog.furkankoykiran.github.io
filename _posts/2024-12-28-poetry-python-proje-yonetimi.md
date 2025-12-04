@@ -1,10 +1,11 @@
 ---
 title: "Poetry ile Python Proje Yönetimi"
+description: "Poetry ile modern Python proje yönetimi. Bağımlılık yönetimi, virtual environment, paketleme ve PyPI'ye yayınlama."
 date: "2024-12-28 09:00:00 +0300"
 categories: [Development Tools, Python]
 tags: [python, poetry, dependency-management, packaging, virtual-environment, pyproject-toml]
 image:
-  src: /assets/img/posts/poetry-dependency-management-workflow.png
+  path: /assets/img/posts/poetry-dependency-management-workflow.png
   alt: "Poetry Dependency Management Workflow"
 ---
 

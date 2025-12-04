@@ -1,5 +1,6 @@
 ---
 title: "Pyrogram ile Telegram Bot Geliştirme: MTProto API Kullanımı"
+description: "Pyrogram ile gelişmiş Telegram bot geliştirme. MTProto API, userbot, medya yönetimi, inline keyboard ve gerçek zamanlı mesajlaşma."
 date: 2024-11-27 09:00:00 +0300
 categories: [Bot Development, Python]
 tags: [python, pyrogram, telegram, bot, mtproto, automation, userbot]

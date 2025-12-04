@@ -1,5 +1,6 @@
 ---
 title: "Python Pandas ile Kripto Para Piyasa Analizi"
+description: "Pandas ile kripto para piyasa analizi. Veri toplama, temizleme, teknik indikatörler, görselleştirme ve trading stratejisi geliştirme."
 date: "2024-12-03"
 categories:
   - "python"
@@ -13,7 +14,7 @@ tags:
   - "matplotlib"
   - "teknik-analiz"
 image:
-  src: "/assets/img/posts/pandas-crypto-analysis.png"
+  path: "/assets/img/posts/pandas-crypto-analysis.png"
   alt: "Pandas ile Kripto Para Veri Analizi"
 ---
 

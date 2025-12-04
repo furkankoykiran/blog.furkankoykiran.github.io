@@ -1,10 +1,11 @@
 ---
 title: "MySQL ve SQLAlchemy ile Veritabanı Yönetimi"
+description: "SQLAlchemy ORM ile MySQL veritabanı yönetimi. Model tanımlama, ilişkiler, migration, query optimization ve best practices."
 date: "2024-12-22 09:00:00 +0300"
 categories: [Database, Python]
 tags: [python, mysql, sqlalchemy, orm, veritabanı, alembic, database-management]
 image:
-  src: /assets/img/posts/sqlalchemy-orm-class-diagram.png
+  path: /assets/img/posts/sqlalchemy-orm-class-diagram.png
   alt: "SQLAlchemy ORM Architecture"
 ---
 

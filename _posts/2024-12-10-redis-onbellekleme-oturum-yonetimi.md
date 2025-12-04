@@ -1,5 +1,6 @@
 ---
 title: "Redis ile Önbellekleme ve Oturum Yönetimi: Performansı Maksimuma Çıkarın"
+description: "Redis ile yüksek performanslı önbellekleme ve oturum yönetimi. Caching stratejileri, pub/sub, data structures ve production best practices."
 date: 2024-12-10 09:00:00 +0300
 categories: [Backend, Cache]
 tags: [redis, cache, session, performance, scalability, memory]

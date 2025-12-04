@@ -1,5 +1,6 @@
 ---
 title: "Traefik ile Reverse Proxy ve SSL Yönetimi: Production-Ready Setup"
+description: "Traefik ile otomatik SSL sertifika yönetimi ve reverse proxy konfigurasyonu. Let's Encrypt, load balancing, Docker entegrasyonu."
 date: 2024-12-15 09:00:00 +0300
 categories: [DevOps, Infrastructure]
 tags: [traefik, reverse-proxy, ssl, letsencrypt, docker, load-balancer, https]

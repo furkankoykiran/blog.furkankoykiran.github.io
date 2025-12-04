@@ -1,10 +1,11 @@
 ---
 title: "Implementing ERC-20 Token Standard"
+description: "Complete guide to implementing ERC-20 token standard. OpenZeppelin contracts, minting, burning, security best practices, and deployment strategies."
 date: "2024-11-21 11:00:00 +0300"
 categories: [Token Development, Ethereum]
 tags: [erc20, ethereum, solidity, tokens, smart-contracts, web3, blockchain, defi]
 image:
-  src: /assets/img/posts/ethereum-smart-contract-security.png
+  path: /assets/img/posts/ethereum-smart-contract-security.png
   alt: "ERC-20 Token Standard Implementation"
 ---
 

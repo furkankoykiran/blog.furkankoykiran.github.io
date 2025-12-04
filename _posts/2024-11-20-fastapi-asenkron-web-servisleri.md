@@ -1,5 +1,6 @@
 ---
 title: "FastAPI ile Asenkron Web Servisleri Geliştirme"
+description: "FastAPI ile yüksek performanslı asenkron web servisleri. Async/await, WebSocket, dependency injection, authentication ve production deployment."
 date: 2024-11-20 09:00:00 +0300
 categories: [Backend Development, Python]
 tags: [python, fastapi, async, rest-api, uvicorn, websocket, performance]
