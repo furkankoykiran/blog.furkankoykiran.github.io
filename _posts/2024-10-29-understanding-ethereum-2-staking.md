@@ -1,10 +1,11 @@
 ---
 title: "Understanding Ethereum 2.0 Staking: Complete Validator Guide"
+description: "Complete guide to Ethereum 2.0 staking and validator setup. Proof of Stake consensus, validator requirements, rewards, penalties, and best practices."
 date: "2024-10-29 14:00:00 +0300"
 categories: [Ethereum Staking, Blockchain Technology]
 tags: [ethereum, staking, eth2, validator, proof-of-stake, blockchain, passive-income]
 image:
-  src: /assets/img/posts/ethereum-beacon-chain-validator-lifecycle.png
+  path: /assets/img/posts/ethereum-beacon-chain-validator-lifecycle.png
   alt: "Ethereum Beacon Chain Validator Lifecycle Diagram"
 ---
 
