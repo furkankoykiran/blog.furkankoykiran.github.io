@@ -1,5 +1,6 @@
 ---
 title: "Blockchain Layer 2 Scaling Solutions: A Comprehensive Guide"
+description: "Deep dive into Layer 2 scaling solutions for blockchain networks. Learn about Optimistic Rollups, ZK-Rollups, State Channels, and how they solve Ethereum's scalability challenges."
 date: "2024-06-18"
 categories:
   - "blockchain"
@@ -13,7 +14,7 @@ tags:
   - "optimistic-rollup"
   - "zk-rollup"
 image:
-  src: "/assets/img/posts/layer2-scaling-solutions.png"
+  path: "/assets/img/posts/layer2-scaling-solutions.png"
   alt: "Blockchain Layer 2 Scaling Solutions Comparison"
 ---
 
@@ -31,7 +32,8 @@ The blockchain trilemma, coined by Ethereum co-founder Vitalik Buterin, states t
 - **Security**: The network is resistant to attacks
 - **Scalability**: High transaction throughput
 
-Layer 2 solutions aim to maximize scalability while inheriting security from Layer 1.
+> Layer 2 solutions aim to maximize scalability while inheriting security from Layer 1, effectively working around the trilemma.
+{: .prompt-info }
 
 ## What Are Layer 2 Solutions?
 
@@ -52,7 +54,6 @@ Layer 2 (L2) solutions are protocols built on top of a Layer 1 blockchain that p
 Optimistic Rollups assume transactions are valid by default and only run computations in case of disputes.
 
 ```solidity
-// Example: Simple Optimistic Rollup State Update
 contract OptimisticRollup {
     struct StateRoot {
         bytes32 root;
@@ -104,6 +105,8 @@ contract OptimisticRollup {
     }
 }
 ```
+{: file="OptimisticRollup.sol" }
+```
 
 **Popular Optimistic Rollups:**
 - **Arbitrum**: EVM-compatible with multi-round fraud proofs
@@ -115,7 +118,6 @@ contract OptimisticRollup {
 ZK-Rollups use cryptographic proofs to validate transactions off-chain, providing instant finality.
 
 ```javascript
-// Example: Interacting with ZK-Rollup
 const { ethers } = require('ethers');
 const zkSync = require('zksync');
 
@@ -163,6 +165,8 @@ async function depositToZKSync() {
     console.log('L2 transfer complete');
 }
 ```
+{: file="zkSyncDeposit.js" }
+```
 
 **Popular ZK-Rollups:**
 - **zkSync Era**: EVM-compatible ZK-Rollup
@@ -170,12 +174,14 @@ async function depositToZKSync() {
 - **Polygon zkEVM**: Ethereum-equivalent ZK-Rollup
 - **Scroll**: zkEVM with emphasis on compatibility
 
+> ZK-Rollups provide instant finality through cryptographic validity proofs, eliminating the need for challenge periods.
+{: .prompt-tip }
+
 ### 3. State Channels
 
 State channels allow participants to transact off-chain with instant finality, only settling on-chain when the channel closes.
 
 ```solidity
-// Example: Simple Payment Channel
 contract PaymentChannel {
     address public sender;
     address public recipient;
@@ -253,6 +259,8 @@ contract PaymentChannel {
     }
 }
 ```
+{: file="PaymentChannel.sol" }
+```
 
 **Use Cases:**
 - Lightning Network (Bitcoin)
@@ -260,12 +268,14 @@ contract PaymentChannel {
 - Gaming microtransactions
 - High-frequency trading
 
+> State channels are ideal for high-frequency interactions between known parties, but require locking up funds for the channel duration.
+{: .prompt-info }
+
 ### 4. Plasma
 
 Plasma creates child chains that periodically commit state to the main chain.
 
 ```javascript
-// Example: Interacting with Polygon (formerly Matic/Plasma)
 const { ethers } = require('ethers');
 const { MaticPOSClient } = require('@maticnetwork/maticjs');
 
@@ -296,6 +306,8 @@ async function bridgeToPolygon() {
     console.log('Deposit tx hash:', result.transactionHash);
 }
 ```
+{: file="polygonBridge.js" }
+```
 
 ## Comparing Layer 2 Solutions
 
@@ -311,7 +323,6 @@ async function bridgeToPolygon() {
 ### Example: Deploying to Arbitrum
 
 ```javascript
-// hardhat.config.js
 require("@nomiclabs/hardhat-waffle");
 
 module.exports = {
@@ -329,6 +340,8 @@ module.exports = {
     }
   }
 };
+```
+{: file="hardhat.config.js" }
 ```
 
 ### Bridge Integration
@@ -359,6 +372,8 @@ async function bridgeToArbitrum() {
     console.log('Available on L2:', l2Result.transactionHash);
 }
 ```
+{: file="arbitrumBridge.js" }
+```
 
 ## Security Considerations
 
@@ -379,6 +394,9 @@ async function bridgeToArbitrum() {
 4. **Plan for withdrawal delays** in Optimistic Rollups
 5. **Keep emergency exits** in mind for fund recovery
 
+> Always test bridge operations on testnets first! Irreversible fund loss can occur if contracts are called incorrectly.
+{: .prompt-warning }
+
 ## The Future of Layer 2
 
 ### Emerging Trends
@@ -387,7 +405,6 @@ async function bridgeToArbitrum() {
 Reduces L2 costs by introducing blob transactions:
 
 ```solidity
-// Future: Optimized for blob data
 function submitBatchWithBlobs(
     bytes calldata batchData,
     bytes32[] calldata blobHashes
@@ -401,6 +418,8 @@ function submitBatchWithBlobs(
     }
     // Process batch
 }
+```
+{: file="BlobRollup.sol" }
 ```
 
 **Shared Sequencers**
@@ -420,3 +439,6 @@ Layer 2 scaling solutions represent a crucial step in blockchain's evolution, of
 - [Arbitrum Documentation](https://developer.arbitrum.io/)
 - [zkSync Documentation](https://era.zksync.io/docs/)
 - [Optimism Docs](https://community.optimism.io/)
+
+> For production deployments, always consult the latest documentation as L2 technology evolves rapidly.
+{: .prompt-tip }
