@@ -696,7 +696,7 @@ async function uploadImages() {
     try {
         // Test authentication
         await pinata.testAuthentication();
-        console.log('✅ Pinata authentication successful');
+        console.log('Pinata authentication successful');
         
         // Upload folder
         const result = await pinata.pinFromFS(imagesPath, {
@@ -708,13 +708,13 @@ async function uploadImages() {
             }
         });
         
-        console.log('✅ Images uploaded to IPFS');
-        console.log('📦 CID:', result.IpfsHash);
-        console.log('🔗 URL:', `ipfs://${result.IpfsHash}`);
+        console.log('Images uploaded to IPFS');
+        console.log('CID:', result.IpfsHash);
+        console.log('URL:', `ipfs://${result.IpfsHash}`);
         
         return result.IpfsHash;
     } catch (error) {
-        console.error('❌ Error uploading images:', error);
+        console.error('Error uploading images:', error);
         throw error;
     }
 }
@@ -738,13 +738,13 @@ async function uploadMetadata(imageCID) {
             }
         });
         
-        console.log('✅ Metadata uploaded to IPFS');
-        console.log('📦 CID:', result.IpfsHash);
-        console.log('🔗 Base URI:', `ipfs://${result.IpfsHash}/`);
+        console.log('Metadata uploaded to IPFS');
+        console.log('CID:', result.IpfsHash);
+        console.log('Base URI:', `ipfs://${result.IpfsHash}/`);
         
         return result.IpfsHash;
     } catch (error) {
-        console.error('❌ Error uploading metadata:', error);
+        console.error('Error uploading metadata:', error);
         throw error;
     }
 }
@@ -769,14 +769,14 @@ function updateMetadataImages(imageCID) {
         }
     });
     
-    console.log('✅ Updated metadata files with image CID');
+    console.log('Updated metadata files with image CID');
 }
 
 /**
  * Main upload process
  */
 async function main() {
-    console.log('🚀 Starting IPFS upload process...\n');
+    console.log('Starting IPFS upload process...\n');
     
     // Step 1: Upload images
     const imageCID = await uploadImages();
@@ -784,8 +784,8 @@ async function main() {
     // Step 2: Upload metadata
     const metadataCID = await uploadMetadata(imageCID);
     
-    console.log('\n✨ Upload complete!');
-    console.log('📋 Save these CIDs:');
+    console.log('\nUpload complete!');
+    console.log('Save these CIDs:');
     console.log('   Images CID:', imageCID);
     console.log('   Metadata CID:', metadataCID);
     console.log('   Base URI for contract:', `ipfs://${metadataCID}/`);
@@ -823,13 +823,13 @@ async function uploadNFT(imagePath, metadata) {
             }
         });
         
-        console.log('✅ NFT stored successfully');
-        console.log('📦 IPFS URL:', nft.url);
-        console.log('🖼️  Image URL:', nft.data.image.href);
+        console.log('NFT stored successfully');
+        console.log('IPFS URL:', nft.url);
+        console.log('Image URL:', nft.data.image.href);
         
         return nft;
     } catch (error) {
-        console.error('❌ Error uploading to NFT.Storage:', error);
+        console.error('Error uploading to NFT.Storage:', error);
         throw error;
     }
 }
@@ -971,47 +971,47 @@ Create `scripts/deploy.js`{: .filepath}:
 const hre = require("hardhat");
 
 async function main() {
-    console.log("🚀 Starting NFT deployment...\n");
+    console.log("Starting NFT deployment...\n");
     
     // Get deployer account
     const [deployer] = await hre.ethers.getSigners();
-    console.log("📝 Deploying with account:", deployer.address);
+    console.log("Deploying with account:", deployer.address);
     
     // Check balance
     const balance = await deployer.getBalance();
-    console.log("💰 Account balance:", hre.ethers.utils.formatEther(balance), "ETH\n");
+    console.log("Account balance:", hre.ethers.utils.formatEther(balance), "ETH\n");
     
     // Deploy contract
     const baseURI = process.env.BASE_URI || "ipfs://YOUR_METADATA_CID/";
     
-    console.log("📦 Deploying MyNFT contract...");
+    console.log("Deploying MyNFT contract...");
     const MyNFT = await hre.ethers.getContractFactory("MyNFT");
     const nft = await MyNFT.deploy(baseURI);
     
     await nft.deployed();
     
-    console.log("✅ Contract deployed!");
-    console.log("📍 Contract address:", nft.address);
-    console.log("🔗 Base URI:", baseURI);
-    console.log("⛽ Gas used:", (await nft.deployTransaction.wait()).gasUsed.toString());
+    console.log("Contract deployed!");
+    console.log("Contract address:", nft.address);
+    console.log("Base URI:", baseURI);
+    console.log("Gas used:", (await nft.deployTransaction.wait()).gasUsed.toString());
     
     // Wait for block confirmations
-    console.log("\n⏳ Waiting for block confirmations...");
+    console.log("\nWaiting for block confirmations...");
     await nft.deployTransaction.wait(5);
     
-    console.log("✅ Confirmed!\n");
+    console.log("Confirmed!\n");
     
     // Verify contract
     if (hre.network.name !== "hardhat" && hre.network.name !== "localhost") {
-        console.log("🔍 Verifying contract on Etherscan...");
+        console.log("Verifying contract on Etherscan...");
         try {
             await hre.run("verify:verify", {
                 address: nft.address,
                 constructorArguments: [baseURI]
             });
-            console.log("✅ Contract verified!");
+            console.log("Contract verified!");
         } catch (error) {
-            console.log("❌ Verification failed:", error.message);
+            console.log("Verification failed:", error.message);
         }
     }
     
@@ -1030,8 +1030,8 @@ async function main() {
         JSON.stringify(deployment, null, 2)
     );
     
-    console.log("\n📋 Deployment info saved to deployment.json");
-    console.log("\n🎉 Deployment complete!");
+    console.log("\nDeployment info saved to deployment.json");
+    console.log("\nDeployment complete!");
 }
 
 main()
@@ -1134,7 +1134,7 @@ const hre = require("hardhat");
 const deployment = require("../deployment.json");
 
 async function main() {
-    console.log("🎨 Starting NFT minting...\n");
+    console.log("Starting NFT minting...\n");
     
     // Get signer
     const [minter] = await hre.ethers.getSigners();
@@ -1153,13 +1153,13 @@ async function main() {
     console.log("Current supply:", currentSupply.toString());
     
     // Mint NFT
-    console.log("\n💎 Minting NFT...");
+    console.log("\nMinting NFT...");
     const tx = await nft.mint({ value: mintPrice });
     console.log("Transaction hash:", tx.hash);
     
     // Wait for confirmation
     const receipt = await tx.wait();
-    console.log("✅ NFT minted successfully!");
+    console.log("NFT minted successfully!");
     console.log("Gas used:", receipt.gasUsed.toString());
     
     // Get token ID from Transfer event
@@ -1175,7 +1175,7 @@ async function main() {
     const newSupply = await nft.totalSupply();
     console.log("New supply:", newSupply.toString());
     
-    console.log("\n🎉 Minting complete!");
+    console.log("\nMinting complete!");
 }
 
 main()
@@ -1207,14 +1207,14 @@ async function batchMint(contractAddress, recipients) {
     const MyNFT = await hre.ethers.getContractFactory("AdvancedNFT");
     const nft = MyNFT.attach(contractAddress);
     
-    console.log(`🎨 Batch minting ${recipients.length} NFTs...\n`);
+    console.log(`Batch minting ${recipients.length} NFTs...\n`);
     
     // Use the reserveMint function for owner minting
     const tx = await nft.reserveMint(recipients);
     console.log("Transaction hash:", tx.hash);
     
     const receipt = await tx.wait();
-    console.log("✅ Batch mint successful!");
+    console.log("Batch mint successful!");
     console.log("Gas used:", receipt.gasUsed.toString());
     
     // Calculate average gas per mint
@@ -1870,4 +1870,4 @@ Now that you understand NFT development fundamentals, consider exploring:
 
 The NFT ecosystem continues to evolve rapidly, with new standards, tools, and use cases emerging regularly. Stay curious, keep learning, and always prioritize security and user experience in your implementations. Whether you're building the next major NFT collection, creating utility NFTs for a game, or tokenizing real-world assets, the foundation you've learned here will serve you well.
 
-Happy minting, and welcome to the exciting world of NFT development! 🚀✨
+Happy minting, and welcome to the exciting world of NFT development!
