@@ -1,5 +1,6 @@
 ---
 title: "Blockchain Veri Analizi için Python Araçları"
+description: "Web3.py, TheGraph ve Dune Analytics kullanarak blockchain verilerini analiz etme rehberi. On-chain veri okuma, event monitoring ve DeFi protokol takibi."
 date: 2024-03-07 09:15:00 +0300
 categories: [Blockchain, Analytics]
 tags: [python, blockchain, web3py, thegraph, dune-analytics, veri-analizi, on-chain]
@@ -47,12 +48,16 @@ w3 = Web3(Web3.HTTPProvider(RPC_URL))
 
 # Bağlantı kontrolü
 if w3.is_connected():
-    print(f"✅ Ethereum ağına bağlanıldı")
-    print(f"📊 Son blok numarası: {w3.eth.block_number}")
-    print(f"⛽ Gas fiyatı: {w3.eth.gas_price / 10**9} Gwei")
+    print(f"Ethereum ağına bağlanıldı")
+    print(f"Son blok numarası: {w3.eth.block_number}")
+    print(f"Gas fiyatı: {w3.eth.gas_price / 10**9} Gwei")
 else:
-    print("❌ Bağlantı başarısız")
+    print("Bağlantı başarısız")
 ```
+{: file="web3_connection.py" }
+
+> RPC endpoint'ler için Infura veya Alchemy gibi servislerden ücretsiz API key alabilirsiniz. Rate limit'lere dikkat edin.
+{: .prompt-tip }
 
 ### Transaction Data Parsing
 
@@ -100,8 +105,9 @@ for i in range(latest_block - 10, latest_block):
     
     # ETH transfer hacmini hesapla
     total_volume = sum(tx['value'] for tx in txs)
-    print(f"  💰 Toplam ETH: {total_volume:.4f}")
+    print(f"  Toplam ETH: {total_volume:.4f}")
 ```
+{: file="block_parser.py" }
 
 ### Smart Contract Event Monitoring
 
@@ -152,13 +158,13 @@ def track_uniswap_swaps(pair_address: str, from_block: int, to_block: int):
         tx_hash = swap.transactionHash.hex()
         block = swap.blockNumber
         
-        print(f"\n📦 Blok: {block}")
-        print(f"🔗 TX: {tx_hash}")
-        print(f"👤 Gönderen: {args.sender}")
-        print(f"📊 Amount0 In: {args.amount0In}")
-        print(f"📊 Amount1 In: {args.amount1In}")
-        print(f"📊 Amount0 Out: {args.amount0Out}")
-        print(f"📊 Amount1 Out: {args.amount1Out}")
+        print(f"\nBlok: {block}")
+        print(f"TX: {tx_hash}")
+        print(f"Gönderen: {args.sender}")
+        print(f"Amount0 In: {args.amount0In}")
+        print(f"Amount1 In: {args.amount1In}")
+        print(f"Amount0 Out: {args.amount0Out}")
+        print(f"Amount1 Out: {args.amount1Out}")
     
     return swaps
 
@@ -167,8 +173,12 @@ USDC_ETH_PAIR = "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc"
 latest = w3.eth.block_number
 swaps = track_uniswap_swaps(USDC_ETH_PAIR, latest - 100, latest)
 ```
+{: file="uniswap_tracker.py" }
 
-![TheGraph Protocol Mimarisi](/assets/img/posts/thegraph-protocol-architecture.png)
+> Event monitoring yaparken block range'i çok geniş tutmayın. Büyük aralıklar için batch processing kullanın.
+{: .prompt-warning }
+
+![TheGraph Protocol Mimarisi](/assets/img/posts/thegraph-protocol-architecture.png){: w="700" h="400" .shadow }
 _TheGraph protokolü ile blockchain verilerinin indekslenmesi ve sorgulanması_
 
 ## TheGraph ile Gelişmiş Veri Sorgulama
@@ -239,11 +249,12 @@ for i, pool in enumerate(pools, 1):
     fee = int(pool['feeTier']) / 10000  # Fee tier'i yüzdeye çevir
     
     print(f"\n{i}. {symbol_pair}")
-    print(f"   💰 TVL: ${tvl:,.2f}")
-    print(f"   📊 Volume: ${volume:,.2f}")
-    print(f"   💸 Fee: {fee}%")
-    print(f"   🔢 TX Count: {pool['txCount']}")
+    print(f"   TVL: ${tvl:,.2f}")
+    print(f"   Volume: ${volume:,.2f}")
+    print(f"   Fee: {fee}%")
+    print(f"   TX Count: {pool['txCount']}")
 ```
+{: file="thegraph_pools.py" }
 
 ### Token Holder Analizi
 
@@ -289,17 +300,17 @@ def analyze_token_holders(token_address: str, min_balance: float = 1000):
     whale_balance = sum(int(h['balance']) / 10**18 for h in whales)
     whale_percentage = (whale_balance / total_balance) * 100
     
-    print(f"\n🐋 Whale Analizi (Top 10)")
+    print(f"\nWhale Analizi (Top 10)")
     print(f"   Balance: {whale_balance:,.2f} token")
     print(f"   Oran: {whale_percentage:.2f}%")
     
     return holders
-
-# Örnek kullanım (kendi subgraph endpoint'inizi kullanın)
-# holders = analyze_token_holders("0x...", min_balance=10000)
 ```
 
-![TheGraph Subgraph Workflow](/assets/img/posts/thegraph-subgraph-query-workflow.png)
+> TheGraph subgraph'ler community tarafından oluşturulur. Önemli protokollerin resmi subgraph'lerini kullandığınızdan emin olun.
+{: .prompt-info }
+
+![TheGraph Subgraph Workflow](/assets/img/posts/thegraph-subgraph-query-workflow.png){: w="700" h="400" .shadow }
 _TheGraph subgraph oluşturma ve veri sorgulama iş akışı_
 
 ### Time-Series Veri Analizi
@@ -448,11 +459,12 @@ def analyze_dex_volume_comparison():
     )
     
     fig.write_html('dex_volume_analysis.html')
-    print("\n📈 Grafik kaydedildi: dex_volume_analysis.html")
-
-# Analizi çalıştır
-# analyze_dex_volume_comparison()
+    print("\nGrafik kaydedildi: dex_volume_analysis.html")
 ```
+{: file="dune_dex_analysis.py" }
+
+> Dune Analytics'te kompleks query'ler oluştururken önce SQL'i Dune web arayüzünde test edin, sonra Python'dan çağırın.
+{: .prompt-tip }
 
 ### Wallet Activity Tracking
 
@@ -477,16 +489,16 @@ def track_whale_wallets(wallet_addresses: list, min_value_usd: float = 100000):
     if not results:
         return
     
-    print(f"🐋 Whale Aktivite Raporu")
-    print(f"📅 Son 24 saat")
+    print(f"Whale Aktivite Raporu")
+    print(f"Son 24 saat")
     print("=" * 80)
     
     for tx in results:
-        print(f"\n⏰ {tx['timestamp']}")
-        print(f"👤 Cüzdan: {tx['wallet_address'][:10]}...{tx['wallet_address'][-8:]}")
-        print(f"🔄 İşlem: {tx['action']}")
-        print(f"💰 Değer: ${tx['value_usd']:,.2f}")
-        print(f"🪙 Token: {tx['token_symbol']}")
+        print(f"\n{tx['timestamp']}")
+        print(f"Cüzdan: {tx['wallet_address'][:10]}...{tx['wallet_address'][-8:]}")
+        print(f"İşlem: {tx['action']}")
+        print(f"Değer: ${tx['value_usd']:,.2f}")
+        print(f"Token: {tx['token_symbol']}")
 
 # Örnek whale adresleri
 whale_addresses = [
@@ -594,7 +606,7 @@ class BlockchainMonitor:
             # Büyük swap'leri logla
             amount0 = data.args.amount0Out
             if amount0 > 10**20:  # 100+ token
-                print(f"   🔥 BÜYÜK SWAP TESPİT EDİLDİ!")
+                print(f"   BÜYÜK SWAP TESPİT EDİLDİ!")
                 print(f"   TX: {data.transactionHash.hex()}")
                 
                 # Alert gönder (Telegram, Discord, vb.)
@@ -605,7 +617,7 @@ class BlockchainMonitor:
         Alert gönderir (Telegram, Discord, email, vb.)
         """
         # Buraya kendi alert sisteminizi entegre edin
-        print(f"📬 Alert: {message}")
+        print(f"Alert: {message}")
     
     def start(self):
         """
@@ -639,6 +651,10 @@ monitor = BlockchainMonitor(
 # monitor.start()
 """
 ```
+{: file="blockchain_monitor.py" }
+
+> WebSocket bağlantıları için reconnection logic implementasyonu önemlidir. Bağlantı koptuğunda otomatik yeniden bağlanma sağlayın.
+{: .prompt-warning }
 
 ## Best Practices ve Optimizasyon
 
@@ -682,6 +698,10 @@ def rate_limited(max_per_second: int = 5):
 def fetch_block_data(block_number: int):
     return w3.eth.get_block(block_number)
 ```
+{: file="rate_limiter.py" }
+
+> Public RPC endpoint'ler günde 100K request ile sınırlıdır. Production uygulamalar için ücretli plan kullanın.
+{: .prompt-info }
 
 ### 2. Veri Caching
 
@@ -780,11 +800,15 @@ def safe_web3_call(func, *args, **kwargs):
     try:
         return func(*args, **kwargs)
     except Exception as e:
-        print(f"⚠️ Web3 call hatası: {e}")
+        print(f"Web3 call hatası: {e}")
         raise
 ```
+{: file="error_handler.py" }
 
 ## Sonuç
+
+> Blockchain veri analizi araçlarını birleştirerek daha güçlü sistemler oluşturabilirsiniz. Web3.py + TheGraph + Dune kombinasyonu profesyonel analizler için idealdir.
+{: .prompt-tip }
 
 Python ekosistemi, blockchain veri analizi için son derece güçlü araçlar sunmaktadır. Web3.py ile düşük seviyeli RPC çağrıları yapabilir, TheGraph ile kompleks sorguları hızlıca çalıştırabilir ve Dune Analytics ile SQL tabanlı analizler yapabilirsiniz.
 
