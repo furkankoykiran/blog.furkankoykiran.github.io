@@ -1,5 +1,6 @@
 ---
 title: "Django ile Kripto Portfolio Takip Uygulaması Geliştirme"
+description: "Django ile tam özellikli kripto portfolio takip uygulaması. REST API, Celery ile asenkron işlemler, Redis cache ve gerçek zamanlı fiyat takibi."
 date: 2024-11-15 09:30:00 +0300
 categories: [Web Development, Django]
 tags: [python, django, kripto, portfolio, web-app, rest-api, database]

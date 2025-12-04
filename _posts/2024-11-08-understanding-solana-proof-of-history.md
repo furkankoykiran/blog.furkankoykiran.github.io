@@ -1,5 +1,6 @@
 ---
 title: "Understanding Solana's Proof of History: A Revolutionary Consensus Mechanism"
+description: "Deep dive into Solana's Proof of History consensus mechanism. How PoH enables 65,000 TPS, validator operations, and Solana's unique architecture."
 date: "2024-11-08"
 categories:
   - "blockchain"
@@ -12,7 +13,7 @@ tags:
   - "cryptocurrency"
   - "distributed-systems"
 image:
-  src: "/assets/img/posts/solana-proof-of-history-consensus.png"
+  path: "/assets/img/posts/solana-proof-of-history-consensus.png"
   alt: "Solana Proof of History Consensus Mechanism"
 ---
 
