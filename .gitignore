@@ -23,5 +23,4 @@ package-lock.json
 !.vscode/tasks.json
 
 # Misc
-_sass/vendors
-assets/js/dist
+# Note: vendors and dist are needed for deployment, not ignored anymore
