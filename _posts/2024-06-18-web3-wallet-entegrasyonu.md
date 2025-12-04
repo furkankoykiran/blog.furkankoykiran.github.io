@@ -1,10 +1,11 @@
 ---
 title: "Web3 Wallet Entegrasyonu: MetaMask ve WalletConnect ile DApp Geliştirme"
+description: "MetaMask ve WalletConnect ile Web3 wallet entegrasyonu rehberi. React, Vue ve vanilla JavaScript örnekleriyle modern DApp geliştirme, güvenlik ve best practices."
 date: "2024-06-18 14:00:00 +0300"
 categories: [Web3, Frontend]
 tags: [web3, metamask, walletconnect, ethereum, dapp, javascript, wallet, blockchain]
 image:
-  src: /assets/img/posts/web3-application-architecture.png
+  path: /assets/img/posts/web3-application-architecture.png
   alt: "Web3 Wallet Entegrasyonu"
 ---
 
@@ -16,8 +17,8 @@ Bu kapsamlı rehberde, Web3 wallet entegrasyonunu sıfırdan öğreneceksiniz. M
 
 DApp (Decentralized Application) geliştirmek isteyenler için bu rehber, production-ready wallet entegrasyonu oluşturmak için gereken tüm bilgiyi sağlayacak. Güvenlik best practice'leri, error handling ve kullanıcı deneyimi optimizasyonlarını da öğreneceksiniz.
 
-![Web3 Architecture](/assets/img/posts/web3-smart-contract-architecture.png)
-*Şekil 1: Web3 uygulama mimarisi ve wallet bağlantı akışı*
+![Web3 Architecture](/assets/img/posts/web3-smart-contract-architecture.png){: w="700" h="400" .shadow }
+_Web3 uygulama mimarisi ve wallet bağlantı akışı_
 
 ## Web3 Wallet'lara Giriş
 
@@ -36,6 +37,9 @@ Web3 wallet'lar, blockchain ağlarına erişim sağlayan ve dijital varlıkları
 2. **Non-Custodial**: Kullanıcı kendi key'lerini yönetir (MetaMask, Trust Wallet)
 3. **Multi-Sig**: Çoklu imza gerektiren (Gnosis Safe)
 4. **Smart Contract Wallet**: Programlanabilir (Argent, Safe)
+
+> Non-custodial wallet'lar, kullanıcılara tam kontrol sağlar ancak private key kaybı durumunda fonlar kurtarılamaz.
+{: .prompt-info }
 
 ### Web3 Provider'lar
 
@@ -85,8 +89,12 @@ const detectProviders = () => {
 
 console.log('Available wallets:', detectProviders());
 ```
+{: file="detectProviders.js" }
 
 ## MetaMask Entegrasyonu
+
+> MetaMask kurulumunu kontrol etmeden önce, kullanıcıya anlaşılır bir mesaj gösterin ve kurulum linkini sağlayın.
+{: .prompt-tip }
 
 ### Temel Bağlantı
 
@@ -235,8 +243,15 @@ console.log('Balance:', balance, 'ETH');
 // İşlem gönder
 // await wallet.sendTransaction('0x...', '0.01');
 ```
+{: file="WalletConnector.js" }
+
+> Ağ ve hesap değişikliklerinde sayfayı yenilemek yerine, state yönetimi ile dinamik güncelleme yapmanızı öneririz.
+{: .prompt-tip }
 
 ### Ağ Yönetimi
+
+> Kullanıcı yanlış ağda ise, otomatik ağ değiştirme önerisi sunun.
+{: .prompt-info }
 
 ```javascript
 class NetworkManager {
@@ -354,8 +369,15 @@ await NetworkManager.switchNetwork('polygon');
 // Ethereum'da olduğundan emin ol
 await NetworkManager.ensureNetwork('ethereum');
 ```
+{: file="NetworkManager.js" }
+
+> Her ağın farklı RPC endpoint'leri vardır. Production'da Infura, Alchemy gibi güvenilir sağlayıcılar kullanın.
+{: .prompt-tip }
 
 ### Smart Contract Etkileşimi
+
+> Gas tahmini yaparken %20-30 buffer ekleyin. Ağ yoğunluğuna göre gas fiyatları değişebilir.
+{: .prompt-warning }
 
 ```javascript
 class ContractInteraction {
@@ -513,11 +535,18 @@ const tokenContract = new ContractInteraction(
 const balance = await tokenContract.getTokenBalance(wallet.address);
 console.log('Token balance:', balance);
 ```
+{: file="contractUsage.js" }
+
+> Smart contract fonksiyonlarını çağırmadan önce mutlaka gas tahmini yapın ve kullanıcıya işlem maliyetini gösterin.
+{: .prompt-warning }
 
 ## WalletConnect Entegrasyonu
 
-![Web3 Development](/assets/img/posts/web3py-ethereum-development.png)
-*Şekil 2: Web3 geliştirme workflow ve bağlantı katmanları*
+![Web3 Development](/assets/img/posts/web3py-ethereum-development.png){: w="700" h="400" .shadow }
+_Web3 geliştirme workflow ve bağlantı katmanları_
+
+> WalletConnect, mobile wallet'lar için QR kod tabanlı bağlantı sağlar. WalletConnect Cloud'dan ücretsiz Project ID alın.
+{: .prompt-info }
 
 ### WalletConnect v2 Setup
 
@@ -648,6 +677,7 @@ class WalletConnectManager {
 const wcManager = new WalletConnectManager();
 await wcManager.connect();
 ```
+{: file="WalletConnectManager.js" }
 
 ### Multi-Wallet Desteği
 
@@ -828,6 +858,10 @@ const multiWallet = new MultiWalletManager();
 const connection = await multiWallet.showWalletModal();
 console.log('Connected with:', connection.type);
 ```
+{: file="MultiWalletManager.js" }
+
+> Kullanıcılara birden fazla wallet seçeneği sunmak, DApp erişilebilirliğini artırır. Web3Modal gibi hazır çözümler de kullanabilirsiniz.
+{: .prompt-tip }
 
 ## React Component Implementasyonu
 
@@ -1092,6 +1126,10 @@ function App() {
   );
 }
 ```
+{: file="App.jsx" }
+
+> React Context API ile global wallet state yönetimi yaparak, tüm componentlerde wallet bilgilerine erişebilirsiniz.
+{: .prompt-tip }
 
 ## Mesaj İmzalama ve Doğrulama
 
@@ -1201,8 +1239,15 @@ console.log('Verified signer:', signer);
 // EIP-712 imzala
 const typedSignature = await messageSigning.signTypedData(domain, types, value);
 ```
+{: file="messageSigning.js" }
+
+> Mesaj imzalama, kimlik doğrulama için güvenli bir yöntemdir ancak kullanıcıya imzaladığı mesajı açıkça gösterin.
+{: .prompt-warning }
 
 ## Güvenlik Best Practices
+
+> Web3 güvenliği kritiktir! Private key'ler asla frontend'de saklanmamalı ve tüm işlemler HTTPS üzerinden yapılmalıdır.
+{: .prompt-danger }
 
 ```javascript
 class SecureWalletManager {
@@ -1385,8 +1430,12 @@ try {
   console.error('Security error:', error);
 }
 ```
+{: file="SecureWalletManager.js" }
 
 ## Error Handling ve User Experience
+
+> Kullanıcı dostu error mesajları gösterin! Teknik hataları kullanıcının anlayabileceği dile çevirin.
+{: .prompt-tip }
 
 ```javascript
 class WalletErrorHandler {
@@ -1527,6 +1576,7 @@ async function transferTokens(to, amount) {
   }
 }
 ```
+{: file="WalletErrorHandler.js" }
 
 ## Sonuç
 
@@ -1581,4 +1631,4 @@ Web3 ecosystem sürekli gelişiyor. Yeni cüzdan çözümleri, improved security
 - [Ethereum Stack Exchange](https://ethereum.stackexchange.com/)
 - [WalletConnect Discord](https://discord.gg/walletconnect)
 
-Başarılı DApp geliştirmeler! 🚀💼
+Başarılı DApp geliştirmeler!
