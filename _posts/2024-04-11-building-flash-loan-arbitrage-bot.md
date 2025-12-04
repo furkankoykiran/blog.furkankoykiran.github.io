@@ -125,6 +125,7 @@ npm install --save-dev @openzeppelin/contracts
 npm install dotenv
 npm install web3
 ```
+{: .nolineno }
 
 ### Project Structure
 
@@ -145,6 +146,7 @@ flash-loan-arbitrage-bot/
 ├── .env
 └── package.json
 ```
+{: .nolineno }
 
 ### Configuration
 
