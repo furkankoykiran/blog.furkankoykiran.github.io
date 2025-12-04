@@ -1,10 +1,11 @@
 ---
 title: "Gas Optimization Techniques for Solidity Smart Contracts"
+description: "Advanced gas optimization techniques for Solidity smart contracts. Storage layout, assembly optimization, EVM opcodes, and best practices for cost-effective blockchain development."
 date: "2024-09-25 16:00:00 +0300"
 categories: [Smart Contracts, Solidity]
 tags: [solidity, ethereum, gas-optimization, evm, smart-contracts, blockchain, opcodes, storage]
 image:
-  src: /assets/img/posts/evm-gas-opcodes-how-it-works.png
+  path: /assets/img/posts/evm-gas-opcodes-how-it-works.png
   alt: "Gas Optimization Techniques for Solidity"
 ---
 
@@ -16,8 +17,8 @@ This comprehensive guide explores advanced gas optimization techniques for Solid
 
 From storage layout optimization to advanced assembly techniques, we'll cover everything you need to know to write production-grade, gas-efficient Solidity code. By the end of this guide, you'll have a complete toolkit for analyzing and optimizing your smart contracts' gas consumption.
 
-![EVM Architecture](/assets/img/posts/evm-architecture-execution-diagram.png)
-*Figure 1: EVM architecture and execution flow*
+![EVM Architecture](/assets/img/posts/evm-architecture-execution-diagram.png){: w="800" h="500" .shadow }
+_EVM architecture and execution flow_
 
 ## Understanding Gas in Ethereum
 
