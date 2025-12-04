@@ -200,7 +200,7 @@ def get_top_pools_by_tvl(limit: int = 10):
     TVL'ye göre en büyük Uniswap V3 pool'larını getirir
     """
     query = gql(f"""
-        {{
+        {% raw %}{{
             pools(
                 first: {limit},
                 orderBy: totalValueLockedUSD,
@@ -220,7 +220,7 @@ def get_top_pools_by_tvl(limit: int = 10):
                 feeTier
                 txCount
             }}
-        }}
+        }}{% endraw %}
     """)
     
     result = client.execute(query)
@@ -256,7 +256,7 @@ def analyze_token_holders(token_address: str, min_balance: float = 1000):
     Not: Token'a özel subgraph gerekir
     """
     query = gql(f"""
-        {{
+        {% raw %}{{
             tokenHolders(
                 where: {{
                     token: "{token_address.lower()}",
@@ -271,7 +271,7 @@ def analyze_token_holders(token_address: str, min_balance: float = 1000):
                 balance
                 transactionCount
             }}
-        }}
+        }}{% endraw %}
     """)
     
     result = client.execute(query)
@@ -318,7 +318,7 @@ def get_pool_daily_volume(pool_id: str, days: int = 30):
     start_timestamp = int((datetime.now() - timedelta(days=days)).timestamp())
     
     query = gql(f"""
-        {{
+        {% raw %}{{
             poolDayDatas(
                 where: {{
                     pool: "{pool_id}",
@@ -333,7 +333,7 @@ def get_pool_daily_volume(pool_id: str, days: int = 30):
                 feesUSD
                 txCount
             }}
-        }}
+        }}{% endraw %}
     """)
     
     result = client.execute(query)
