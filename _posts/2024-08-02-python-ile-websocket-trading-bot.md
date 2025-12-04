@@ -161,7 +161,7 @@ async def binance_ticker_stream(symbol):
     
     try:
         async with websockets.connect(uri) as websocket:
-            print(f"✅ Connected to {symbol} ticker stream")
+            print(f"Connected to {symbol} ticker stream")
             
             while True:
                 # Veri gelene kadar bekle (non-blocking)
@@ -182,13 +182,14 @@ async def binance_ticker_stream(symbol):
                 print("-" * 50)
                 
     except websockets.exceptions.ConnectionClosed:
-        print(f"❌ Connection closed for {symbol}")
+        print(f"Connection closed for {symbol}")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
 
 # Çalıştır
 asyncio.run(binance_ticker_stream("BTCUSDT"))
 ```
+{: file="binance_ticker.py" }
 
 ### Çoklu Stream Yönetimi
 
@@ -212,7 +213,7 @@ class BinanceMultiStream:
         while True:  # Auto-reconnect loop
             try:
                 async with websockets.connect(uri) as websocket:
-                    print(f"✅ Connected: {symbol}")
+                    print(f"Connected: {symbol}")
                     
                     while True:
                         message = await websocket.recv()
@@ -227,7 +228,7 @@ class BinanceMultiStream:
                         
             except Exception as e:
                 print(f"{symbol} disconnected: {e}")
-                print(f"Reconnecting in 5 seconds...")
+                print("Reconnecting in 5 seconds...")
                 await asyncio.sleep(5)
     
     async def print_dashboard(self):
