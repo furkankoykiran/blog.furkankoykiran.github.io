@@ -1,10 +1,11 @@
 ---
 title: "NFT Minting on Ethereum: Complete Tutorial"
+description: "Complete guide to minting NFTs on Ethereum. Learn ERC-721 standard, IPFS metadata storage, smart contract deployment with Hardhat, and OpenSea integration."
 date: "2024-01-25 10:00:00 +0300"
 categories: [NFT Development, Blockchain]
 tags: [nft, ethereum, erc721, ipfs, smart-contracts, web3, minting, opensea]
 image:
-  src: /assets/img/posts/nft-minting-ethereum-architecture.png
+  path: /assets/img/posts/nft-minting-ethereum-architecture.png
   alt: "NFT Minting Architecture on Ethereum Blockchain"
 ---
 
@@ -37,8 +38,8 @@ NFTs enable true digital ownership through blockchain technology. When you own a
 
 ERC-721 is the Ethereum token standard for NFTs, introduced in 2018 by William Entriken, Dieter Shirley, Jacob Evans, and Nastassia Sachs. It defines a minimum interface that smart contracts must implement to enable unique tokens to be managed, owned, and traded.
 
-![ERC-721 Standard Structure](/assets/img/posts/erc721-standard-diagram.png)
-*Figure 1: The ERC-721 standard interface showing required functions and events*
+![ERC-721 Standard Structure](/assets/img/posts/erc721-standard-diagram.png){: w="800" h="500" .shadow }
+_Figure 1: The ERC-721 standard interface showing required functions and events_
 
 **Core Functions in ERC-721:**
 
@@ -95,6 +96,9 @@ This metadata structure is universally recognized by NFT marketplaces like OpenS
 
 ### Required Knowledge
 
+> This tutorial assumes intermediate blockchain knowledge. If you're new to Solidity, consider completing a basics course first.
+{: .prompt-tip }
+
 Before diving into NFT development, you should have:
 
 - **Solidity Basics**: Understanding of contract structure, functions, modifiers, and events
@@ -115,6 +119,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 nvm install 18
 nvm use 18
 ```
+{: .nolineno }
 
 **2. Hardhat Framework**
 
@@ -135,6 +140,7 @@ npm install --save-dev hardhat
 npx hardhat
 # Select "Create a JavaScript project"
 ```
+{: .nolineno }
 
 **3. OpenZeppelin Contracts**
 
@@ -143,6 +149,7 @@ OpenZeppelin provides secure, audited implementations of ERC-721:
 ```bash
 npm install @openzeppelin/contracts
 ```
+{: .nolineno }
 
 **4. Additional Dependencies**
 
@@ -156,6 +163,7 @@ npm install --save-dev @nomiclabs/hardhat-etherscan
 # For environment variables
 npm install dotenv
 ```
+{: .nolineno }
 
 ### Setting Up MetaMask Wallet
 
@@ -164,6 +172,9 @@ MetaMask is essential for interacting with Ethereum networks:
 1. Install MetaMask browser extension from [metamask.io](https://metamask.io)
 2. Create a new wallet and **securely save your seed phrase**
 3. Add test networks (Sepolia, Goerli) for development
+
+> Never share your seed phrase or private key! Store it securely offline. Anyone with your seed phrase has complete access to your wallet.
+{: .prompt-danger }
 4. Get test ETH from faucets:
    - Sepolia: https://sepoliafaucet.com
    - Goerli: https://goerlifaucet.com
@@ -540,6 +551,7 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
     }
 }
 ```
+{: file="contracts/AdvancedNFT.sol" }
 
 **Advanced Features:**
 
@@ -550,8 +562,8 @@ contract AdvancedNFT is ERC721, Ownable, ReentrancyGuard {
 5. **ReentrancyGuard**: Protection against reentrancy attacks
 6. **Per-Wallet Limits**: Prevent whale accumulation
 
-![NFT Project Architecture](/assets/img/posts/nft-project-architecture-complete.png)
-*Figure 2: Complete NFT project architecture showing smart contract, IPFS, and marketplace integration*
+![NFT Project Architecture](/assets/img/posts/nft-project-architecture-complete.png){: w="800" h="500" .shadow }
+_Figure 2: Complete NFT project architecture showing smart contract, IPFS, and marketplace integration_
 
 ## Metadata Storage with IPFS
 
@@ -564,8 +576,11 @@ The InterPlanetary File System (IPFS) is a peer-to-peer protocol for storing and
 3. **Permanence**: Content remains accessible as long as nodes pin it
 4. **Censorship Resistance**: No central authority can remove content
 
-![IPFS Storage Architecture](/assets/img/posts/nft-ipfs-storage-architecture.png)
-*Figure 3: How NFT metadata and images are stored on IPFS and referenced from blockchain*
+> IPFS content remains available only as long as at least one node pins it. Always use pinning services like Pinata or NFT.Storage for production NFTs.
+{: .prompt-info }
+
+![IPFS Storage Architecture](/assets/img/posts/nft-ipfs-storage-architecture.png){: w="800" h="500" .shadow }
+_Figure 3: How NFT metadata and images are stored on IPFS and referenced from blockchain_
 
 ### Creating NFT Metadata
 
@@ -627,7 +642,10 @@ function generateMetadata(totalSupply, baseImageCID) {
     console.log(`Generated ${totalSupply} metadata files`);
     return metadata;
 }
+```
+{: file="scripts/metadata-generator.js" }
 
+```javascript
 // Helper functions for trait randomization
 function getRandomBackground() {
     const backgrounds = ['Blue', 'Red', 'Green', 'Purple', 'Gold', 'Black'];
@@ -659,7 +677,6 @@ generateMetadata(100, IMAGE_CID);
 **Method 1: Using Pinata SDK**
 
 ```javascript
-// upload-to-ipfs.js
 const pinataSDK = require('@pinata/sdk');
 const fs = require('fs');
 const path = require('path');
@@ -776,13 +793,13 @@ async function main() {
 
 main().catch(console.error);
 ```
+{: file="scripts/upload-to-ipfs.js" }
 
 **Method 2: Using NFT.Storage**
 
 NFT.Storage provides free, permanent storage specifically for NFTs:
 
 ```javascript
-// upload-nft-storage.js
 const { NFTStorage, File } = require('nft.storage');
 const fs = require('fs');
 const path = require('path');
@@ -853,8 +870,12 @@ const metadata = {
 
 uploadNFT('./images/1.png', metadata);
 ```
+{: file="scripts/upload-nft-storage.js" }
 
 ### IPFS Best Practices
+
+> Always pin your IPFS content! Unpinned content may disappear if no nodes host it. Use reliable pinning services for production.
+{: .prompt-warning }
 
 1. **Pin Your Content**: Ensure your IPFS content remains available
    - Use pinning services (Pinata, NFT.Storage, Infura)
@@ -887,7 +908,7 @@ uploadNFT('./images/1.png', metadata);
 
 **Step 1: Configure Hardhat**
 
-Create `hardhat.config.js`:
+Create `hardhat.config.js`{: .filepath}:
 
 ```javascript
 require("@nomiclabs/hardhat-waffle");
@@ -940,10 +961,11 @@ module.exports = {
     }
 };
 ```
+{: file="hardhat.config.js" }
 
 **Step 2: Create Deployment Script**
 
-Create `scripts/deploy.js`:
+Create `scripts/deploy.js`{: .filepath}:
 
 ```javascript
 const hre = require("hardhat");
@@ -1019,8 +1041,12 @@ main()
         process.exit(1);
     });
 ```
+{: file="scripts/deploy.js" }
 
 **Step 3: Deploy to Testnet**
+
+> Never commit your `.env`{: .filepath} file to version control! Add it to `.gitignore`{: .filepath} immediately. Your private key grants full access to your wallet.
+{: .prompt-danger }
 
 ```bash
 # Set environment variables in .env file
@@ -1032,20 +1058,21 @@ ETHERSCAN_API_KEY=your_etherscan_api_key
 # Deploy to Sepolia
 npx hardhat run scripts/deploy.js --network sepolia
 ```
+{: .nolineno file=".env" }
 
 ### Deployment with Remix IDE
 
 For beginners, Remix provides a browser-based deployment experience:
 
-![Smart Contract Deployment](/assets/img/posts/smart-contract-deployment-nft.png)
-*Figure 4: Smart contract deployment flow using Remix and Hardhat*
+![Smart Contract Deployment](/assets/img/posts/smart-contract-deployment-nft.png){: w="800" h="500" .shadow }
+_Figure 4: Smart contract deployment flow using Remix and Hardhat_
 
 **Step-by-Step Remix Deployment:**
 
 1. **Open Remix**: Navigate to [remix.ethereum.org](https://remix.ethereum.org)
 
 2. **Create Contract File**: 
-   - Create new file: `MyNFT.sol`
+   - Create new file: `MyNFT.sol`{: .filepath}
    - Paste your contract code
    - Import OpenZeppelin contracts
 
@@ -1065,6 +1092,9 @@ For beginners, Remix provides a browser-based deployment experience:
 5. **Interact**: Use Remix interface to call contract functions
 
 ### Gas Optimization Tips
+
+> Gas optimization can save thousands of dollars on popular NFT drops. Test gas costs thoroughly before mainnet deployment.
+{: .prompt-tip }
 
 ```solidity
 // ❌ Gas-inefficient
@@ -1097,7 +1127,7 @@ for (uint256 i; i < length;) {
 
 ### Writing a Minting Script
 
-Create `scripts/mint.js`:
+Create `scripts/mint.js`{: .filepath}:
 
 ```javascript
 const hre = require("hardhat");
@@ -1155,12 +1185,14 @@ main()
         process.exit(1);
     });
 ```
+{: file="scripts/mint.js" }
 
 Run the script:
 
 ```bash
 npx hardhat run scripts/mint.js --network sepolia
 ```
+{: .nolineno }
 
 ### Batch Minting Script
 
@@ -1199,13 +1231,13 @@ const recipients = [
 
 batchMint("YOUR_CONTRACT_ADDRESS", recipients);
 ```
+{: file="scripts/batch-mint.js" }
 
 ### Web3 Frontend Integration
 
 Create a simple minting interface with ethers.js:
 
 ```javascript
-// frontend/mint.js
 import { ethers } from 'ethers';
 
 const CONTRACT_ADDRESS = "YOUR_CONTRACT_ADDRESS";
@@ -1318,6 +1350,7 @@ function updateUI(state, data) {
 // Attach to button
 document.getElementById('mint-button').addEventListener('click', mintNFT);
 ```
+{: file="frontend/mint.js" }
 
 Corresponding HTML:
 
@@ -1369,10 +1402,14 @@ Corresponding HTML:
 </body>
 </html>
 ```
+{: file="frontend/index.html" }
 
 ## Security Best Practices and Common Pitfalls
 
 ### Smart Contract Security
+
+> Security vulnerabilities in smart contracts can lead to permanent loss of funds. Always audit code and use established patterns.
+{: .prompt-danger }
 
 **1. Reentrancy Protection**
 
@@ -1443,8 +1480,12 @@ contract NFTWithRoles is ERC721, AccessControl {
     }
 }
 ```
+{: file="contracts/NFTWithRoles.sol" }
 
 **4. Randomness**
+
+> On-chain randomness using block data is exploitable by miners. Always use Chainlink VRF for fair, verifiable randomness.
+{: .prompt-warning }
 
 Never use `block.timestamp` or `blockhash` for randomness:
 
@@ -1472,6 +1513,7 @@ contract RandomNFT is ERC721, VRFConsumerBase {
     }
 }
 ```
+{: file="contracts/RandomNFT.sol" }
 
 **5. Front-Running Protection**
 
@@ -1499,10 +1541,14 @@ contract FairLaunchNFT is ERC721 {
     }
 }
 ```
+{: file="contracts/FairLaunchNFT.sol" }
 
 ### Common Mistakes to Avoid
 
 **1. Not Testing on Testnets**
+
+> Mainnet deployment is irreversible. Always test thoroughly on Sepolia or Goerli first, including all edge cases and failure scenarios.
+{: .prompt-tip }
 
 Always deploy to testnets first (Sepolia, Goerli) before mainnet:
 
@@ -1513,6 +1559,7 @@ npx hardhat run scripts/deploy.js --network sepolia
 # Test all functions
 npx hardhat test --network sepolia
 ```
+{: .nolineno }
 
 **2. Hardcoding Values**
 
@@ -1551,13 +1598,13 @@ contract SafeNFT is ERC721, Pausable, Ownable {
     }
 }
 ```
+{: file="contracts/SafeNFT.sol" }
 
 **4. Ignoring Gas Costs**
 
 Test gas consumption:
 
 ```javascript
-// test/gas-test.js
 const { expect } = require("chai");
 
 describe("Gas Tests", function() {
@@ -1574,6 +1621,7 @@ describe("Gas Tests", function() {
     });
 });
 ```
+{: file="test/gas-test.js" }
 
 **5. Insufficient Event Logging**
 
@@ -1595,6 +1643,9 @@ function mint() external payable {
 ## Listing on OpenSea and Marketplaces
 
 ### OpenSea Integration
+
+> OpenSea automatically discovers and indexes ERC-721 contracts. Just deploy your contract and mint NFTs—they'll appear in wallets within 24 hours.
+{: .prompt-info }
 
 OpenSea automatically indexes NFTs that follow the ERC-721 standard. No API integration required!
 
@@ -1678,8 +1729,12 @@ contract NFTWithRoyalties is ERC721, ERC2981, Ownable {
     }
 }
 ```
+{: file="contracts/NFTWithRoyalties.sol" }
 
 ### Testing Metadata Display
+
+> Always test your metadata on OpenSea testnets before mainnet launch. Incorrect metadata structure can prevent NFTs from displaying properly.
+{: .prompt-tip }
 
 Before listing, verify metadata appears correctly:
 
@@ -1711,6 +1766,7 @@ async function refreshMetadata(contractAddress, tokenId) {
     console.log('Metadata refreshed:', data);
 }
 ```
+{: file="scripts/refresh-metadata.js" }
 
 ### Alternative Marketplaces
 
