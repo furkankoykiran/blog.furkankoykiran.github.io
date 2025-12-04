@@ -1,5 +1,6 @@
 ---
 title: "Building Automated Trading Systems with Python"
+description: "Complete guide to building automated trading systems with Python. Architecture design, backtesting, risk management, and deployment strategies for algorithmic trading."
 date: "2024-09-12"
 categories:
   - "trading"
@@ -13,7 +14,7 @@ tags:
   - "fintech"
   - "quantitative-analysis"
 image:
-  src: "/assets/img/posts/python-automated-trading-architecture.png"
+  path: "/assets/img/posts/python-automated-trading-architecture.png"
   alt: "Python Automated Trading System Architecture"
 ---
 
