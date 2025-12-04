@@ -1,10 +1,11 @@
 ---
 title: "Yapay Zeka Destekli Trading Stratejileri"
+description: "Makine öğrenmesi ile trading stratejileri geliştirme rehberi. LSTM sinir ağları, sentiment analysis, feature engineering, backtesting ve production deployment."
 date: "2024-05-16 14:00:00 +0300"
 categories: [AI & Trading, Machine Learning]
 tags: [machine-learning, ai, trading, python, lstm, neural-networks, fintech, prediction]
 image:
-  src: /assets/img/posts/ai-trading-algorithm-flow.png
+  path: /assets/img/posts/ai-trading-algorithm-flow.png
   alt: "AI Trading Algorithm Flow"
 ---
 
@@ -14,8 +15,8 @@ Finansal piyasalarda yapay zeka ve makine öğrenmesi teknolojileri, son yıllar
 
 Bu kapsamlı rehberde, makine öğrenmesi algoritmalarını kullanarak nasıl trading stratejileri geliştirebileceğinizi öğreneceksiniz. LSTM (Long Short-Term Memory) sinir ağları, Random Forest algoritması, sentiment analysis ve feature engineering gibi konuları detaylıca ele alacağız. Ayrıca, geliştirdiğiniz modelleri nasıl test edeceğinizi, optimize edeceğinizi ve production ortamına nasıl deploy edeceğinizi de göreceğiz.
 
-![AI Techniques in Financial Trading](/assets/img/posts/ai-techniques-financial-trading.jpg)
-*Şekil 1: Finansal trading'de yapay zeka teknikleri genel görünümü*
+![AI Techniques in Financial Trading](/assets/img/posts/ai-techniques-financial-trading.jpg){: w="800" h="500" .shadow }
+_Şekil 1: Finansal trading'de yapay zeka teknikleri genel görünümü_
 
 ## Neden Yapay Zeka ve Trading?
 
@@ -100,8 +101,15 @@ df = get_stock_data(
 print(f"Toplam {len(df)} günlük veri çekildi")
 print(df.head())
 ```
+{: file="data_collection.py" }
+
+> Yeterli veri toplamanız önemlidir. En az 1-2 yıllık veri kullanmanızı öneririz.
+{: .prompt-tip }
 
 ### Kripto Para Verileri
+
+> Exchange API kullanırken rate limit'lere dikkat edin. Fazla istek çok hızlı gönderirseniz ban yiyebilirsiniz.
+{: .prompt-warning }
 
 ```python
 import ccxt
@@ -145,8 +153,8 @@ print(btc_data.tail())
 
 Feature engineering, makine öğrenmesi modelinin performansını belirleyen en kritik adımdır.
 
-![Machine Learning Model Flowchart](/assets/img/posts/machine-learning-model-flowchart.png)
-*Şekil 2: Machine learning model geliştirme iş akışı*
+![Machine Learning Model Flowchart](/assets/img/posts/machine-learning-model-flowchart.png){: w="800" h="500" .shadow }
+_Şekil 2: Machine learning model geliştirme iş akışı_
 
 ### Teknik İndikatörlerin Hesaplanması
 
@@ -506,8 +514,8 @@ print(f"\nTest Accuracy: {accuracy:.4f}")
 
 Random Forest algoritması, hem güçlü tahminler yapar hem de hangi feature'ların önemli olduğunu gösterir.
 
-![ML Trading Architecture](/assets/img/posts/ml-trading-architecture.jpg)
-*Şekil 3: Machine learning trading mimarisi*
+![ML Trading Architecture](/assets/img/posts/ml-trading-architecture.jpg){: w="800" h="500" .shadow }
+_Şekil 3: Machine learning trading mimarisi_
 
 ### Random Forest Modeli
 
@@ -749,8 +757,8 @@ df = add_sentiment_features(df, sentiment_data)
 
 Optuna kullanarak model hiperparametrelerini optimize edelim.
 
-![Deep Reinforcement Learning Trading](/assets/img/posts/deep-reinforcement-learning-trading.png)
-*Şekil 4: Deep reinforcement learning ile trading sistemi mimarisi*
+![Deep Reinforcement Learning Trading](/assets/img/posts/deep-reinforcement-learning-trading.png){: w="800" h="500" .shadow }
+_Şekil 4: Deep reinforcement learning ile trading sistemi mimarisi_
 
 ### Optuna ile Random Forest Optimizasyonu
 
@@ -966,8 +974,8 @@ print(classification_report(y_test_ens, y_pred_ensemble))
 
 Geliştirdiğimiz stratejinin gerçek performansını test edelim.
 
-![AI Stock Trading Visualization](/assets/img/posts/ai-stock-trading-visualization.jpg)
-*Şekil 5: AI destekli trading stratejisi görselleştirmesi*
+![AI Stock Trading Visualization](/assets/img/posts/ai-stock-trading-visualization.jpg){: w="700" h="400" .shadow }
+_Şekil 5: AI destekli trading stratejisi görselleştirmesi_
 
 ### Basit Backtesting
 
