@@ -1,5 +1,6 @@
 ---
 title: "Cross-Chain Bridge Geliştirme: Ethereum ve Polygon Arasında Varlık Transferi"
+description: "Ethereum ve Polygon arasında güvenli cross-chain bridge geliştirme. Lock-and-mint mekanizması, relayer implementasyonu ve güvenlik best practices."
 date: 2024-07-31 14:30:00 +0300
 categories: [Blockchain, Infrastructure]
 tags: [cross-chain, bridge, ethereum, polygon, web3, smart-contracts, interoperability]
@@ -22,7 +23,7 @@ Kaynak zincirde token'lar kilitlenir, hedef zincirde eşdeğer wrapped token bas
 
 Kaynak zincirde token yakılır, hedef zincirde yeniden basılır. Bu yöntem wrapped token'lar için daha uygundur.
 
-![Lock-and-Mint Mekanizması](/assets/img/posts/lock-and-mint-bridge-mechanism.png)
+![Lock-and-Mint Mekanizması](/assets/img/posts/lock-and-mint-bridge-mechanism.png){: w="800" h="500" .shadow }
 _Lock-and-mint bridge mekanizmasının çalışma prensibi_
 
 ## Proje Mimarisi
@@ -43,6 +44,10 @@ npm install --save-dev @openzeppelin/contracts
 # Python Relayer
 pip install web3 python-dotenv asyncio aiohttp redis
 ```
+{: .nolineno }
+
+> Cross-chain bridge geliştirmede güvenlik en kritik faktördür. Tüm kodu production'a almadan önce mutlaka security audit yaptırın.
+{: .prompt-danger }
 
 ## Smart Contract Implementasyonu
 
@@ -596,8 +601,8 @@ class BridgeRelayer:
             decode_responses=True
         )
         
-        logger.info("✅ Bridge Relayer initialized")
-        logger.info(f"📍 Validator address: {self.validator_account.address}")
+        logger.info("Bridge Relayer initialized")
+        logger.info(f"Validator address: {self.validator_account.address}")
     
     def _load_contract(self, w3: Web3, address: str, abi_file: str):
         """Contract instance oluşturur"""
@@ -613,7 +618,7 @@ class BridgeRelayer:
         """
         Ethereum'daki TokensLocked event'lerini dinler
         """
-        logger.info("🔍 Monitoring Ethereum TokensLocked events...")
+        logger.info("Monitoring Ethereum TokensLocked events...")
         
         # Event filter oluştur
         event_filter = self.eth_bridge.events.TokensLocked.create_filter(
@@ -629,7 +634,7 @@ class BridgeRelayer:
                 await asyncio.sleep(2)  # 2 saniye polling
                 
             except Exception as e:
-                logger.error(f"❌ Ethereum monitoring error: {e}")
+                logger.error(f"Ethereum monitoring error: {e}")
                 await asyncio.sleep(5)
     
     async def _process_ethereum_lock(self, event):
@@ -639,7 +644,7 @@ class BridgeRelayer:
         args = event.args
         transfer_id = args.transferId.hex()
         
-        logger.info(f"\n🔒 New Ethereum Lock Detected")
+        logger.info(f"\nNew Ethereum Lock Detected")
         logger.info(f"   Transfer ID: {transfer_id}")
         logger.info(f"   Token: {args.token}")
         logger.info(f"   Amount: {args.amount}")
@@ -647,7 +652,7 @@ class BridgeRelayer:
         
         # Redis'te işlenmiş mi kontrol et
         if self.redis_client.get(f"processed:eth:{transfer_id}"):
-            logger.info("   ⏭️  Already processed, skipping")
+            logger.info("   Already processed, skipping")
             return
         
         # Confirmation bekle (6 blok)
@@ -671,7 +676,7 @@ class BridgeRelayer:
                 [signature]  # Production'da multiple validator imzaları
             )
             
-            logger.info(f"   ✅ Minted on Polygon: {tx_hash.hex()}")
+            logger.info(f"   Minted on Polygon: {tx_hash.hex()}")
             
             # Redis'e işlenmiş olarak kaydet
             self.redis_client.setex(
@@ -681,13 +686,13 @@ class BridgeRelayer:
             )
             
         except Exception as e:
-            logger.error(f"   ❌ Mint failed: {e}")
+            logger.error(f"   Mint failed: {e}")
     
     async def monitor_polygon_burns(self):
         """
         Polygon'daki TokensBurned event'lerini dinler
         """
-        logger.info("🔍 Monitoring Polygon TokensBurned events...")
+        logger.info("Monitoring Polygon TokensBurned events...")
         
         event_filter = self.poly_bridge.events.TokensBurned.create_filter(
             fromBlock='latest'
@@ -701,7 +706,7 @@ class BridgeRelayer:
                 await asyncio.sleep(2)
                 
             except Exception as e:
-                logger.error(f"❌ Polygon monitoring error: {e}")
+                logger.error(f"Polygon monitoring error: {e}")
                 await asyncio.sleep(5)
     
     async def _process_polygon_burn(self, event):
@@ -711,14 +716,14 @@ class BridgeRelayer:
         args = event.args
         transfer_id = args.transferId.hex()
         
-        logger.info(f"\n🔥 New Polygon Burn Detected")
+        logger.info(f"\nNew Polygon Burn Detected")
         logger.info(f"   Transfer ID: {transfer_id}")
         logger.info(f"   Wrapped Token: {args.wrappedToken}")
         logger.info(f"   Amount: {args.amount}")
         logger.info(f"   Ethereum Recipient: {args.ethereumRecipient}")
         
         if self.redis_client.get(f"processed:poly:{transfer_id}"):
-            logger.info("   ⏭️  Already processed, skipping")
+            logger.info("   Already processed, skipping")
             return
         
         # Confirmation bekle
@@ -742,7 +747,7 @@ class BridgeRelayer:
                 [signature]
             )
             
-            logger.info(f"   ✅ Released on Ethereum: {tx_hash.hex()}")
+            logger.info(f"   Released on Ethereum: {tx_hash.hex()}")
             
             self.redis_client.setex(
                 f"processed:poly:{transfer_id}",
@@ -751,7 +756,7 @@ class BridgeRelayer:
             )
             
         except Exception as e:
-            logger.error(f"   ❌ Release failed: {e}")
+            logger.error(f"   Release failed: {e}")
     
     def _create_signature(
         self,
@@ -875,11 +880,11 @@ class BridgeRelayer:
             current_block = w3.eth.block_number
             
             if current_block >= target_block:
-                logger.info(f"   ✅ {confirmations} confirmations reached")
+                logger.info(f"   {confirmations} confirmations reached")
                 break
             
             remaining = target_block - current_block
-            logger.info(f"   ⏳ Waiting for confirmations... ({remaining} blocks)")
+            logger.info(f"   Waiting for confirmations... ({remaining} blocks)")
             
             await asyncio.sleep(12)  # Ethereum block time
     
@@ -887,7 +892,7 @@ class BridgeRelayer:
         """
         Relayer'ı başlatır (her iki zinciri de aynı anda izler)
         """
-        logger.info("🚀 Starting Bridge Relayer...")
+        logger.info("Starting Bridge Relayer...")
         
         tasks = [
             asyncio.create_task(self.monitor_ethereum_locks()),
@@ -901,31 +906,34 @@ if __name__ == "__main__":
     relayer = BridgeRelayer()
     asyncio.run(relayer.run())
 ```
+{: file="relayer.py" }
 
-![Blockchain Relayer Mimarisi](/assets/img/posts/blockchain-relayer-architecture.png)
+![Blockchain Relayer Mimarisi](/assets/img/posts/blockchain-relayer-architecture.png){: w="800" h="500" .shadow }
 _Relayer servisinin zincirler arası mesaj iletim mimarisi_
+
+> Relayer'larınızı birden fazla sunucuda çalıştırarak redundancy sağlayın. Redis ile state synchronization yapın.
+{: .prompt-tip }
 
 ## Deployment ve Test
 
 ### Hardhat Deployment Script
 
 ```javascript
-// scripts/deploy.js
 const hre = require("hardhat");
 
 async function main() {
-  console.log("🚀 Deploying Bridge Contracts...\n");
+  console.log("Deploying Bridge Contracts...\n");
   
   // Ethereum Bridge Deploy
-  console.log("📍 Deploying Ethereum Bridge...");
+  console.log("Deploying Ethereum Bridge...");
   const EthereumBridge = await hre.ethers.getContractFactory("EthereumBridge");
   const feeCollector = "0x..."; // Fee collector adresi
   const ethBridge = await EthereumBridge.deploy(feeCollector);
   await ethBridge.deployed();
-  console.log(`✅ Ethereum Bridge: ${ethBridge.address}\n`);
+  console.log(`Ethereum Bridge: ${ethBridge.address}\n`);
   
   // Polygon Bridge Deploy
-  console.log("📍 Deploying Polygon Bridge...");
+  console.log("Deploying Polygon Bridge...");
   const PolygonBridge = await hre.ethers.getContractFactory("PolygonBridge");
   const validators = [
     "0x...",  // Validator 1
@@ -936,10 +944,10 @@ async function main() {
   
   const polyBridge = await PolygonBridge.deploy(validators, requiredSignatures);
   await polyBridge.deployed();
-  console.log(`✅ Polygon Bridge: ${polyBridge.address}\n`);
+  console.log(`Polygon Bridge: ${polyBridge.address}\n`);
   
   // USDC Token Support Ekle
-  console.log("📍 Adding USDC support...");
+  console.log("Adding USDC support...");
   const usdcAddress = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // Mainnet USDC
   
   const addTokenTx = await ethBridge.addSupportedToken(
@@ -948,10 +956,10 @@ async function main() {
     hre.ethers.utils.parseUnits("1000000", 6)  // Max: 1M USDC
   );
   await addTokenTx.wait();
-  console.log("✅ USDC support added to Ethereum Bridge\n");
+  console.log("USDC support added to Ethereum Bridge\n");
   
   // Wrapped USDC Deploy
-  console.log("📍 Creating Wrapped USDC on Polygon...");
+  console.log("Creating Wrapped USDC on Polygon...");
   const createWrappedTx = await polyBridge.createWrappedToken(
     usdcAddress,
     "Wrapped USDC",
@@ -959,10 +967,10 @@ async function main() {
   );
   const receipt = await createWrappedTx.wait();
   const wrappedUSDC = receipt.events[0].args.wrappedToken;
-  console.log(`✅ Wrapped USDC: ${wrappedUSDC}\n`);
+  console.log(`Wrapped USDC: ${wrappedUSDC}\n`);
   
   // Deployment summary
-  console.log("📋 Deployment Summary");
+  console.log("Deployment Summary");
   console.log("=".repeat(50));
   console.log(`Ethereum Bridge: ${ethBridge.address}`);
   console.log(`Polygon Bridge:  ${polyBridge.address}`);
@@ -978,6 +986,7 @@ main()
     process.exit(1);
   });
 ```
+{: file="scripts/deploy.js" }
 
 ### Test Suite
 
@@ -1239,7 +1248,7 @@ class BridgeMonitor:
         # Fark %1'den fazla ise alert
         if abs(eth_locked - poly_minted) / eth_locked > 0.01:
             await self.send_alert(
-                "⚠️ Balance Mismatch Detected",
+                "Balance Mismatch Detected",
                 f"ETH Locked: {eth_locked}\nPoly Minted: {poly_minted}"
             )
 ```
@@ -1301,17 +1310,23 @@ services:
     ports:
       - "6379:6379"
 ```
+{: file="docker-compose.yml" }
 
 ## Sonuç
 
 Cross-chain bridge geliştirmek, karmaşık ancak blockchain ekosisteminin interoperability'si için kritik bir konudur. Bu yazıda ele aldığımız lock-and-mint mekanizması, güvenli ve ölçeklenebilir bir bridge implementasyonu için temel oluşturur.
 
-Production ortamına geçmeden önce mutlaka:
-- Kapsamlı security audit yaptırın (CertiK, OpenZeppelin, vb.)
-- Bug bounty programı başlatın
+> Production ortamına geçmeden önce mutlaka kapsamlı security audit yaptırın (CertiK, OpenZeppelin, vb.).
+{: .prompt-danger }
+
+> Bug bounty programı başlatarak community'nin güvenlik arayışından faydalanabilirsiniz.
+{: .prompt-tip }
+
+**Production checklist:**
 - Testnet'te extensive testing yapın
 - Multi-sig wallet ve timelock kullanın
 - Insurance fund oluşturun
+- Rate limiting ve anti-spam mekanizmaları ekleyin
 
 Cross-chain future'da bridge'ler blockchain adoption'ı için vazgeçilmez olacaktır.
 
