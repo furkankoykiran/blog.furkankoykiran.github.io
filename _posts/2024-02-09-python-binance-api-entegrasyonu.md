@@ -1,10 +1,11 @@
 ---
 title: "Python ile Binance API Entegrasyonu"
+description: "Python ile Binance API kullanarak otomatik trading botları geliştirme rehberi. REST API, WebSocket entegrasyonu, order yönetimi ve risk stratejileri."
 date: "2024-02-09 13:00:00 +0300"
 categories: [Exchange Integration, Python]
 tags: [python, binance, api, trading, kripto, exchange, websocket, automation]
 image:
-  src: /assets/img/posts/python-automated-trading-architecture.png
+  path: /assets/img/posts/python-automated-trading-architecture.png
   alt: "Python ile Binance API Entegrasyonu"
 ---
 
@@ -14,8 +15,8 @@ Binance, dünyanın en büyük kripto para borsalarından biri olarak günlük m
 
 Bu kapsamlı rehberde, Binance API'sini Python ile nasıl kullanacağınızı sıfırdan öğreneceksiniz. REST API ile temel işlemler yapmayı, WebSocket ile gerçek zamanlı veri akışını dinlemeyi, order placement stratejilerini ve güvenli API key yönetimini detaylıca ele alacağız. Ayrıca, production-ready trading botları geliştirmek için gereken best practice'leri ve error handling mekanizmalarını da göreceğiz.
 
-![AI Trading Architecture](/assets/img/posts/ai-stock-trading-visualization.jpg)
-*Şekil 1: Kripto trading sistemi mimarisi genel görünümü*
+![AI Trading Architecture](/assets/img/posts/ai-stock-trading-visualization.jpg){: w="700" h="400" .shadow }
+_Şekil 1: Kripto trading sistemi mimarisi genel görünümü_
 
 ## Binance API'ye Giriş
 
@@ -83,12 +84,16 @@ pip install loguru
 
 ### Güvenli API Key Yönetimi
 
-```python
-# .env dosyası oluşturun (ASLA git'e eklemeyin!)
-# .env
+> API key'lerinizi asla public repository'ye eklemeyin! .env dosyasını mutlaka .gitignore'a ekleyin.
+{: .prompt-warning }
+
+```bash
 BINANCE_API_KEY=your_api_key_here
 BINANCE_SECRET_KEY=your_secret_key_here
+```
+{: file=".env" }
 
+```python
 # Python'dan okuyun
 from dotenv import load_dotenv
 import os
@@ -97,12 +102,14 @@ load_dotenv()
 
 API_KEY = os.getenv('BINANCE_API_KEY')
 SECRET_KEY = os.getenv('BINANCE_SECRET_KEY')
-
-# .gitignore'a ekleyin
-# .env
-# *.key
-# secrets/
 ```
+
+```bash
+.env
+*.key
+secrets/
+```
+{: file=".gitignore" }
 
 ## REST API ile Temel İşlemler
 
@@ -146,6 +153,7 @@ def check_server_time():
 
 check_server_time()
 ```
+{: file="binance_client.py" }
 
 ### Market Data Çekme
 
@@ -405,8 +413,8 @@ all_balances = get_all_balances()
 
 ## Order Placement (Emir Verme)
 
-![Python Trading Bot](/assets/img/posts/telegram-trading-bot-python.png)
-*Şekil 2: Python trading bot mimarisi*
+![Python Trading Bot](/assets/img/posts/telegram-trading-bot-python.png){: w="700" h="400" .shadow }
+_Şekil 2: Python trading bot mimarisi_
 
 ### Market Order
 
@@ -458,10 +466,10 @@ def place_market_order(symbol, side, quantity):
     except Exception as e:
         print(f"Unexpected Error: {e}")
         return None
-
-# UYARI: Gerçek order vermeden önce test edin!
-# order = place_market_order('BTCUSDT', SIDE_BUY, 0.001)
 ```
+
+> Gerçek para ile order vermeden önce mutlaka Testnet üzerinde test edin! Yanlış bir order geri alınamaz.
+{: .prompt-danger }
 
 ### Limit Order
 
@@ -741,6 +749,9 @@ history = get_order_history('BTCUSDT', limit=20)
 ## WebSocket ile Gerçek Zamanlı Veri
 
 WebSocket, gerçek zamanlı piyasa verilerini almak için en verimli yöntemdir.
+
+> WebSocket kullanarak REST API'ye sürekli request göndermekten kaçının. Bu hem rate limit'lere takılmanızı önler hem de daha düşük gecikme sağlar.
+{: .prompt-tip }
 
 ### Fiyat Takibi
 
@@ -1035,11 +1046,10 @@ class SimpleTradingBot:
             logger.info("Bot stopped by user")
         except Exception as e:
             logger.error(f"Bot error: {e}")
-
-# Bot'u başlat (UYARI: Test edin önce!)
-# bot = SimpleTradingBot('BTCUSDT', '5m', 10, 30)
-# bot.run(check_interval=300)  # 5 dakikada bir kontrol
 ```
+
+> Herhangi bir trading botunu production'a almadan önce en az 1 ay backtest ve paper trading yapın. Risk yönetimi kurallarını mutlaka uygulayın.
+{: .prompt-warning }
 
 ## Risk Yönetimi
 
@@ -1434,6 +1444,9 @@ monitor = PerformanceMonitor()
 ```
 
 ## Sonuç
+
+> Bu rehberde öğrendiğiniz teknikler sadece Binance için değil, CCXT kütüphanesi ile 100+ farklı exchange için de kullanılabilir.
+{: .prompt-info }
 
 Python ile Binance API entegrasyonu, kripto trading dünyasında güçlü otomasyonlar kurmanızı sağlar. Bu rehberde öğrendikleriniz:
 
