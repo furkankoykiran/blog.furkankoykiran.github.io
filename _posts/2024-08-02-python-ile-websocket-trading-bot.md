@@ -1,10 +1,11 @@
 ---
 title: "Python ile WebSocket Trading Bot: Real-Time Kripto Trading Sistemi"
+description: "Python asyncio ve WebSocket ile milisaniye hızında gerçek zamanlı kripto trading botu geliştirme. Order book analizi, latency optimizasyonu ve HFT stratejileri."
 date: "2024-08-02 10:00:00 +0300"
 categories: [High-Frequency Trading, Bot Development]
 tags: [python, websocket, trading-bot, real-time, hft, asyncio, kripto, automation]
 image:
-  src: /assets/img/posts/websocket-real-time-architecture-diagram.png
+  path: /assets/img/posts/websocket-real-time-architecture-diagram.png
   alt: "WebSocket Real-Time Data Stream Architecture"
 ---
 
@@ -225,8 +226,8 @@ class BinanceMultiStream:
                         }
                         
             except Exception as e:
-                print(f"⚠️ {symbol} disconnected: {e}")
-                print(f"🔄 Reconnecting in 5 seconds...")
+                print(f"{symbol} disconnected: {e}")
+                print(f"Reconnecting in 5 seconds...")
                 await asyncio.sleep(5)
     
     async def print_dashboard(self):
