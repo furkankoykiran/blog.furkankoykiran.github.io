@@ -1,5 +1,6 @@
 ---
 title: "Python ile Telegram Trading Botu Geliştirme"
+description: "Python ve Telegram Bot API kullanarak 7/24 çalışan otomatik trading botu geliştirme rehberi. CCXT entegrasyonu, teknik indikatörler, alarm sistemi ve deployment."
 date: "2024-07-22"
 categories:
   - "bot-development"
@@ -14,7 +15,7 @@ tags:
   - "bot-geliştirme"
   - "telegram-api"
 image:
-  src: "/assets/img/posts/telegram-trading-bot-python.png"
+  path: "/assets/img/posts/telegram-trading-bot-python.png"
   alt: "Python ile Telegram Trading Botu"
 ---
 
@@ -24,13 +25,14 @@ Kripto para piyasaları 7/24 açık olduğundan, manuel olarak takip etmek hem y
 
 Telegram, trading botları için mükemmel bir platform çünkü:
 
-- 📱 **Mobil Erişim**: Botunuzu her yerden kontrol edebilirsiniz
-- 🔔 **Anlık Bildirimler**: Fiyat hareketlerini anında öğrenirsiniz
-- 🚀 **Kolay API**: Telegram Bot API kullanımı oldukça basittir
-- 🔒 **Güvenlik**: End-to-end encryption ile güvenli iletişim
-- 💰 **Ücretsiz**: Sınırsız mesaj gönderimi
+- **Mobil Erişim**: Botunuzu her yerden kontrol edebilirsiniz
+- **Anlık Bildirimler**: Fiyat hareketlerini anında öğrenirsiniz
+- **Kolay API**: Telegram Bot API kullanımı oldukça basittir
+- **Güvenlik**: End-to-end encryption ile güvenli iletişim
+- **Ücretsiz**: Sınırsız mesaj gönderimi
 
-![Telegram Trading Bot](/assets/img/posts/telegram-trading-bot-python.png)
+![Telegram Trading Bot](/assets/img/posts/telegram-trading-bot-python.png){: w="700" h="400" .shadow }
+_Python ile geliştirilen Telegram trading bot arayüzü_
 
 ## Gereksinimler
 
@@ -46,18 +48,20 @@ pip install ccxt  # Kripto exchange API wrapper
 pip install pandas numpy
 pip install python-dotenv
 ```
+{: .nolineno }
 
 ## 1. Telegram Bot Oluşturma
 
 Öncelikle BotFather ile yeni bir bot oluşturalım:
 
-1. Telegram'da [@BotFather](https://t.me/botfather)'ı bulun
+1. Telegram'da [BotFather](https://t.me/botfather) botunu bulun
 2. `/newbot` komutunu gönderin
 3. Bot adını belirleyin (örn: "MyTradingBot")
 4. Username seçin (örn: "my_trading_bot")
 5. **Bot Token**'ı kopyalayın (örn: `1234567890:ABCdefGHIjklMNOpqrsTUVwxyz`)
 
-⚠️ **ÖNEMLİ**: Token'ı asla paylaşmayın veya GitHub'a yüklemeyin!
+> Token'ı asla paylaşmayın veya GitHub'a yüklemeyin! Token sızdırılması durumunda bot kontrolünü kaybedersiniz.
+{: .prompt-danger }
 
 ## 2. Proje Yapısı
 
@@ -70,11 +74,11 @@ trading_bot/
 ├── indicators.py       # Teknik indikatörler
 └── requirements.txt    # Dependencies
 ```
+{: .nolineno }
 
 ## 3. Temel Bot Yapısı
 
 ```python
-# bot.py
 import os
 from dotenv import load_dotenv
 from telegram import Update
@@ -94,7 +98,7 @@ BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Bot başlatma komutu"""
     welcome_message = """
-🤖 *Trading Bot'a Hoş Geldiniz!*
+*Trading Bot'a Hoş Geldiniz!*
 
 Kullanılabilir komutlar:
 /price BTC - Bitcoin fiyatını gösterir
@@ -123,7 +127,7 @@ async def price(update: Update, context: ContextTypes.DEFAULT_TYPE):
         current_price = get_current_price(symbol)
         
         message = f"""
-💰 *{symbol}/USDT Fiyatı*
+*{symbol}/USDT Fiyatı*
 
 Fiyat: ${current_price:,.2f}
 Son Güncelleme: {datetime.now().strftime('%H:%M:%S')}
@@ -131,12 +135,12 @@ Son Güncelleme: {datetime.now().strftime('%H:%M:%S')}
         await update.message.reply_text(message, parse_mode='Markdown')
         
     except Exception as e:
-        await update.message.reply_text(f"❌ Hata: {str(e)}")
+        await update.message.reply_text(f"Hata: {str(e)}")
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Yardım mesajı"""
     help_text = """
-📚 *Detaylı Komut Listesi*
+*Detaylı Komut Listesi*
 
 *Fiyat Sorguları:*
 /price <symbol> - Anlık fiyat
@@ -171,17 +175,17 @@ def main():
     app.add_handler(CommandHandler("help", help_command))
     
     # Botu başlat
-    print("🤖 Bot çalışıyor...")
+    print("Bot çalışıyor...")
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == '__main__':
     main()
 ```
+{: file="bot.py" }
 
 ## 4. Exchange Entegrasyonu (CCXT)
 
 ```python
-# trader.py
 import ccxt
 from datetime import datetime
 
@@ -266,6 +270,7 @@ def get_current_price(symbol):
     data = trader.get_price(f"{symbol}/USDT")
     return data['price']
 ```
+{: file="trader.py" }
 
 ## 5. Fiyat Alarm Sistemi
 
@@ -296,7 +301,7 @@ async def set_alert(update: Update, context: ContextTypes.DEFAULT_TYPE):
     price_alerts[user_id].append(alert)
     
     await update.message.reply_text(
-        f"✅ Alarm kuruldu!\n\n"
+        f"Alarm kuruldu!\n\n"
         f"{symbol}/USDT = ${target_price:,.2f}"
     )
 
@@ -312,7 +317,7 @@ async def check_alerts(context: ContextTypes.DEFAULT_TYPE):
             # Hedef fiyata ulaşıldı mı?
             if current_price >= target:
                 message = f"""
-🔔 *Fiyat Alarmı!*
+*Fiyat Alarmı!*
 
 {symbol}/USDT hedef fiyata ulaştı!
 Hedef: ${target:,.2f}
@@ -340,11 +345,14 @@ def main():
     
     app.run_polling()
 ```
+{: file="bot.py" }
+
+> Alarm sistemi bellekte (RAM) tutuluyor. Kalıcı alarm sistemi için Redis veya SQLite kullanın.
+{: .prompt-tip }
 
 ## 6. Teknik İndikatörler Entegrasyonu
 
 ```python
-# indicators.py
 import pandas as pd
 import numpy as np
 
@@ -378,7 +386,10 @@ def calculate_bollinger_bands(df, period=20, std=2):
     lower_band = sma - (std_dev * std)
     
     return upper_band, sma, lower_band
+```
+{: file="indicators.py" }
 
+```python
 # Bot'a teknik analiz komutu ekle
 async def analyze(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Teknik analiz yap"""
@@ -401,22 +412,22 @@ async def analyze(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Sinyal üret
     signals = []
     if rsi < 30:
-        signals.append("📈 RSI oversold - AL sinyali")
+        signals.append("RSI oversold - AL sinyali")
     elif rsi > 70:
-        signals.append("📉 RSI overbought - SAT sinyali")
+        signals.append("RSI overbought - SAT sinyali")
     
     if macd.iloc[-1] > signal.iloc[-1] and macd.iloc[-2] <= signal.iloc[-2]:
-        signals.append("📈 MACD bullish crossover - AL sinyali")
+        signals.append("MACD bullish crossover - AL sinyali")
     
     if current_price < lower.iloc[-1]:
-        signals.append("📈 Fiyat alt Bollinger Band'de - AL fırsatı")
+        signals.append("Fiyat alt Bollinger Band'de - AL fırsatı")
     
     message = f"""
-📊 *{symbol}/USDT Teknik Analiz*
+*{symbol}/USDT Teknik Analiz*
 
-💰 Fiyat: ${current_price:,.2f}
+Fiyat: ${current_price:,.2f}
 
-📈 İndikatörler:
+İndikatörler:
 RSI (14): {rsi:.2f}
 MACD: {macd.iloc[-1]:.2f}
 Signal: {signal.iloc[-1]:.2f}
@@ -426,29 +437,35 @@ Upper: ${upper.iloc[-1]:,.2f}
 Middle: ${middle.iloc[-1]:,.2f}
 Lower: ${lower.iloc[-1]:,.2f}
 
-🎯 Sinyaller:
+Sinyaller:
 {chr(10).join(signals) if signals else 'Beklemede...'}
     """
     
     await update.message.reply_text(message, parse_mode='Markdown')
 ```
+{: file="bot.py" }
+
+> Teknik indikatörler geçmiş verilere dayalıdır ve gelecek fiyat hareketlerini garanti etmez. Risk yönetimi kullanın.
+{: .prompt-warning }
 
 ## 7. Güvenlik ve Best Practices
 
 ### Environment Variables (.env)
 
 ```bash
-# .env
 TELEGRAM_BOT_TOKEN=1234567890:ABCdefGHIjklMNOpqrsTUVwxyz
 BINANCE_API_KEY=your_api_key_here
 BINANCE_API_SECRET=your_api_secret_here
 ALLOWED_USER_IDS=123456789,987654321  # Sadece bu user ID'ler botu kullanabilir
 ```
+{: file=".env" }
+
+> `.env`{: .filepath} dosyasını mutlaka `.gitignore`{: .filepath} dosyasına ekleyin!
+{: .prompt-danger }
 
 ### Güvenlik Kontrolleri
 
 ```python
-# config.py
 import os
 from dotenv import load_dotenv
 
@@ -459,17 +476,21 @@ ALLOWED_USERS = set(map(int, os.getenv('ALLOWED_USER_IDS', '').split(',')))
 def is_authorized(user_id):
     """Kullanıcı yetkili mi?"""
     return user_id in ALLOWED_USERS
+```
+{: file="config.py" }
 
+```python
 # bot.py'da kullanım
 async def buy(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     
     if not is_authorized(user_id):
-        await update.message.reply_text("❌ Bu botu kullanma yetkiniz yok!")
+        await update.message.reply_text("Bu botu kullanma yetkiniz yok!")
         return
     
     # Trading logic...
 ```
+{: file="bot.py" }
 
 ### Rate Limiting
 
@@ -496,6 +517,9 @@ def rate_limit_check(user_id):
     return True
 ```
 
+> Rate limiting sayesinde botunuz spam saldırılarından ve aşırı API kullanımından korunur.
+{: .prompt-tip }
+
 ## 8. Loglama ve Hata Yönetimi
 
 ```python
@@ -519,7 +543,7 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if update and update.effective_message:
         await update.effective_message.reply_text(
-            "❌ Bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+            "Bir hata oluştu. Lütfen daha sonra tekrar deneyin."
         )
 
 # Main'e ekle
@@ -531,7 +555,6 @@ app.add_error_handler(error_handler)
 ### Systemd Service (Linux)
 
 ```ini
-# /etc/systemd/system/trading-bot.service
 [Unit]
 Description=Telegram Trading Bot
 After=network.target
@@ -547,6 +570,7 @@ RestartSec=10
 [Install]
 WantedBy=multi-user.target
 ```
+{: file="/etc/systemd/system/trading-bot.service" }
 
 ```bash
 # Servisi etkinleştir
@@ -557,11 +581,11 @@ sudo systemctl status trading-bot
 # Logları görüntüle
 journalctl -u trading-bot -f
 ```
+{: .nolineno }
 
 ### Docker ile Deployment
 
 ```dockerfile
-# Dockerfile
 FROM python:3.10-slim
 
 WORKDIR /app
@@ -573,12 +597,14 @@ COPY . .
 
 CMD ["python", "bot.py"]
 ```
+{: file="Dockerfile" }
 
 ```bash
 # Build ve çalıştır
 docker build -t trading-bot .
 docker run -d --name trading-bot --env-file .env trading-bot
 ```
+{: .nolineno }
 
 ## 10. Örnek Kullanım Senaryoları
 
@@ -596,19 +622,22 @@ async def auto_trade(context: ContextTypes.DEFAULT_TYPE):
         if result['success']:
             await context.bot.send_message(
                 chat_id=ADMIN_USER_ID,
-                text=f"✅ Otomatik ALIŞ yapıldı!\nRSI: {rsi:.2f}"
+                text=f"Otomatik ALIŞ yapıldı!\nRSI: {rsi:.2f}"
             )
     elif rsi > 70:  # Overbought - SAT
         result = trader.place_order(symbol, 'sell', 0.001)
         if result['success']:
             await context.bot.send_message(
                 chat_id=ADMIN_USER_ID,
-                text=f"✅ Otomatik SATIŞ yapıldı!\nRSI: {rsi:.2f}"
+                text=f"Otomatik SATIŞ yapıldı!\nRSI: {rsi:.2f}"
             )
 
 # Her 15 dakikada bir çalıştır
 job_queue.run_repeating(auto_trade, interval=900, first=10)
 ```
+
+> Otomatik trading kullanırken mutlaka stop-loss ve take-profit limitleri belirleyin!
+{: .prompt-warning }
 
 ### Senaryo 2: Portfolio Takibi
 
@@ -632,7 +661,7 @@ async def portfolio_update(context: ContextTypes.DEFAULT_TYPE):
             assets.append(f"{asset}: {data['total']:.4f} (${usdt_value:,.2f})")
     
     message = f"""
-📊 *Günlük Portfolio Raporu*
+*Günlük Portfolio Raporu*
 
 Toplam Değer: ${total_usdt:,.2f}
 
@@ -656,21 +685,19 @@ job_queue.run_daily(portfolio_update, time=datetime.strptime('09:00', '%H:%M').t
 
 Bu kapsamlı rehberde, sıfırdan başlayarak profesyonel bir Telegram trading botu geliştirmeyi öğrendik:
 
-✅ Telegram Bot API entegrasyonu  
-✅ CCXT ile exchange bağlantısı  
-✅ Fiyat alarm sistemi  
-✅ Teknik indikatör hesaplamaları  
-✅ Güvenlik ve yetkilendirme  
-✅ Hata yönetimi ve loglama  
-✅ Cloud deployment  
+- Telegram Bot API entegrasyonu  
+- CCXT ile exchange bağlantısı  
+- Fiyat alarm sistemi  
+- Teknik indikatör hesaplamaları  
+- Güvenlik ve yetkilendirme  
+- Hata yönetimi ve loglama  
+- Cloud deployment
 
-**Uyarı:** Trading botları finansal risk içerir. Canlı ortamda kullanmadan önce:
-- Test ortamında (Binance Testnet) deneyin
-- Küçük miktarlarla başlayın
-- Stop-loss mekanizmaları ekleyin
-- Risk yönetimi stratejileri uygulayın
+> Trading botları finansal risk içerir. Canlı ortamda kullanmadan önce test ortamında (Binance Testnet) deneyin ve küçük miktarlarla başlayın.
+{: .prompt-danger }
 
-**Kaynak Kodu:** [GitHub'da tam proje](https://github.com/example/telegram-trading-bot)
+> Mutlaka stop-loss mekanizmaları ekleyin ve risk yönetimi stratejileri uygulayın.
+{: .prompt-warning }
 
 ## İleri Seviye Özellikler
 
@@ -682,4 +709,5 @@ Botunuzu daha da geliştirmek için:
 - Veritabanı entegrasyonu (PostgreSQL)
 - Grafik oluşturma (matplotlib, plotly)
 
-Başarılı tradeler! 🚀📈
+> Başarılı trading stratejileri sürekli test ve iyileştirme gerektirir. Piyasa koşullarını takip edin ve botunuzu düzenli olarak güncelleyin.
+{: .prompt-tip }
