@@ -1,5 +1,6 @@
 ---
 title: "Smart Contract Testing with Hardhat and Ethers.js"
+description: "Comprehensive guide to smart contract testing with Hardhat and Ethers.js. Unit tests, integration testing, gas optimization, and best practices for secure Solidity development."
 date: "2024-08-19"
 categories:
   - "ethereum"
@@ -13,7 +14,7 @@ tags:
   - "web3"
   - "development"
 image:
-  src: "/assets/img/posts/smart-contract-testing-tools.png"
+  path: "/assets/img/posts/smart-contract-testing-tools.png"
   alt: "Smart Contract Testing Tools and Framework"
 ---
 
@@ -28,6 +29,9 @@ Smart contracts are immutable once deployed. Unlike traditional software where y
 - **Builds Confidence**: Deploy with certainty
 - **Saves Gas**: Optimize before mainnet deployment
 - **Enables Refactoring**: Change code safely
+
+> Smart contracts are immutable. A single bug can cost millions. Always test thoroughly before deployment!
+{: .prompt-danger }
 
 ## Setting Up Hardhat
 
