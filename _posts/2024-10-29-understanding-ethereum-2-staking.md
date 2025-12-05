@@ -54,7 +54,6 @@ The Ethereum PoS consensus operates through a sophisticated system of validators
 **1. Validator Registration**
 
 ```python
-# Validator deposit process
 class ValidatorDeposit:
     def __init__(self):
         self.deposit_amount = 32  # ETH
@@ -81,6 +80,7 @@ class ValidatorDeposit:
         
         return deposit_message
 ```
+{: file="validator_deposit.py" }
 
 **2. Epoch and Slot System**
 
@@ -125,6 +125,7 @@ print(f"Current Epoch: {BeaconChainTime.current_epoch()}")
 print(f"Current Slot: {BeaconChainTime.current_slot()}")
 print(f"Next slot in: {BeaconChainTime.next_slot_in()} seconds")
 ```
+{: file="beacon_time.py" }
 
 **3. Validator Duties**
 
@@ -150,6 +151,7 @@ def propose_block(validator, slot):
         
         return signed_block
 ```
+{: file="block_proposer.py" }
 
 **Attestation**: All validators attest to their view of the chain
 ```python
@@ -174,6 +176,7 @@ def create_attestation(validator, slot, committee_index):
     
     return attestation
 ```
+{: file="attestation.py" }
 
 **4. Finality and Checkpoints**
 
@@ -215,8 +218,9 @@ class FinalityTracker:
                     
                     self.checkpoints[epoch] = 'finalized'
                     self.finalized_epoch = epoch
-                    print(f"✅ Epoch {epoch} is now FINALIZED")
+                    print(f"Epoch {epoch} is now FINALIZED")
 ```
+{: file="finality_tracker.py" }
 
 ## Validator Requirements and Setup
 
@@ -302,6 +306,7 @@ sudo systemctl start geth
 # Check status
 sudo systemctl status geth
 ```
+{: file="setup-geth.sh" }
 
 **Step 2: Install Consensus Client (Lighthouse)**
 
@@ -346,6 +351,7 @@ sudo systemctl start lighthouse-beacon
 # Monitor sync progress
 sudo journalctl -u lighthouse-beacon -f
 ```
+{: file="setup-lighthouse-beacon.sh" }
 
 **Step 3: Generate Validator Keys**
 
@@ -368,6 +374,7 @@ cd staking_deposit-cli-*
 
 # Backup your mnemonic (24 words) SECURELY!
 ```
+{: file="generate-validator-keys.sh" }
 
 **Step 4: Import Keys and Start Validator**
 
