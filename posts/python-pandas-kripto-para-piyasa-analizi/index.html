@@ -1,0 +1,1507 @@
+<!doctype html><html lang="tr-TR" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover" ><meta name="generator" content="Jekyll v4.4.1" /><meta property="og:title" content="Python Pandas ile Kripto Para Piyasa Analizi" /><meta property="og:locale" content="tr_TR" /><meta name="description" content="Pandas ile kripto para piyasa analizi. Veri toplama, temizleme, teknik indikatörler, görselleştirme ve trading stratejisi geliştirme." /><meta property="og:description" content="Pandas ile kripto para piyasa analizi. Veri toplama, temizleme, teknik indikatörler, görselleştirme ve trading stratejisi geliştirme." /><link rel="canonical" href="https://blog.furkankoykiran.com.tr/posts/python-pandas-kripto-para-piyasa-analizi/" /><meta property="og:url" content="https://blog.furkankoykiran.com.tr/posts/python-pandas-kripto-para-piyasa-analizi/" /><meta property="og:site_name" content="Furkan Köykıran" /><meta property="og:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/pandas-crypto-analysis.png" /><meta property="og:image:alt" content="Pandas ile Kripto Para Veri Analizi" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2024-12-03T00:00:00+03:00" /><meta name="twitter:card" content="summary_large_image" /><meta property="twitter:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/pandas-crypto-analysis.png" /><meta name="twitter:image:alt" content="Pandas ile Kripto Para Veri Analizi" /><meta property="twitter:title" content="Python Pandas ile Kripto Para Piyasa Analizi" /><meta name="twitter:site" content="@furkankoykiran" /><meta name="google-site-verification" content="LEiVauGuhGdPxwWU7bq-uQaNYrEu9Aqhv8TM3SaoSsM" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-12-05T03:13:57+03:00","datePublished":"2024-12-03T00:00:00+03:00","description":"Pandas ile kripto para piyasa analizi. Veri toplama, temizleme, teknik indikatörler, görselleştirme ve trading stratejisi geliştirme.","headline":"Python Pandas ile Kripto Para Piyasa Analizi","image":{"alt":"Pandas ile Kripto Para Veri Analizi","url":"https://blog.furkankoykiran.com.tr/assets/img/posts/pandas-crypto-analysis.png","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.furkankoykiran.com.tr/posts/python-pandas-kripto-para-piyasa-analizi/"},"url":"https://blog.furkankoykiran.com.tr/posts/python-pandas-kripto-para-piyasa-analizi/"}</script><title>Python Pandas ile Kripto Para Piyasa Analizi | Furkan Köykıran</title><link rel="icon" type="image/png" href="/assets/img/favicons/favicon-96x96.png" sizes="96x96"><link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.36.4/dist/tocbot.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css"> <script src="/assets/js/dist/theme.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/glightbox@3.3.0/dist/js/glightbox.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.18/dayjs.min.js,npm/dayjs@1.11.18/locale/tr.js,npm/dayjs@1.11.18/plugin/relativeTime.js,npm/dayjs@1.11.18/plugin/localizedFormat.js,npm/tocbot@4.36.4/dist/tocbot.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script><body><aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end"><header class="profile-wrapper"> <a href="/" id="avatar" class="rounded-circle"><img src="https://blog.furkankoykiran.com.tr/assets/img/avatar.png" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a> <a class="site-title d-block" href="/">Furkan Köykıran</a><p class="site-subtitle fst-italic mb-0">Kişisel Websitesi</p></header><nav class="flex-column flex-grow-1 w-100 ps-0"><ul class="nav"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home"></i> <span>ANA SAYFA</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream"></i> <span>KATEGORILER</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tags"></i> <span>ETIKETLER</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive"></i> <span>ARŞIV</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle"></i> <span>HAKKINDA</span> </a><li class="nav-item"> <a href="/contact/" class="nav-link"> <i class="fa-fw far fa-address-book"></i> <span>İLETIŞIM</span> </a></ul></nav><div class="sidebar-bottom d-flex flex-wrap align-items-center w-100"> <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/furkankoykiran" aria-label="github" target="_blank" rel="noopener noreferrer" > <i class="fab fa-github"></i> </a> <a href="https://twitter.com/furkankoykiran" aria-label="twitter" target="_blank" rel="noopener noreferrer" > <i class="fa-brands fa-x-twitter"></i> </a> <a href="javascript:location.href = 'mailto:' + ['furkankoykiran','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></aside><div id="main-wrapper" class="d-flex justify-content-center"><div class="container d-flex flex-column px-xxl-5"><header id="topbar-wrapper" class="flex-shrink-0" aria-label="Top Bar"><div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100" ><nav id="breadcrumb" aria-label="Breadcrumb"> <span> <a href="/">Ana sayfa</a> </span> <span>Python Pandas ile Kripto Para Piyasa Analizi</span></nav><button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Sidebar"> <i class="fas fa-bars fa-fw"></i> </button><div id="topbar-title"> Gönderi</div><button type="button" id="search-trigger" class="btn btn-link" aria-label="Search"> <i class="fas fa-search fa-fw"></i> </button> <search id="search" class="align-items-center ms-3 ms-lg-0"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Ara......" > </search> <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">İptal</button></div></header><div class="row flex-grow-1"><main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4"><article class="px-1" data-toc="true"><header><h1 data-toc-skip>Python Pandas ile Kripto Para Piyasa Analizi</h1><p class="post-desc fw-light mb-4">Pandas ile kripto para piyasa analizi. Veri toplama, temizleme, teknik indikatörler, görselleştirme ve trading stratejisi geliştirme.</p><div class="post-meta text-muted"> <span> Gönderim <time data-ts="1733173200" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 03/12/2024 </time> </span> <span> Güncelleme <time data-ts="1764893637" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 05/12/2025 </time> </span><div class="mt-3 mb-3"> <a href="/assets/img/posts/pandas-crypto-analysis.png" class="popup img-link preview-img shimmer"><img src="/assets/img/posts/pandas-crypto-analysis.png" alt="Pandas ile Kripto Para Veri Analizi" width="1200" height="630" loading="lazy"></a><figcaption class="text-center pt-2 pb-2">Pandas ile Kripto Para Veri Analizi</figcaption></div><div class="d-flex justify-content-between"> <span> Yazan <em> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a> </em> </span><div> <span class="readtime" data-bs-toggle="tooltip" data-bs-placement="bottom" title="3033 sözcük" > <em>16 dakikada</em> okunabilir</span></div></div></div></header><div id="toc-bar" class="d-flex align-items-center justify-content-between invisible"> <span class="label text-truncate">Python Pandas ile Kripto Para Piyasa Analizi</span> <button type="button" class="toc-trigger btn me-1"> <i class="fa-solid fa-list-ul fa-fw"></i> </button></div><button id="toc-solo-trigger" type="button" class="toc-trigger btn btn-outline-secondary btn-sm"> <span class="label ps-2 pe-1">İçindekiler</span> <i class="fa-solid fa-angle-right fa-fw"></i> </button> <dialog id="toc-popup" class="p-0"><div class="header d-flex flex-row align-items-center justify-content-between"><div class="label text-truncate py-2 ms-4">Python Pandas ile Kripto Para Piyasa Analizi</div><button id="toc-popup-close" type="button" class="btn mx-1 my-1 opacity-75"> <i class="fas fa-close"></i> </button></div><div id="toc-popup-content" class="px-4 py-3 pb-4"></div></dialog><div class="content"><p>Kripto para piyasalarında başarılı olmak için veri analizi vazgeçilmezdir. Bu kapsamlı rehberde, Python’un güçlü veri analiz kütüphanesi Pandas kullanarak kripto para verilerini nasıl toplayacağınızı, temizleyeceğinizi, analiz edeceğinizi ve görselleştireceğinizi öğreneceksiniz.</p><h2 id="pandasa-giriş"><span class="me-2">Pandas’a Giriş</span><a href="#pandasa-giriş" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Pandas, Python’da veri manipülasyonu ve analizi için en popüler kütüphanedir. Kripto piyasa verileri gibi zaman serisi verileriyle çalışmak için idealdir.</p><h3 id="kurulum"><span class="me-2">Kurulum</span><a href="#kurulum" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="c"># Gerekli kütüphaneleri yükleyin</span>
+pip <span class="nb">install </span>pandas numpy matplotlib seaborn
+pip <span class="nb">install </span>yfinance ccxt ta-lib requests
+pip <span class="nb">install </span>plotly jupyter
+
+<span class="c"># TA-Lib için sistem bağımlılıkları (Linux)</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>build-essential
+pip <span class="nb">install </span>TA-Lib
+</pre></table></code></div></div><h3 id="temel-veri-yapıları"><span class="me-2">Temel Veri Yapıları</span><a href="#temel-veri-yapıları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="pandas_basics.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="pandas_basics.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="c1"># Series - Tek boyutlu veri
+</span><span class="n">prices</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="mi">45000</span><span class="p">,</span> <span class="mi">46000</span><span class="p">,</span> <span class="mi">45500</span><span class="p">,</span> <span class="mi">47000</span><span class="p">],</span> 
+                   <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">2024-01-01</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2024-01-02</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2024-01-03</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2024-01-04</span><span class="sh">'</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
+
+<span class="c1"># DataFrame - İki boyutlu veri
+</span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">2024-01-01</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2024-01-02</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2024-01-03</span><span class="sh">'</span><span class="p">],</span>
+    <span class="sh">'</span><span class="s">open</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">45000</span><span class="p">,</span> <span class="mi">46000</span><span class="p">,</span> <span class="mi">45500</span><span class="p">],</span>
+    <span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">46500</span><span class="p">,</span> <span class="mi">47000</span><span class="p">,</span> <span class="mi">46800</span><span class="p">],</span>
+    <span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">44800</span><span class="p">,</span> <span class="mi">45500</span><span class="p">,</span> <span class="mi">45000</span><span class="p">],</span>
+    <span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">46000</span><span class="p">,</span> <span class="mi">45500</span><span class="p">,</span> <span class="mi">46200</span><span class="p">],</span>
+    <span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1000000</span><span class="p">,</span> <span class="mi">1200000</span><span class="p">,</span> <span class="mi">950000</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></table></code></div></div><h2 id="kripto-veri-kaynakları"><span class="me-2">Kripto Veri Kaynakları</span><a href="#kripto-veri-kaynakları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="1-binance-api-ile-veri-çekme"><span class="me-2">1. Binance API ile Veri Çekme</span><a href="#1-binance-api-ile-veri-çekme" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="fetch_binance_data.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="fetch_binance_data.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">ccxt</span>
+<span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">def</span> <span class="nf">fetch_binance_data</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="sh">'</span><span class="s">BTC/USDT</span><span class="sh">'</span><span class="p">,</span> <span class="n">timeframe</span><span class="o">=</span><span class="sh">'</span><span class="s">1h</span><span class="sh">'</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Binance</span><span class="sh">'</span><span class="s">den OHLCV verisi çeker
+    </span><span class="sh">"""</span>
+    <span class="n">exchange</span> <span class="o">=</span> <span class="n">ccxt</span><span class="p">.</span><span class="nf">binance</span><span class="p">({</span>
+        <span class="sh">'</span><span class="s">enableRateLimit</span><span class="sh">'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">options</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span><span class="sh">'</span><span class="s">defaultType</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">future</span><span class="sh">'</span><span class="p">}</span>
+    <span class="p">})</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># OHLCV verisi çek
+</span>        <span class="n">ohlcv</span> <span class="o">=</span> <span class="n">exchange</span><span class="p">.</span><span class="nf">fetch_ohlcv</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">timeframe</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+        
+        <span class="c1"># DataFrame'e dönüştür
+</span>        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">ohlcv</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">open</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">])</span>
+        
+        <span class="c1"># Timestamp'i datetime'a çevir
+</span>        <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="sh">'</span><span class="s">ms</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">.</span><span class="nf">set_index</span><span class="p">(</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        
+        <span class="c1"># Veri tiplerini düzelt
+</span>        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="sh">'</span><span class="s">open</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">]:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="sh">'</span><span class="s">coerce</span><span class="sh">'</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">df</span>
+        
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Hata: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+<span class="c1"># Kullanım
+</span><span class="n">btc_data</span> <span class="o">=</span> <span class="nf">fetch_binance_data</span><span class="p">(</span><span class="sh">'</span><span class="s">BTC/USDT</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">1h</span><span class="sh">'</span><span class="p">,</span> <span class="mi">720</span><span class="p">)</span>  <span class="c1"># Son 30 gün
+</span><span class="nf">print</span><span class="p">(</span><span class="n">btc_data</span><span class="p">.</span><span class="nf">head</span><span class="p">())</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">Veri şekli: </span><span class="si">{</span><span class="n">btc_data</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Eksik veri: </span><span class="si">{</span><span class="n">btc_data</span><span class="p">.</span><span class="nf">isnull</span><span class="p">().</span><span class="nf">sum</span><span class="p">().</span><span class="nf">sum</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="2-coingecko-api-ile-veri"><span class="me-2">2. CoinGecko API ile Veri</span><a href="#2-coingecko-api-ile-veri" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="fetch_coingecko_data.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="fetch_coingecko_data.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+<span class="k">def</span> <span class="nf">fetch_coingecko_data</span><span class="p">(</span><span class="n">coin_id</span><span class="o">=</span><span class="sh">'</span><span class="s">bitcoin</span><span class="sh">'</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">vs_currency</span><span class="o">=</span><span class="sh">'</span><span class="s">usd</span><span class="sh">'</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    CoinGecko</span><span class="sh">'</span><span class="s">dan fiyat verisi çeker
+    </span><span class="sh">"""</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">https://api.coingecko.com/api/v3/coins/</span><span class="si">{</span><span class="n">coin_id</span><span class="si">}</span><span class="s">/market_chart</span><span class="sh">"</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">vs_currency</span><span class="sh">'</span><span class="p">:</span> <span class="n">vs_currency</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">days</span><span class="sh">'</span><span class="p">:</span> <span class="n">days</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">interval</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">daily</span><span class="sh">'</span>
+    <span class="p">}</span>
+    
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="nf">json</span><span class="p">()</span>
+    
+    <span class="c1"># Fiyat verilerini DataFrame'e dönüştür
+</span>    <span class="n">prices</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">prices</span><span class="sh">'</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">])</span>
+    <span class="n">volumes</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">total_volumes</span><span class="sh">'</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">])</span>
+    <span class="n">market_caps</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">market_caps</span><span class="sh">'</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">market_cap</span><span class="sh">'</span><span class="p">])</span>
+    
+    <span class="c1"># Birleştir
+</span>    <span class="n">df</span> <span class="o">=</span> <span class="n">prices</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="n">volumes</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">).</span><span class="nf">merge</span><span class="p">(</span><span class="n">market_caps</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="sh">'</span><span class="s">ms</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">.</span><span class="nf">set_index</span><span class="p">(</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># Kullanım
+</span><span class="n">btc_market</span> <span class="o">=</span> <span class="nf">fetch_coingecko_data</span><span class="p">(</span><span class="sh">'</span><span class="s">bitcoin</span><span class="sh">'</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="n">eth_market</span> <span class="o">=</span> <span class="nf">fetch_coingecko_data</span><span class="p">(</span><span class="sh">'</span><span class="s">ethereum</span><span class="sh">'</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Bitcoin Market Data:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">btc_market</span><span class="p">.</span><span class="nf">tail</span><span class="p">())</span>
+</pre></table></code></div></div><h3 id="3-çoklu-exchange-karşılaştırma"><span class="me-2">3. Çoklu Exchange Karşılaştırma</span><a href="#3-çoklu-exchange-karşılaştırma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="multi_exchange_comparison.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="multi_exchange_comparison.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">fetch_multi_exchange_data</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="sh">'</span><span class="s">BTC/USDT</span><span class="sh">'</span><span class="p">,</span> <span class="n">timeframe</span><span class="o">=</span><span class="sh">'</span><span class="s">1h</span><span class="sh">'</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Birden fazla exchange</span><span class="sh">'</span><span class="s">den veri çeker ve karşılaştırır
+    </span><span class="sh">"""</span>
+    <span class="n">exchanges</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">binance</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">kraken</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">coinbase</span><span class="sh">'</span><span class="p">]</span>
+    <span class="n">dfs</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">for</span> <span class="n">exchange_name</span> <span class="ow">in</span> <span class="n">exchanges</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">exchange</span> <span class="o">=</span> <span class="nf">getattr</span><span class="p">(</span><span class="n">ccxt</span><span class="p">,</span> <span class="n">exchange_name</span><span class="p">)()</span>
+            <span class="n">ohlcv</span> <span class="o">=</span> <span class="n">exchange</span><span class="p">.</span><span class="nf">fetch_ohlcv</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">timeframe</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">ohlcv</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">open</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">])</span>
+            <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="sh">'</span><span class="s">ms</span><span class="sh">'</span><span class="p">)</span>
+            <span class="n">df</span><span class="p">.</span><span class="nf">set_index</span><span class="p">(</span><span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">dfs</span><span class="p">[</span><span class="n">exchange_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">exchange_name</span><span class="si">}</span><span class="s"> hatası: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">dfs</span>
+
+<span class="c1"># Karşılaştırma
+</span><span class="n">exchange_data</span> <span class="o">=</span> <span class="nf">fetch_multi_exchange_data</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">exchange</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">exchange_data</span><span class="p">.</span><span class="nf">items</span><span class="p">():</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="si">{</span><span class="n">exchange</span><span class="p">.</span><span class="nf">upper</span><span class="p">()</span><span class="si">}</span><span class="s"> - Son fiyat: $</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h2 id="veri-temizleme-ve-hazırlama"><span class="me-2">Veri Temizleme ve Hazırlama</span><a href="#veri-temizleme-ve-hazırlama" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="eksik-veri-yönetimi"><span class="me-2">Eksik Veri Yönetimi</span><a href="#eksik-veri-yönetimi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="clean_crypto_data.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="clean_crypto_data.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">clean_crypto_data</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Kripto veri setini temizler
+    </span><span class="sh">"""</span>
+    <span class="c1"># Kopyasını oluştur
+</span>    <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+    
+    <span class="c1"># Eksik verileri kontrol et
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Eksik veriler:</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">df_clean</span><span class="p">.</span><span class="nf">isnull</span><span class="p">().</span><span class="nf">sum</span><span class="p">())</span>
+    
+    <span class="c1"># Eksik verileri forward fill ile doldur
+</span>    <span class="n">df_clean</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="sh">'</span><span class="s">ffill</span><span class="sh">'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="c1"># Hala eksik varsa backward fill
+</span>    <span class="n">df_clean</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="sh">'</span><span class="s">bfill</span><span class="sh">'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="c1"># Aykırı değerleri tespit et (IQR yöntemi)
+</span>    <span class="n">Q1</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">Q3</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+    
+    <span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">IQR</span>
+    <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">IQR</span>
+    
+    <span class="c1"># Aykırı değerleri işaretle
+</span>    <span class="n">outliers</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">Aykırı değer sayısı: </span><span class="si">{</span><span class="n">outliers</span><span class="p">.</span><span class="nf">sum</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="c1"># Aykırı değerleri median ile değiştir
+</span>    <span class="n">df_clean</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">outliers</span><span class="p">,</span> <span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">median</span><span class="p">()</span>
+    
+    <span class="c1"># Duplike satırları kaldır
+</span>    <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="o">~</span><span class="n">df_clean</span><span class="p">.</span><span class="n">index</span><span class="p">.</span><span class="nf">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="sh">'</span><span class="s">first</span><span class="sh">'</span><span class="p">)]</span>
+    
+    <span class="k">return</span> <span class="n">df_clean</span>
+
+<span class="c1"># Kullanım
+</span><span class="n">btc_clean</span> <span class="o">=</span> <span class="nf">clean_crypto_data</span><span class="p">(</span><span class="n">btc_data</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">Temizlenmiş veri şekli: </span><span class="si">{</span><span class="n">btc_clean</span><span class="p">.</span><span class="n">shape</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="veri-resampling"><span class="me-2">Veri Resampling</span><a href="#veri-resampling" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">resample_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="sh">'</span><span class="s">1D</span><span class="sh">'</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Veriyi farklı zaman dilimlerine resamples eder
+    </span><span class="sh">"""</span>
+    <span class="n">resampled</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">resample</span><span class="p">(</span><span class="n">freq</span><span class="p">).</span><span class="nf">agg</span><span class="p">({</span>
+        <span class="sh">'</span><span class="s">open</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">first</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">max</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">min</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">last</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">sum</span><span class="sh">'</span>
+    <span class="p">})</span>
+    
+    <span class="k">return</span> <span class="n">resampled</span><span class="p">.</span><span class="nf">dropna</span><span class="p">()</span>
+
+<span class="c1"># Saatlik veriyi günlüğe çevir
+</span><span class="n">btc_daily</span> <span class="o">=</span> <span class="nf">resample_data</span><span class="p">(</span><span class="n">btc_clean</span><span class="p">,</span> <span class="sh">'</span><span class="s">1D</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Günlük veri:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">btc_daily</span><span class="p">.</span><span class="nf">head</span><span class="p">())</span>
+
+<span class="c1"># Haftalık veri
+</span><span class="n">btc_weekly</span> <span class="o">=</span> <span class="nf">resample_data</span><span class="p">(</span><span class="n">btc_clean</span><span class="p">,</span> <span class="sh">'</span><span class="s">1W</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">Haftalık veri:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">btc_weekly</span><span class="p">.</span><span class="nf">head</span><span class="p">())</span>
+</pre></table></code></div></div><h2 id="temel-i̇statistiksel-analiz"><span class="me-2">Temel İstatistiksel Analiz</span><a href="#temel-i̇statistiksel-analiz" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="tanımlayıcı-i̇statistikler"><span class="me-2">Tanımlayıcı İstatistikler</span><a href="#tanımlayıcı-i̇statistikler" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">descriptive_statistics</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Temel istatistikleri hesaplar
+    </span><span class="sh">"""</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">Ortalama Fiyat</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">mean</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">Medyan Fiyat</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">median</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">Standart Sapma</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">std</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">Minimum</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">min</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">Maksimum</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">max</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">Değişim Katsayısı</span><span class="sh">'</span><span class="p">:</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">std</span><span class="p">()</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">mean</span><span class="p">())</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Çarpıklık</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">skew</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">Basıklık</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">kurtosis</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">pd</span><span class="p">.</span><span class="nc">Series</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+
+<span class="c1"># Analiz
+</span><span class="n">btc_stats</span> <span class="o">=</span> <span class="nf">descriptive_statistics</span><span class="p">(</span><span class="n">btc_daily</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Bitcoin İstatistikleri:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">btc_stats</span><span class="p">)</span>
+
+<span class="c1"># Getiri hesaplama
+</span><span class="n">btc_daily</span><span class="p">[</span><span class="sh">'</span><span class="s">returns</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">btc_daily</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">pct_change</span><span class="p">()</span>
+<span class="n">btc_daily</span><span class="p">[</span><span class="sh">'</span><span class="s">log_returns</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="n">btc_daily</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="n">btc_daily</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">Ortalama Günlük Getiri: </span><span class="si">{</span><span class="n">btc_daily</span><span class="p">[</span><span class="sh">'</span><span class="s">returns</span><span class="sh">'</span><span class="p">].</span><span class="nf">mean</span><span class="p">()</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="o">%</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Volatilite (std): </span><span class="si">{</span><span class="n">btc_daily</span><span class="p">[</span><span class="sh">'</span><span class="s">returns</span><span class="sh">'</span><span class="p">].</span><span class="nf">std</span><span class="p">()</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="o">%</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Sharpe Ratio (annualized): </span><span class="si">{</span><span class="p">(</span><span class="n">btc_daily</span><span class="p">[</span><span class="sh">'</span><span class="s">returns</span><span class="sh">'</span><span class="p">].</span><span class="nf">mean</span><span class="p">()</span> <span class="o">/</span> <span class="n">btc_daily</span><span class="p">[</span><span class="sh">'</span><span class="s">returns</span><span class="sh">'</span><span class="p">].</span><span class="nf">std</span><span class="p">())</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">365</span><span class="p">)</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="korelasyon-analizi"><span class="me-2">Korelasyon Analizi</span><a href="#korelasyon-analizi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">correlation_analysis</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">90</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Farklı kripto paralar arası korelasyon analizi
+    </span><span class="sh">"""</span>
+    <span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="nf">fetch_coingecko_data</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">days</span><span class="p">)</span>
+        <span class="n">dfs</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">].</span><span class="nf">rename</span><span class="p">(</span><span class="n">symbol</span><span class="p">))</span>
+    
+    <span class="c1"># Tüm verileri birleştir
+</span>    <span class="n">combined</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Getiri hesapla
+</span>    <span class="n">returns</span> <span class="o">=</span> <span class="n">combined</span><span class="p">.</span><span class="nf">pct_change</span><span class="p">().</span><span class="nf">dropna</span><span class="p">()</span>
+    
+    <span class="c1"># Korelasyon matrisi
+</span>    <span class="n">correlation</span> <span class="o">=</span> <span class="n">returns</span><span class="p">.</span><span class="nf">corr</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">correlation</span><span class="p">,</span> <span class="n">returns</span>
+
+<span class="c1"># Analiz
+</span><span class="n">crypto_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">bitcoin</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">ethereum</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">binancecoin</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">cardano</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">solana</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">corr_matrix</span><span class="p">,</span> <span class="n">returns</span> <span class="o">=</span> <span class="nf">correlation_analysis</span><span class="p">(</span><span class="n">crypto_symbols</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Korelasyon Matrisi:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">)</span>
+
+<span class="c1"># Görselleştirme
+</span><span class="kn">import</span> <span class="n">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="p">.</span><span class="nf">heatmap</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="sh">'</span><span class="s">coolwarm</span><span class="sh">'</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+            <span class="n">square</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="sh">'</span><span class="s">.2f</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">'</span><span class="s">Kripto Para Korelasyon Matrisi</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">savefig</span><span class="p">(</span><span class="sh">'</span><span class="s">crypto_correlation.png</span><span class="sh">'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="sh">'</span><span class="s">tight</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</pre></table></code></div></div><h2 id="teknik-analiz-i̇ndikatörleri"><span class="me-2">Teknik Analiz İndikatörleri</span><a href="#teknik-analiz-i̇ndikatörleri" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="hareketli-ortalamalar"><span class="me-2">Hareketli Ortalamalar</span><a href="#hareketli-ortalamalar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">calculate_moving_averages</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Çeşitli hareketli ortalamalar hesaplar
+    </span><span class="sh">"""</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+    
+    <span class="c1"># Basit Hareketli Ortalama (SMA)
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_20</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">20</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_50</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">50</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_200</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">200</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    
+    <span class="c1"># Üssel Hareketli Ortalama (EMA)
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">EMA_12</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">ewm</span><span class="p">(</span><span class="n">span</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">EMA_26</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">ewm</span><span class="p">(</span><span class="n">span</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    
+    <span class="c1"># MACD
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">MACD</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">EMA_12</span><span class="sh">'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">EMA_26</span><span class="sh">'</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">MACD_Signal</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">MACD</span><span class="sh">'</span><span class="p">].</span><span class="nf">ewm</span><span class="p">(</span><span class="n">span</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">MACD_Histogram</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">MACD</span><span class="sh">'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">MACD_Signal</span><span class="sh">'</span><span class="p">]</span>
+    
+    <span class="c1"># Golden Cross / Death Cross sinyalleri
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Golden_Cross</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_50</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_200</span><span class="sh">'</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_50</span><span class="sh">'</span><span class="p">].</span><span class="nf">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_200</span><span class="sh">'</span><span class="p">].</span><span class="nf">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Death_Cross</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_50</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_200</span><span class="sh">'</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_50</span><span class="sh">'</span><span class="p">].</span><span class="nf">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_200</span><span class="sh">'</span><span class="p">].</span><span class="nf">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># Hesaplama
+</span><span class="n">btc_with_ma</span> <span class="o">=</span> <span class="nf">calculate_moving_averages</span><span class="p">(</span><span class="n">btc_daily</span><span class="p">)</span>
+
+<span class="c1"># Golden/Death Cross'ları bul
+</span><span class="n">golden_crosses</span> <span class="o">=</span> <span class="n">btc_with_ma</span><span class="p">[</span><span class="n">btc_with_ma</span><span class="p">[</span><span class="sh">'</span><span class="s">Golden_Cross</span><span class="sh">'</span><span class="p">]].</span><span class="n">index</span>
+<span class="n">death_crosses</span> <span class="o">=</span> <span class="n">btc_with_ma</span><span class="p">[</span><span class="n">btc_with_ma</span><span class="p">[</span><span class="sh">'</span><span class="s">Death_Cross</span><span class="sh">'</span><span class="p">]].</span><span class="n">index</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Golden Cross sayısı: </span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">golden_crosses</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Death Cross sayısı: </span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">death_crosses</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">golden_crosses</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">Son Golden Cross: </span><span class="si">{</span><span class="n">golden_crosses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">death_crosses</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Son Death Cross: </span><span class="si">{</span><span class="n">death_crosses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="rsi-relative-strength-index"><span class="me-2">RSI (Relative Strength Index)</span><a href="#rsi-relative-strength-index" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">calculate_rsi</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">14</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    RSI indikatörünü hesaplar
+    </span><span class="sh">"""</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+    
+    <span class="c1"># Fiyat değişimlerini hesapla
+</span>    <span class="n">delta</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">diff</span><span class="p">()</span>
+    
+    <span class="c1"># Kazanç ve kayıpları ayır
+</span>    <span class="n">gain</span> <span class="o">=</span> <span class="n">delta</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="n">delta</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">delta</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="n">delta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="c1"># Ortalama kazanç ve kayıp
+</span>    <span class="n">avg_gain</span> <span class="o">=</span> <span class="n">gain</span><span class="p">.</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">period</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">loss</span><span class="p">.</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">period</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    
+    <span class="c1"># RS ve RSI
+</span>    <span class="n">rs</span> <span class="o">=</span> <span class="n">avg_gain</span> <span class="o">/</span> <span class="n">avg_loss</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">RSI</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">-</span> <span class="p">(</span><span class="mi">100</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">rs</span><span class="p">))</span>
+    
+    <span class="c1"># Aşırı alım/satım bölgeleri
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">RSI_Overbought</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">RSI</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">70</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">RSI_Oversold</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">RSI</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">30</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># Hesaplama
+</span><span class="n">btc_with_rsi</span> <span class="o">=</span> <span class="nf">calculate_rsi</span><span class="p">(</span><span class="n">btc_with_ma</span><span class="p">)</span>
+
+<span class="c1"># Aşırı alım/satım anlarını bul
+</span><span class="n">overbought</span> <span class="o">=</span> <span class="n">btc_with_rsi</span><span class="p">[</span><span class="n">btc_with_rsi</span><span class="p">[</span><span class="sh">'</span><span class="s">RSI_Overbought</span><span class="sh">'</span><span class="p">]]</span>
+<span class="n">oversold</span> <span class="o">=</span> <span class="n">btc_with_rsi</span><span class="p">[</span><span class="n">btc_with_rsi</span><span class="p">[</span><span class="sh">'</span><span class="s">RSI_Oversold</span><span class="sh">'</span><span class="p">]]</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Aşırı alım durumu sayısı: </span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">overbought</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Aşırı satım durumu sayısı: </span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">oversold</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Son değerler
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">Güncel RSI: </span><span class="si">{</span><span class="n">btc_with_rsi</span><span class="p">[</span><span class="sh">'</span><span class="s">RSI</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="bollinger-bands"><span class="me-2">Bollinger Bands</span><a href="#bollinger-bands" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">calculate_bollinger_bands</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">std_dev</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Bollinger Bantlarını hesaplar
+    </span><span class="sh">"""</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+    
+    <span class="c1"># Orta bant (SMA)
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Middle</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">period</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    
+    <span class="c1"># Standart sapma
+</span>    <span class="n">rolling_std</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">period</span><span class="p">).</span><span class="nf">std</span><span class="p">()</span>
+    
+    <span class="c1"># Üst ve alt bantlar
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Upper</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Middle</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">rolling_std</span> <span class="o">*</span> <span class="n">std_dev</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Lower</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Middle</span><span class="sh">'</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">rolling_std</span> <span class="o">*</span> <span class="n">std_dev</span><span class="p">)</span>
+    
+    <span class="c1"># Bant genişliği
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Width</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Upper</span><span class="sh">'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Lower</span><span class="sh">'</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Width_Pct</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Width</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Middle</span><span class="sh">'</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
+    
+    <span class="c1"># Fiyatın bantlara göre pozisyonu
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Lower</span><span class="sh">'</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Upper</span><span class="sh">'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Lower</span><span class="sh">'</span><span class="p">])</span>
+    
+    <span class="c1"># Sinyaller
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Squeeze</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Width_Pct</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Width_Pct</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="mi">100</span><span class="p">).</span><span class="nf">quantile</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Upper_Touch</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Upper</span><span class="sh">'</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Lower_Touch</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Lower</span><span class="sh">'</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># Hesaplama
+</span><span class="n">btc_with_bb</span> <span class="o">=</span> <span class="nf">calculate_bollinger_bands</span><span class="p">(</span><span class="n">btc_with_rsi</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Bollinger Bands Özeti:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Güncel Pozisyon: </span><span class="si">{</span><span class="n">btc_with_bb</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Position</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="o">%</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Bant Genişliği: </span><span class="si">{</span><span class="n">btc_with_bb</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Width_Pct</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Squeeze durumu: </span><span class="si">{</span><span class="n">btc_with_bb</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Squeeze</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="volume-analysis"><span class="me-2">Volume Analysis</span><a href="#volume-analysis" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">analyze_volume</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Volume analizi yapar
+    </span><span class="sh">"""</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+    
+    <span class="c1"># Volume hareketli ortalamaları
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Volume_MA_20</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">20</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Volume_Ratio</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Volume_MA_20</span><span class="sh">'</span><span class="p">]</span>
+    
+    <span class="c1"># Volume trend
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Volume_Trend</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">10</span><span class="p">).</span><span class="nf">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># On-Balance Volume (OBV)
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">OBV</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">sign</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">diff</span><span class="p">())</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">]).</span><span class="nf">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nf">cumsum</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">OBV_MA</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">OBV</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">20</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    
+    <span class="c1"># Volume spike detection
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Volume_Spike</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Volume_Ratio</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">2.0</span>
+    
+    <span class="c1"># Price-Volume correlation
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">PV_Correlation</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">20</span><span class="p">).</span><span class="nf">corr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># Analiz
+</span><span class="n">btc_with_volume</span> <span class="o">=</span> <span class="nf">analyze_volume</span><span class="p">(</span><span class="n">btc_with_bb</span><span class="p">)</span>
+
+<span class="c1"># Volume spike'ları bul
+</span><span class="n">volume_spikes</span> <span class="o">=</span> <span class="n">btc_with_volume</span><span class="p">[</span><span class="n">btc_with_volume</span><span class="p">[</span><span class="sh">'</span><span class="s">Volume_Spike</span><span class="sh">'</span><span class="p">]]</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Volume spike sayısı: </span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">volume_spikes</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">volume_spikes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">Son 5 Volume Spike:</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">volume_spikes</span><span class="p">[[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Volume_Ratio</span><span class="sh">'</span><span class="p">]].</span><span class="nf">tail</span><span class="p">())</span>
+</pre></table></code></div></div><h2 id="gelişmiş-analiz-teknikleri"><span class="me-2">Gelişmiş Analiz Teknikleri</span><a href="#gelişmiş-analiz-teknikleri" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="volatilite-analizi"><span class="me-2">Volatilite Analizi</span><a href="#volatilite-analizi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">volatility_analysis</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">windows</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">]):</span>
+    <span class="sh">"""</span><span class="s">
+    Farklı zaman dilimlerinde volatilite analizi
+    </span><span class="sh">"""</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+    
+    <span class="c1"># Getiri hesapla (eğer yoksa)
+</span>    <span class="k">if</span> <span class="sh">'</span><span class="s">returns</span><span class="sh">'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">returns</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">pct_change</span><span class="p">()</span>
+    
+    <span class="c1"># Farklı periyotlarda volatilite
+</span>    <span class="k">for</span> <span class="n">window</span> <span class="ow">in</span> <span class="n">windows</span><span class="p">:</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">'</span><span class="s">Volatility_</span><span class="si">{</span><span class="n">window</span><span class="si">}</span><span class="s">d</span><span class="sh">'</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">returns</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">).</span><span class="nf">std</span><span class="p">()</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">365</span><span class="p">)</span>
+    
+    <span class="c1"># Parkinson volatilitesi (high-low range kullanarak)
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Parkinson_Vol</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span>
+        <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span> <span class="o">*</span> 
+        <span class="n">np</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="p">).</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">30</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">365</span><span class="p">)</span>
+    
+    <span class="c1"># Garman-Klass volatilitesi
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">GK_Vol</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span>
+        <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span>
+        <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">open</span><span class="sh">'</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="p">).</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="mi">30</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="mi">365</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># Analiz
+</span><span class="n">btc_with_vol</span> <span class="o">=</span> <span class="nf">volatility_analysis</span><span class="p">(</span><span class="n">btc_with_volume</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Volatilite Özeti:</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="sh">'</span><span class="s">Volatility_7d</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Volatility_30d</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Volatility_60d</span><span class="sh">'</span><span class="p">]:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">btc_with_vol</span><span class="p">[</span><span class="n">col</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="o">%</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="trend-tespiti"><span class="me-2">Trend Tespiti</span><a href="#trend-tespiti" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">detect_trends</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Trend yönünü ve gücünü tespit eder
+    </span><span class="sh">"""</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+    
+    <span class="c1"># Lineer regresyon eğimi
+</span>    <span class="k">def</span> <span class="nf">calculate_slope</span><span class="p">(</span><span class="n">series</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">series</span><span class="p">))</span>
+        <span class="n">slope</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">series</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">slope</span>
+    
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend_Slope</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">).</span><span class="nf">apply</span><span class="p">(</span><span class="n">calculate_slope</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    
+    <span class="c1"># Trend gücü (R-squared)
+</span>    <span class="k">def</span> <span class="nf">calculate_r_squared</span><span class="p">(</span><span class="n">series</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">arange</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">series</span><span class="p">))</span>
+        <span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">series</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">intercept</span>
+        <span class="n">ss_res</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">((</span><span class="n">series</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">ss_tot</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">((</span><span class="n">series</span> <span class="o">-</span> <span class="n">series</span><span class="p">.</span><span class="nf">mean</span><span class="p">())</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">ss_res</span> <span class="o">/</span> <span class="n">ss_tot</span><span class="p">)</span> <span class="k">if</span> <span class="n">ss_tot</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend_Strength</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">).</span><span class="nf">apply</span><span class="p">(</span><span class="n">calculate_r_squared</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    
+    <span class="c1"># Trend sınıflandırması
+</span>    <span class="k">def</span> <span class="nf">classify_trend</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pd</span><span class="p">.</span><span class="nf">isna</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend_Slope</span><span class="sh">'</span><span class="p">])</span> <span class="ow">or</span> <span class="n">pd</span><span class="p">.</span><span class="nf">isna</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend_Strength</span><span class="sh">'</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="sh">'</span><span class="s">Unknown</span><span class="sh">'</span>
+        
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend_Strength</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sh">'</span><span class="s">Sideways</span><span class="sh">'</span>
+        <span class="k">elif</span> <span class="n">row</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend_Slope</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sh">'</span><span class="s">Uptrend</span><span class="sh">'</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend_Strength</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.7</span> <span class="k">else</span> <span class="sh">'</span><span class="s">Weak Uptrend</span><span class="sh">'</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sh">'</span><span class="s">Downtrend</span><span class="sh">'</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend_Strength</span><span class="sh">'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.7</span> <span class="k">else</span> <span class="sh">'</span><span class="s">Weak Downtrend</span><span class="sh">'</span>
+    
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="n">classify_trend</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="c1"># Analiz
+</span><span class="n">btc_with_trend</span> <span class="o">=</span> <span class="nf">detect_trends</span><span class="p">(</span><span class="n">btc_with_vol</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Güncel Trend: </span><span class="si">{</span><span class="n">btc_with_trend</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Trend Gücü: </span><span class="si">{</span><span class="n">btc_with_trend</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend_Strength</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="o">%</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Trend Eğimi: </span><span class="si">{</span><span class="n">btc_with_trend</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend_Slope</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Trend dağılımı
+</span><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">Trend Dağılımı:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">btc_with_trend</span><span class="p">[</span><span class="sh">'</span><span class="s">Trend</span><span class="sh">'</span><span class="p">].</span><span class="nf">value_counts</span><span class="p">())</span>
+</pre></table></code></div></div><h3 id="support-ve-resistance-seviyeleri"><span class="me-2">Support ve Resistance Seviyeleri</span><a href="#support-ve-resistance-seviyeleri" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">find_support_resistance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">num_levels</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Destek ve direnç seviyelerini bulur
+    </span><span class="sh">"""</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+    
+    <span class="c1"># Local maxima ve minima
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Local_Max</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="nf">max</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Local_Min</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="nf">min</span><span class="p">()</span>
+    
+    <span class="c1"># Direnç seviyeleri
+</span>    <span class="n">resistance_levels</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Local_Max</span><span class="sh">'</span><span class="p">]][</span><span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">].</span><span class="nf">nlargest</span><span class="p">(</span><span class="n">num_levels</span><span class="p">).</span><span class="n">values</span>
+    
+    <span class="c1"># Destek seviyeleri
+</span>    <span class="n">support_levels</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Local_Min</span><span class="sh">'</span><span class="p">]][</span><span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">].</span><span class="nf">nsmallest</span><span class="p">(</span><span class="n">num_levels</span><span class="p">).</span><span class="n">values</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">resistance</span><span class="sh">'</span><span class="p">:</span> <span class="nf">sorted</span><span class="p">(</span><span class="n">resistance_levels</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+        <span class="sh">'</span><span class="s">support</span><span class="sh">'</span><span class="p">:</span> <span class="nf">sorted</span><span class="p">(</span><span class="n">support_levels</span><span class="p">),</span>
+        <span class="sh">'</span><span class="s">current_price</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">}</span>
+
+<span class="c1"># Seviyeleri bul
+</span><span class="n">levels</span> <span class="o">=</span> <span class="nf">find_support_resistance</span><span class="p">(</span><span class="n">btc_with_trend</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">num_levels</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Direnç Seviyeleri:</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">level</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">levels</span><span class="p">[</span><span class="sh">'</span><span class="s">resistance</span><span class="sh">'</span><span class="p">],</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="p">((</span><span class="n">level</span> <span class="o">/</span> <span class="n">levels</span><span class="p">[</span><span class="sh">'</span><span class="s">current_price</span><span class="sh">'</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">R</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s">: $</span><span class="si">{</span><span class="n">level</span><span class="si">:</span><span class="p">,.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> (</span><span class="si">{</span><span class="n">distance</span><span class="si">:</span><span class="o">+</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%)</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">Destek Seviyeleri:</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">level</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">levels</span><span class="p">[</span><span class="sh">'</span><span class="s">support</span><span class="sh">'</span><span class="p">],</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="p">((</span><span class="n">level</span> <span class="o">/</span> <span class="n">levels</span><span class="p">[</span><span class="sh">'</span><span class="s">current_price</span><span class="sh">'</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">S</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s">: $</span><span class="si">{</span><span class="n">level</span><span class="si">:</span><span class="p">,.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> (</span><span class="si">{</span><span class="n">distance</span><span class="si">:</span><span class="o">+</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%)</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">Güncel Fiyat: $</span><span class="si">{</span><span class="n">levels</span><span class="p">[</span><span class="sh">'</span><span class="s">current_price</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">,.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h2 id="veri-görselleştirme"><span class="me-2">Veri Görselleştirme</span><a href="#veri-görselleştirme" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="fiyat-ve-volume-grafiği"><span class="me-2">Fiyat ve Volume Grafiği</span><a href="#fiyat-ve-volume-grafiği" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="n">matplotlib.dates</span> <span class="k">as</span> <span class="n">mdates</span>
+
+<span class="k">def</span> <span class="nf">plot_price_volume</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sh">"</span><span class="s">Bitcoin Fiyat ve Volume</span><span class="sh">"</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Fiyat ve volume grafiği çizer
+    </span><span class="sh">"""</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> 
+                                     <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="sh">'</span><span class="s">height_ratios</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]})</span>
+    
+    <span class="c1"># Fiyat grafiği
+</span>    <span class="n">ax1</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">Close</span><span class="sh">'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">#1f77b4</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="sh">'</span><span class="s">SMA_20</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">ax1</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_20</span><span class="sh">'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">SMA 20</span><span class="sh">'</span><span class="p">,</span> 
+                <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">orange</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="k">if</span> <span class="sh">'</span><span class="s">SMA_50</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">ax1</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_50</span><span class="sh">'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">SMA 50</span><span class="sh">'</span><span class="p">,</span> 
+                <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    
+    <span class="n">ax1</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="sh">'</span><span class="s">bold</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">Fiyat (USD)</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">upper left</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="c1"># Volume grafiği
+</span>    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">green</span><span class="sh">'</span> <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">open</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> 
+              <span class="k">else</span> <span class="sh">'</span><span class="s">red</span><span class="sh">'</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">df</span><span class="p">))]</span>
+    <span class="n">ax2</span><span class="p">.</span><span class="nf">bar</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">volume</span><span class="sh">'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="sh">'</span><span class="s">Volume_MA_20</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">ax2</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Volume_MA_20</span><span class="sh">'</span><span class="p">],</span> 
+                <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">blue</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">Volume MA 20</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">upper left</span><span class="sh">'</span><span class="p">)</span>
+    
+    <span class="n">ax2</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">Volume</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="p">.</span><span class="nf">set_xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">Tarih</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="c1"># Tarih formatı
+</span>    <span class="n">ax1</span><span class="p">.</span><span class="n">xaxis</span><span class="p">.</span><span class="nf">set_major_formatter</span><span class="p">(</span><span class="n">mdates</span><span class="p">.</span><span class="nc">DateFormatter</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y-%m-%d</span><span class="sh">'</span><span class="p">))</span>
+    <span class="n">ax2</span><span class="p">.</span><span class="n">xaxis</span><span class="p">.</span><span class="nf">set_major_formatter</span><span class="p">(</span><span class="n">mdates</span><span class="p">.</span><span class="nc">DateFormatter</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y-%m-%d</span><span class="sh">'</span><span class="p">))</span>
+    
+    <span class="n">plt</span><span class="p">.</span><span class="nf">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">savefig</span><span class="p">(</span><span class="sh">'</span><span class="s">price_volume.png</span><span class="sh">'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="sh">'</span><span class="s">tight</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+
+<span class="c1"># Görselleştir
+</span><span class="nf">plot_price_volume</span><span class="p">(</span><span class="n">btc_with_trend</span><span class="p">.</span><span class="nf">tail</span><span class="p">(</span><span class="mi">90</span><span class="p">))</span>
+</pre></table></code></div></div><h3 id="teknik-i̇ndikatör-grafiği"><span class="me-2">Teknik İndikatör Grafiği</span><a href="#teknik-i̇ndikatör-grafiği" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">plot_technical_indicators</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sh">"</span><span class="s">Teknik İndikatörler</span><span class="sh">"</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    RSI, MACD ve Bollinger Bands grafiği
+    </span><span class="sh">"""</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> 
+                                          <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="sh">'</span><span class="s">height_ratios</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]})</span>
+    
+    <span class="c1"># Fiyat ve Bollinger Bands
+</span>    <span class="n">ax1</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">Close</span><span class="sh">'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">blue</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="sh">'</span><span class="s">BB_Upper</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">ax1</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Upper</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">r--</span><span class="sh">'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">BB Upper</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Middle</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">g--</span><span class="sh">'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">BB Middle</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Lower</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">r--</span><span class="sh">'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">BB Lower</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="p">.</span><span class="nf">fill_between</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Lower</span><span class="sh">'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">BB_Upper</span><span class="sh">'</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    
+    <span class="n">ax1</span><span class="p">.</span><span class="nf">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="sh">'</span><span class="s">bold</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">Fiyat (USD)</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">upper left</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="c1"># RSI
+</span>    <span class="k">if</span> <span class="sh">'</span><span class="s">RSI</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">ax2</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">RSI</span><span class="sh">'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">RSI</span><span class="sh">'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">purple</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="p">.</span><span class="nf">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">--</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">Overbought</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="p">.</span><span class="nf">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">g</span><span class="sh">'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">--</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">Oversold</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="p">.</span><span class="nf">fill_between</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">RSI</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="p">.</span><span class="nf">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">upper left</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="c1"># MACD
+</span>    <span class="k">if</span> <span class="sh">'</span><span class="s">MACD</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">ax3</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">MACD</span><span class="sh">'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">MACD</span><span class="sh">'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">blue</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">MACD_Signal</span><span class="sh">'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">Signal</span><span class="sh">'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="p">.</span><span class="nf">bar</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">MACD_Histogram</span><span class="sh">'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sh">'</span><span class="s">Histogram</span><span class="sh">'</span><span class="p">,</span> 
+               <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">gray</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="p">.</span><span class="nf">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">black</span><span class="sh">'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="sh">'</span><span class="s">-</span><span class="sh">'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="p">.</span><span class="nf">set_ylabel</span><span class="p">(</span><span class="sh">'</span><span class="s">MACD</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="p">.</span><span class="nf">set_xlabel</span><span class="p">(</span><span class="sh">'</span><span class="s">Tarih</span><span class="sh">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="sh">'</span><span class="s">upper left</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">ax3</span><span class="p">.</span><span class="nf">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="p">.</span><span class="nf">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">savefig</span><span class="p">(</span><span class="sh">'</span><span class="s">technical_indicators.png</span><span class="sh">'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="sh">'</span><span class="s">tight</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+
+<span class="c1"># Görselleştir
+</span><span class="nf">plot_technical_indicators</span><span class="p">(</span><span class="n">btc_with_trend</span><span class="p">.</span><span class="nf">tail</span><span class="p">(</span><span class="mi">90</span><span class="p">))</span>
+</pre></table></code></div></div><h3 id="candlestick-chart"><span class="me-2">Candlestick Chart</span><a href="#candlestick-chart" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">plotly.graph_objects</span> <span class="k">as</span> <span class="n">go</span>
+
+<span class="k">def</span> <span class="nf">plot_candlestick</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sh">"</span><span class="s">Bitcoin Candlestick Chart</span><span class="sh">"</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    İnteraktif candlestick grafiği oluşturur
+    </span><span class="sh">"""</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="p">.</span><span class="nc">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">go</span><span class="p">.</span><span class="nc">Candlestick</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span>
+        <span class="nb">open</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">open</span><span class="sh">'</span><span class="p">],</span>
+        <span class="n">high</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">],</span>
+        <span class="n">low</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">low</span><span class="sh">'</span><span class="p">],</span>
+        <span class="n">close</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">],</span>
+        <span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">OHLC</span><span class="sh">'</span>
+    <span class="p">)])</span>
+    
+    <span class="c1"># Hareketli ortalamaları ekle
+</span>    <span class="k">if</span> <span class="sh">'</span><span class="s">SMA_20</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">.</span><span class="nf">add_trace</span><span class="p">(</span><span class="n">go</span><span class="p">.</span><span class="nc">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_20</span><span class="sh">'</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="sh">'</span><span class="s">lines</span><span class="sh">'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">SMA 20</span><span class="sh">'</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nf">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">orange</span><span class="sh">'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">))</span>
+    
+    <span class="k">if</span> <span class="sh">'</span><span class="s">SMA_50</span><span class="sh">'</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">.</span><span class="nf">add_trace</span><span class="p">(</span><span class="n">go</span><span class="p">.</span><span class="nc">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">SMA_50</span><span class="sh">'</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="sh">'</span><span class="s">lines</span><span class="sh">'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">SMA 50</span><span class="sh">'</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nf">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">))</span>
+    
+    <span class="c1"># Layout
+</span>    <span class="n">fig</span><span class="p">.</span><span class="nf">update_layout</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+        <span class="n">yaxis_title</span><span class="o">=</span><span class="sh">'</span><span class="s">Fiyat (USD)</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">xaxis_title</span><span class="o">=</span><span class="sh">'</span><span class="s">Tarih</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">template</span><span class="o">=</span><span class="sh">'</span><span class="s">plotly_dark</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+        <span class="n">xaxis_rangeslider_visible</span><span class="o">=</span><span class="bp">False</span>
+    <span class="p">)</span>
+    
+    <span class="n">fig</span><span class="p">.</span><span class="nf">write_html</span><span class="p">(</span><span class="sh">'</span><span class="s">candlestick.html</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+
+<span class="c1"># Görselleştir
+</span><span class="nf">plot_candlestick</span><span class="p">(</span><span class="n">btc_with_trend</span><span class="p">.</span><span class="nf">tail</span><span class="p">(</span><span class="mi">90</span><span class="p">))</span>
+</pre></table></code></div></div><h2 id="performans-metrikleri"><span class="me-2">Performans Metrikleri</span><a href="#performans-metrikleri" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="backtest-fonksiyonları"><span class="me-2">Backtest Fonksiyonları</span><a href="#backtest-fonksiyonları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">simple_ma_strategy_backtest</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">short_window</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">long_window</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">initial_capital</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Basit hareketli ortalama stratejisi backtest
+    </span><span class="sh">"""</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">copy</span><span class="p">()</span>
+    
+    <span class="c1"># Sinyaller
+</span>    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Short_MA</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">short_window</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Long_MA</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="nf">rolling</span><span class="p">(</span><span class="n">window</span><span class="o">=</span><span class="n">long_window</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+    
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Signal</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Signal</span><span class="sh">'</span><span class="p">][</span><span class="n">short_window</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Short_MA</span><span class="sh">'</span><span class="p">][</span><span class="n">short_window</span><span class="p">:]</span> <span class="o">&gt;</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Long_MA</span><span class="sh">'</span><span class="p">][</span><span class="n">short_window</span><span class="p">:],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Position</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Signal</span><span class="sh">'</span><span class="p">].</span><span class="nf">diff</span><span class="p">()</span>
+    
+    <span class="c1"># Alım satım simülasyonu
+</span>    <span class="n">capital</span> <span class="o">=</span> <span class="n">initial_capital</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">trades</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">df</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Position</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Al sinyali
+</span>            <span class="n">position</span> <span class="o">=</span> <span class="n">capital</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">trades</span><span class="p">.</span><span class="nf">append</span><span class="p">({</span>
+                <span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="sh">'</span><span class="s">type</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">BUY</span><span class="sh">'</span><span class="p">,</span>
+                <span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="sh">'</span><span class="s">amount</span><span class="sh">'</span><span class="p">:</span> <span class="n">position</span><span class="p">,</span>
+                <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="n">capital</span>
+            <span class="p">})</span>
+            
+        <span class="k">elif</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">Position</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">position</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># Sat sinyali
+</span>            <span class="n">capital</span> <span class="o">=</span> <span class="n">position</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">trades</span><span class="p">.</span><span class="nf">append</span><span class="p">({</span>
+                <span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="sh">'</span><span class="s">type</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">SELL</span><span class="sh">'</span><span class="p">,</span>
+                <span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="sh">'</span><span class="s">amount</span><span class="sh">'</span><span class="p">:</span> <span class="n">position</span><span class="p">,</span>
+                <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="n">capital</span>
+            <span class="p">})</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1"># Son pozisyonu kapat
+</span>    <span class="k">if</span> <span class="n">position</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">capital</span> <span class="o">=</span> <span class="n">position</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="c1"># Performans metrikleri
+</span>    <span class="n">total_return</span> <span class="o">=</span> <span class="p">(</span><span class="n">capital</span> <span class="o">-</span> <span class="n">initial_capital</span><span class="p">)</span> <span class="o">/</span> <span class="n">initial_capital</span>
+    <span class="n">trades_df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">trades</span><span class="p">)</span>
+    
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">Initial Capital</span><span class="sh">'</span><span class="p">:</span> <span class="n">initial_capital</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Final Capital</span><span class="sh">'</span><span class="p">:</span> <span class="n">capital</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Total Return</span><span class="sh">'</span><span class="p">:</span> <span class="n">total_return</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Total Return %</span><span class="sh">'</span><span class="p">:</span> <span class="n">total_return</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Number of Trades</span><span class="sh">'</span><span class="p">:</span> <span class="nf">len</span><span class="p">(</span><span class="n">trades</span><span class="p">),</span>
+        <span class="sh">'</span><span class="s">Buy and Hold Return</span><span class="sh">'</span><span class="p">:</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">close</span><span class="sh">'</span><span class="p">].</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">trades_df</span>
+
+<span class="c1"># Backtest
+</span><span class="n">results</span><span class="p">,</span> <span class="n">trades</span> <span class="o">=</span> <span class="nf">simple_ma_strategy_backtest</span><span class="p">(</span><span class="n">btc_daily</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Backtest Sonuçları:</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">results</span><span class="p">.</span><span class="nf">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="s">İşlemler:</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">trades</span><span class="p">)</span>
+</pre></table></code></div></div><h2 id="sonuç"><span class="me-2">Sonuç</span><a href="#sonuç" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Pandas ile kripto para analizi yapmak, güçlü veri manipülasyon yetenekleri sayesinde oldukça etkilidir. Bu rehberde öğrendikleriniz:</p><ul><li><strong>Veri Toplama</strong>: Çeşitli API’lerden veri çekme<li><strong>Veri Temizleme</strong>: Eksik veri ve aykırı değer yönetimi<li><strong>İstatistiksel Analiz</strong>: Tanımlayıcı istatistikler ve korelasyon<li><strong>Teknik Analiz</strong>: RSI, MACD, Bollinger Bands, hareketli ortalamalar<li><strong>Görselleştirme</strong>: Matplotlib ve Plotly ile profesyonel grafikler<li><strong>Backtest</strong>: Strateji performans ölçümü</ul><h2 id="en-i̇yi-uygulamalar"><span class="me-2">En İyi Uygulamalar</span><a href="#en-i̇yi-uygulamalar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><ol><li><strong>Veri Kalitesi</strong>: Her zaman veriyi temizleyin ve doğrulayın<li><strong>Birden Fazla Kaynak</strong>: Tek bir API’ye bağımlı kalmayın<li><strong>Hata Yönetimi</strong>: API çağrılarında try-except kullanın<li><strong>Performans</strong>: Büyük veri setlerinde vectorize işlemler kullanın<li><strong>Dokümantasyon</strong>: Kodunuzu ve analizinizi belgeleyin<li><strong>Versiyon Kontrolü</strong>: Git ile değişiklikleri takip edin</ol><h2 id="kaynaklar"><span class="me-2">Kaynaklar</span><a href="#kaynaklar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><ul><li><a href="https://pandas.pydata.org/docs/">Pandas Documentation</a><li><a href="https://docs.ccxt.com/">CCXT Documentation</a><li><a href="https://ta-lib.org/">TA-Lib Documentation</a><li><a href="https://plotly.com/python/">Plotly Documentation</a></ul><p>Başarılı analizler! 📊</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw me-1"></i> <a href="/categories/python/">python</a>, <a href="/categories/veri-analizi/">veri-analizi</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw me-1"></i> <a href="/tags/pandas/" class="post-tag no-text-decoration" >pandas</a> <a href="/tags/kripto/" class="post-tag no-text-decoration" >kripto</a> <a href="/tags/analiz/" class="post-tag no-text-decoration" >analiz</a> <a href="/tags/trading/" class="post-tag no-text-decoration" >trading</a> <a href="/tags/veri-bilimi/" class="post-tag no-text-decoration" >veri-bilimi</a> <a href="/tags/matplotlib/" class="post-tag no-text-decoration" >matplotlib</a> <a href="/tags/teknik-analiz/" class="post-tag no-text-decoration" >teknik-analiz</a></div><div class=" post-tail-bottom d-flex justify-content-between align-items-center mt-5 pb-2 " ><div class="license-wrapper"> Bu gönderi <a href="https://creativecommons.org/licenses/by/4.0/deed.tr"> CC BY 4.0 </a> lisansı altındadır.</div><div class="share-wrapper d-flex align-items-center"> <span class="share-label text-muted">Paylaş</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Python%20Pandas%20ile%20Kripto%20Para%20Piyasa%20Analizi%20-%20Furkan%20K%C3%B6yk%C4%B1ran&url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fpython-pandas-kripto-para-piyasa-analizi%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter"> <i class="fa-fw fa-brands fa-square-x-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Python%20Pandas%20ile%20Kripto%20Para%20Piyasa%20Analizi%20-%20Furkan%20K%C3%B6yk%C4%B1ran&u=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fpython-pandas-kripto-para-piyasa-analizi%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fpython-pandas-kripto-para-piyasa-analizi%2F&text=Python%20Pandas%20ile%20Kripto%20Para%20Piyasa%20Analizi%20-%20Furkan%20K%C3%B6yk%C4%B1ran" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <button id="copy-link" aria-label="Copy link" class="btn small" data-bs-toggle="tooltip" data-bs-placement="top" title="Linki kopyala" data-title-succeed="Link kopyalandı." > <i class="fa-fw fas fa-link pe-none fs-6"></i> </button> </span></div></div></div></article></main><aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted"><div class="access"><section id="access-lastmod"><h2 class="panel-heading">Son Güncellenenler</h2><ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2"><li class="text-truncate lh-lg"> <a href="/posts/apache-kafka-event-streaming/">Apache Kafka ile Event Streaming: Gerçek Zamanlı Veri Pipeline'ları</a><li class="text-truncate lh-lg"> <a href="/posts/git-is-akisi-branch-stratejileri/">Git İş Akışı ve Branch Stratejileri: GitFlow, Trunk-Based, GitHub Flow</a><li class="text-truncate lh-lg"> <a href="/posts/python-context-managers-kaynak-yonetimi/">Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</a><li class="text-truncate lh-lg"> <a href="/posts/modern-web-arayuzu-css-javascript/">Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</a><li class="text-truncate lh-lg"> <a href="/posts/python-ile-eposta-otomasyonu/">Python ile E-posta Otomasyonu</a></ul></section><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div class="toc-border-cover z-3"></div><section id="toc-wrapper" class="invisible position-sticky ps-0 pe-4 pb-4"><h2 class="panel-heading ps-3 pb-2 mb-0">İçindekiler</h2><nav id="toc"></nav></section></aside></div><div class="row"><div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4"><aside id="related-posts" aria-labelledby="related-label"><h3 class="mb-4" id="related-label">Benzer Gönderiler</h3><nav class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4"><article class="col"> <a href="/posts/python-binance-api-entegrasyonu/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1707472800" data-df="DD/MM/YYYY" > 09/02/2024 </time><h4 class="pt-0 my-2">Python ile Binance API Entegrasyonu</h4><div class="text-muted"><p>Python ile Binance API kullanarak otomatik trading botları geliştirme rehberi. REST API, WebSocket entegrasyonu, order yönetimi ve risk stratejileri.</p></div></div></a></article><article class="col"> <a href="/posts/python-telegram-trading-bot/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1721595600" data-df="DD/MM/YYYY" > 22/07/2024 </time><h4 class="pt-0 my-2">Python ile Telegram Trading Botu Geliştirme</h4><div class="text-muted"><p>Python ve Telegram Bot API kullanarak 7/24 çalışan otomatik trading botu geliştirme rehberi. CCXT entegrasyonu, teknik indikatörler, alarm sistemi ve deployment.</p></div></div></a></article><article class="col"> <a href="/posts/django-kripto-portfolio-takip-uygulamasi/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1731652200" data-df="DD/MM/YYYY" > 15/11/2024 </time><h4 class="pt-0 my-2">Django ile Kripto Portfolio Takip Uygulaması Geliştirme</h4><div class="text-muted"><p>Django ile tam özellikli kripto portfolio takip uygulaması. REST API, Celery ile asenkron işlemler, Redis cache ve gerçek zamanlı fiyat takibi.</p></div></div></a></article></nav></aside><nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation"> <a href="/posts/pyrogram-telegram-bot-gelistirme/" class="btn btn-outline-primary" aria-label="Geri" ><p>Pyrogram ile Telegram Bot Geliştirme: MTProto API Kullanımı</p></a> <a href="/posts/docker-compose-mikroservis-mimarisi/" class="btn btn-outline-primary" aria-label="İleri" ><p>Docker ve Docker Compose ile Mikroservis Mimarisi Geliştirme</p></a></nav><footer aria-label="Site Info" class=" d-flex flex-column justify-content-center text-muted flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3 " ><p>© <time>2025</time> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a>. <span data-bs-toggle="tooltip" data-bs-placement="top" title="Aksi belirtilmediği sürece, bu sitedeki gönderiler Creative Commons Atıf 4.0 Uluslararası (CC BY 4.0) Lisansı altındadır. Kısaca sayfa linkini vererek değiştirebilir / paylaşabilirsiniz." >Bazı hakları saklıdır.</span></p><p><a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> ve <a data-bs-toggle="tooltip" data-bs-placement="top" title="v7.4.1" href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener" >Chirpy</a> teması</p></footer></div></div><div id="search-result-wrapper" class="d-flex justify-content-center d-none"><div class="col-11 content"><div id="search-hints"><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><aside aria-label="Scroll to Top"> <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow"> <i class="fas fa-angle-up"></i> </button></aside></div><div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div><script> document.addEventListener('DOMContentLoaded', () => { SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<article class="px-1 px-sm-2 px-lg-4 px-xl-0"><header><h2><a href="{url}">{title}</a></h2><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div></header><p>{content}</p></article>', noResultsText: '<p class="mt-5">Hop! Öyle bir şey bulamadım.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); }); </script>

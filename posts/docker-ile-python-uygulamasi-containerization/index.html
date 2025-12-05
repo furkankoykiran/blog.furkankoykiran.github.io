@@ -1,0 +1,2888 @@
+<!doctype html><html lang="tr-TR" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover" ><meta name="generator" content="Jekyll v4.4.1" /><meta property="og:title" content="Docker ile Python Uygulaması Containerization" /><meta property="og:locale" content="tr_TR" /><meta name="description" content="Docker ile Python uygulaması containerization rehberi. Multi-stage builds, Docker Compose, Kubernetes deployment ve production best practices." /><meta property="og:description" content="Docker ile Python uygulaması containerization rehberi. Multi-stage builds, Docker Compose, Kubernetes deployment ve production best practices." /><link rel="canonical" href="https://blog.furkankoykiran.com.tr/posts/docker-ile-python-uygulamasi-containerization/" /><meta property="og:url" content="https://blog.furkankoykiran.com.tr/posts/docker-ile-python-uygulamasi-containerization/" /><meta property="og:site_name" content="Furkan Köykıran" /><meta property="og:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/docker-python-containerization-architecture.png" /><meta property="og:image:alt" content="Docker ile Python Uygulaması Containerization Mimarisi" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2024-10-14T09:30:00+03:00" /><meta name="twitter:card" content="summary_large_image" /><meta property="twitter:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/docker-python-containerization-architecture.png" /><meta name="twitter:image:alt" content="Docker ile Python Uygulaması Containerization Mimarisi" /><meta property="twitter:title" content="Docker ile Python Uygulaması Containerization" /><meta name="twitter:site" content="@furkankoykiran" /><meta name="google-site-verification" content="LEiVauGuhGdPxwWU7bq-uQaNYrEu9Aqhv8TM3SaoSsM" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-12-05T03:02:48+03:00","datePublished":"2024-10-14T09:30:00+03:00","description":"Docker ile Python uygulaması containerization rehberi. Multi-stage builds, Docker Compose, Kubernetes deployment ve production best practices.","headline":"Docker ile Python Uygulaması Containerization","image":{"alt":"Docker ile Python Uygulaması Containerization Mimarisi","url":"https://blog.furkankoykiran.com.tr/assets/img/posts/docker-python-containerization-architecture.png","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.furkankoykiran.com.tr/posts/docker-ile-python-uygulamasi-containerization/"},"url":"https://blog.furkankoykiran.com.tr/posts/docker-ile-python-uygulamasi-containerization/"}</script><title>Docker ile Python Uygulaması Containerization | Furkan Köykıran</title><link rel="icon" type="image/png" href="/assets/img/favicons/favicon-96x96.png" sizes="96x96"><link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.36.4/dist/tocbot.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css"> <script src="/assets/js/dist/theme.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/glightbox@3.3.0/dist/js/glightbox.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.18/dayjs.min.js,npm/dayjs@1.11.18/locale/tr.js,npm/dayjs@1.11.18/plugin/relativeTime.js,npm/dayjs@1.11.18/plugin/localizedFormat.js,npm/tocbot@4.36.4/dist/tocbot.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script><body><aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end"><header class="profile-wrapper"> <a href="/" id="avatar" class="rounded-circle"><img src="https://blog.furkankoykiran.com.tr/assets/img/avatar.png" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a> <a class="site-title d-block" href="/">Furkan Köykıran</a><p class="site-subtitle fst-italic mb-0">Kişisel Websitesi</p></header><nav class="flex-column flex-grow-1 w-100 ps-0"><ul class="nav"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home"></i> <span>ANA SAYFA</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream"></i> <span>KATEGORILER</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tags"></i> <span>ETIKETLER</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive"></i> <span>ARŞIV</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle"></i> <span>HAKKINDA</span> </a><li class="nav-item"> <a href="/contact/" class="nav-link"> <i class="fa-fw far fa-address-book"></i> <span>İLETIŞIM</span> </a></ul></nav><div class="sidebar-bottom d-flex flex-wrap align-items-center w-100"> <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/furkankoykiran" aria-label="github" target="_blank" rel="noopener noreferrer" > <i class="fab fa-github"></i> </a> <a href="https://twitter.com/furkankoykiran" aria-label="twitter" target="_blank" rel="noopener noreferrer" > <i class="fa-brands fa-x-twitter"></i> </a> <a href="javascript:location.href = 'mailto:' + ['furkankoykiran','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></aside><div id="main-wrapper" class="d-flex justify-content-center"><div class="container d-flex flex-column px-xxl-5"><header id="topbar-wrapper" class="flex-shrink-0" aria-label="Top Bar"><div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100" ><nav id="breadcrumb" aria-label="Breadcrumb"> <span> <a href="/">Ana sayfa</a> </span> <span>Docker ile Python Uygulaması Containerization</span></nav><button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Sidebar"> <i class="fas fa-bars fa-fw"></i> </button><div id="topbar-title"> Gönderi</div><button type="button" id="search-trigger" class="btn btn-link" aria-label="Search"> <i class="fas fa-search fa-fw"></i> </button> <search id="search" class="align-items-center ms-3 ms-lg-0"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Ara......" > </search> <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">İptal</button></div></header><div class="row flex-grow-1"><main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4"><article class="px-1" data-toc="true"><header><h1 data-toc-skip>Docker ile Python Uygulaması Containerization</h1><p class="post-desc fw-light mb-4">Docker ile Python uygulaması containerization rehberi. Multi-stage builds, Docker Compose, Kubernetes deployment ve production best practices.</p><div class="post-meta text-muted"> <span> Gönderim <time data-ts="1728887400" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 14/10/2024 </time> </span> <span> Güncelleme <time data-ts="1764892968" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 05/12/2025 </time> </span><div class="mt-3 mb-3"> <a href="/assets/img/posts/docker-python-containerization-architecture.png" class="popup img-link preview-img shimmer"><img src="/assets/img/posts/docker-python-containerization-architecture.png" alt="Docker ile Python Uygulaması Containerization Mimarisi" width="1200" height="630" loading="lazy"></a><figcaption class="text-center pt-2 pb-2">Docker ile Python Uygulaması Containerization Mimarisi</figcaption></div><div class="d-flex justify-content-between"> <span> Yazan <em> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a> </em> </span><div> <span class="readtime" data-bs-toggle="tooltip" data-bs-placement="bottom" title="5902 sözcük" > <em>32 dakikada</em> okunabilir</span></div></div></div></header><div id="toc-bar" class="d-flex align-items-center justify-content-between invisible"> <span class="label text-truncate">Docker ile Python Uygulaması Containerization</span> <button type="button" class="toc-trigger btn me-1"> <i class="fa-solid fa-list-ul fa-fw"></i> </button></div><button id="toc-solo-trigger" type="button" class="toc-trigger btn btn-outline-secondary btn-sm"> <span class="label ps-2 pe-1">İçindekiler</span> <i class="fa-solid fa-angle-right fa-fw"></i> </button> <dialog id="toc-popup" class="p-0"><div class="header d-flex flex-row align-items-center justify-content-between"><div class="label text-truncate py-2 ms-4">Docker ile Python Uygulaması Containerization</div><button id="toc-popup-close" type="button" class="btn mx-1 my-1 opacity-75"> <i class="fas fa-close"></i> </button></div><div id="toc-popup-content" class="px-4 py-3 pb-4"></div></dialog><div class="content"><h2 id="giriş"><span class="me-2">Giriş</span><a href="#giriş" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Modern yazılım geliştirme dünyasında <strong>containerization</strong> (konteynerleştirme), uygulamaları geliştirme, test etme ve production ortamlarında çalıştırma şeklimizi kökten değiştirdi. Docker, bu devrimin öncüsü olarak, “works on my machine” (benim makinemde çalışıyor) sorununu tarihe gömdü ve uygulamaların her ortamda tutarlı bir şekilde çalışmasını sağladı.</p><p>Python, veri bilimi, web geliştirme, otomasyon ve API geliştirme gibi birçok alanda kullanılan popüler bir programlama dilidir. Ancak Python uygulamalarının deployment sürecinde sıklıkla karşılaşılan bazı zorluklar vardır:</p><ul><li><strong>Bağımlılık Yönetimi</strong>: Farklı projelerin farklı kütüphane versiyonlarına ihtiyaç duyması<li><strong>Ortam Tutarsızlıkları</strong>: Development, staging ve production ortamları arasındaki farklar<li><strong>Sistem Bağımlılıkları</strong>: C extension’lar ve sistem seviyesi kütüphaneler<li><strong>Ölçeklenebilirlik</strong>: Uygulamanın yatay ve dikey olarak kolayca ölçeklenmesi<li><strong>İzolasyon</strong>: Farklı projelerin birbirini etkilememesi</ul><p>Docker, bu sorunların tümüne elegant bir çözüm sunar. Bu kapsamlı rehberde, Python uygulamalarınızı Docker ile containerize etmeyi, multi-stage build teknikleriyle optimize etmeyi, docker-compose ile mikroservis mimarisi oluşturmayı ve production-ready deployment stratejilerini öğreneceksiniz.</p><h3 id="bu-yazıda-neler-öğreneceksiniz"><span class="me-2">Bu Yazıda Neler Öğreneceksiniz?</span><a href="#bu-yazıda-neler-öğreneceksiniz" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ul><li>Docker temel kavramları ve Python için önemi<li>Dockerfile oluşturma ve best practices<li>Multi-stage builds ile image boyutunu küçültme<li>Docker Compose ile çoklu servis yönetimi<li>Environment variables ve secrets yönetimi<li>Production deployment stratejileri<li>Logging, monitoring ve debugging teknikleri<li>Performance optimization ve güvenlik</ul><h2 id="docker-nedir-ve-neden-önemlidir"><span class="me-2">Docker Nedir ve Neden Önemlidir?</span><a href="#docker-nedir-ve-neden-önemlidir" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p><strong>Docker</strong>, uygulamaları izole edilmiş ortamlarda (container) çalıştırmak için kullanılan açık kaynaklı bir containerization platformudur. Virtual machine’lerden farklı olarak, Docker container’lar host işletim sisteminin kernel’ını paylaşır, bu da onları son derece hafif ve hızlı başlatılabilir yapar.</p><h3 id="dockerın-temel-bileşenleri"><span class="me-2">Docker’ın Temel Bileşenleri</span><a href="#dockerın-temel-bileşenleri" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ol><li><strong>Docker Engine</strong>: Container’ları çalıştıran runtime<li><strong>Docker Image</strong>: Uygulamanın ve bağımlılıklarının snapshot’ı<li><strong>Docker Container</strong>: Image’in çalışan instance’ı<li><strong>Dockerfile</strong>: Image oluşturmak için kullanılan instruction set<li><strong>Docker Hub/Registry</strong>: Image’ların saklandığı repository</ol><h3 id="python-için-dockerın-avantajları"><span class="me-2">Python için Docker’ın Avantajları</span><a href="#python-için-dockerın-avantajları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="c1"># Geleneksel deployment sorunları
+</span><span class="sh">"""</span><span class="s">
+Developer: </span><span class="sh">"</span><span class="s">Python 3.11 ile çalışıyor</span><span class="sh">"</span><span class="s">
+Server: </span><span class="sh">"</span><span class="s">Bizde Python 3.8 var</span><span class="sh">"</span><span class="s">
+Developer: </span><span class="sh">"</span><span class="s">Bu library</span><span class="sh">'</span><span class="s">nin bu versiyonu gerekli</span><span class="sh">"</span><span class="s">
+Server: </span><span class="sh">"</span><span class="s">Başka bir proje farklı version kullanıyor</span><span class="sh">"</span><span class="s">
+Developer: </span><span class="sh">"</span><span class="s">PostgreSQL 15 lazım</span><span class="sh">"</span><span class="s">
+Server: </span><span class="sh">"</span><span class="s">Sadece PostgreSQL 12 kurulu</span><span class="sh">"</span><span class="s">
+</span><span class="sh">"""</span>
+
+<span class="c1"># Docker ile çözüm
+</span><span class="sh">"""</span><span class="s">
+Developer: </span><span class="sh">"</span><span class="s">Docker image</span><span class="sh">'</span><span class="s">ı çalıştır</span><span class="sh">"</span><span class="s">
+Server: </span><span class="sh">"</span><span class="s">Tamam, çalıştı!</span><span class="sh">"</span><span class="s">
+# Her ortamda aynı Python versiyonu
+# Her ortamda aynı dependencies
+# Her ortamda aynı sistem konfigürasyonu
+</span><span class="sh">"""</span>
+</pre></table></code></div></div><h3 id="docker-vs-virtual-machines"><span class="me-2">Docker vs Virtual Machines</span><a href="#docker-vs-virtual-machines" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre><td class="rouge-code"><pre>Virtual Machine Yaklaşımı:
+┌─────────────────────────────────────┐
+│         Hypervisor (ESXi, etc.)     │
+├─────────────┬──────────┬────────────┤
+│   VM 1      │   VM 2   │   VM 3     │
+│  Guest OS   │ Guest OS │  Guest OS  │
+│  (2-4 GB)   │ (2-4 GB) │  (2-4 GB)  │
+│  App + Deps │App + Deps│ App + Deps │
+└─────────────┴──────────┴────────────┘
+         Host Operating System
+         
+Docker Container Yaklaşımı:
+┌─────────────────────────────────────┐
+│  Container 1 │Container 2│Container 3│
+│  App + Deps  │App + Deps │App + Deps │
+│   (100 MB)   │ (100 MB)  │ (100 MB)  │
+├──────────────┴───────────┴───────────┤
+│         Docker Engine                │
+│     Host Operating System            │
+└──────────────────────────────────────┘
+</pre></table></code></div></div><h2 id="docker-kurulumu-ve-i̇lk-adımlar"><span class="me-2">Docker Kurulumu ve İlk Adımlar</span><a href="#docker-kurulumu-ve-i̇lk-adımlar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="docker-kurulumu"><span class="me-2">Docker Kurulumu</span><a href="#docker-kurulumu" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre><span class="c"># Ubuntu/Debian için Docker kurulumu</span>
+curl <span class="nt">-fsSL</span> https://get.docker.com <span class="nt">-o</span> get-docker.sh
+<span class="nb">sudo </span>sh get-docker.sh
+
+<span class="c"># Docker'ı sudo olmadan kullanmak için</span>
+<span class="nb">sudo </span>usermod <span class="nt">-aG</span> docker <span class="nv">$USER</span>
+newgrp docker
+
+<span class="c"># Kurulumu doğrulama</span>
+docker <span class="nt">--version</span>
+docker run hello-world
+
+<span class="c"># Docker Compose kurulumu</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>docker-compose-plugin
+
+<span class="c"># Compose versiyonunu kontrol et</span>
+docker compose version
+</pre></table></code></div></div><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="c"># macOS için (Homebrew ile)</span>
+brew <span class="nb">install</span> <span class="nt">--cask</span> docker
+
+<span class="c"># Windows için</span>
+<span class="c"># Docker Desktop'ı indir: https://www.docker.com/products/docker-desktop</span>
+</pre></table></code></div></div><h3 id="temel-docker-komutları"><span class="me-2">Temel Docker Komutları</span><a href="#temel-docker-komutları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre><td class="rouge-code"><pre><span class="c"># Image işlemleri</span>
+docker images                    <span class="c"># Mevcut image'ları listele</span>
+docker pull python:3.11         <span class="c"># Python image'ını çek</span>
+docker rmi image_name           <span class="c"># Image'ı sil</span>
+docker image prune              <span class="c"># Kullanılmayan image'ları temizle</span>
+
+<span class="c"># Container işlemleri</span>
+docker ps                       <span class="c"># Çalışan container'ları listele</span>
+docker ps <span class="nt">-a</span>                    <span class="c"># Tüm container'ları listele</span>
+docker run image_name           <span class="c"># Container çalıştır</span>
+docker stop container_id        <span class="c"># Container'ı durdur</span>
+docker <span class="nb">rm </span>container_id          <span class="c"># Container'ı sil</span>
+docker logs container_id        <span class="c"># Container loglarını göster</span>
+docker <span class="nb">exec</span> <span class="nt">-it</span> container_id bash  <span class="c"># Container'a shell erişimi</span>
+
+<span class="c"># Build işlemleri</span>
+docker build <span class="nt">-t</span> myapp:latest <span class="nb">.</span>  <span class="c"># Image oluştur</span>
+docker tag <span class="nb">source </span>target        <span class="c"># Image'ı tagla</span>
+
+<span class="c"># Registry işlemleri</span>
+docker login                    <span class="c"># Docker Hub'a giriş</span>
+docker push username/image      <span class="c"># Image'ı registry'ye gönder</span>
+docker pull username/image      <span class="c"># Image'ı registry'den çek</span>
+
+<span class="c"># Sistem temizliği</span>
+docker system prune <span class="nt">-a</span>          <span class="c"># Kullanılmayan tüm kaynakları temizle</span>
+docker volume prune             <span class="c"># Kullanılmayan volume'ları temizle</span>
+docker network prune            <span class="c"># Kullanılmayan network'leri temizle</span>
+</pre></table></code></div></div><h2 id="i̇lk-python-dockerfile-oluşturma"><span class="me-2">İlk Python Dockerfile Oluşturma</span><a href="#i̇lk-python-dockerfile-oluşturma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="basit-bir-flask-uygulaması"><span class="me-2">Basit Bir Flask Uygulaması</span><a href="#basit-bir-flask-uygulaması" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Öncelikle basit bir Flask uygulaması oluşturalım:</p><div file="app.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="app.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">import</span> <span class="n">os</span>
+<span class="kn">import</span> <span class="n">socket</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="nc">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Ana endpoint - sistem bilgilerini döndürür</span><span class="sh">"""</span>
+    <span class="k">return</span> <span class="nf">jsonify</span><span class="p">({</span>
+        <span class="sh">'</span><span class="s">message</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Hello from Docker!</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">hostname</span><span class="sh">'</span><span class="p">:</span> <span class="n">socket</span><span class="p">.</span><span class="nf">gethostname</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">python_version</span><span class="sh">'</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="n">sys</span><span class="p">.</span><span class="n">version</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">environment</span><span class="sh">'</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">ENVIRONMENT</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">development</span><span class="sh">'</span><span class="p">)</span>
+    <span class="p">})</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/health</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">health</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Health check endpoint</span><span class="sh">"""</span>
+    <span class="k">return</span> <span class="nf">jsonify</span><span class="p">({</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">healthy</span><span class="sh">'</span><span class="p">}),</span> <span class="mi">200</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/api/data</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Örnek data endpoint</span><span class="sh">"""</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">users</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Alice</span><span class="sh">'</span><span class="p">},</span>
+            <span class="p">{</span><span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Bob</span><span class="sh">'</span><span class="p">}</span>
+        <span class="p">],</span>
+        <span class="sh">'</span><span class="s">total</span><span class="sh">'</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nf">jsonify</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="c1"># Debug mode sadece development ortamında
+</span>    <span class="n">debug_mode</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">ENVIRONMENT</span><span class="sh">'</span><span class="p">)</span> <span class="o">==</span> <span class="sh">'</span><span class="s">development</span><span class="sh">'</span>
+    <span class="n">app</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="sh">'</span><span class="s">0.0.0.0</span><span class="sh">'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug_mode</span><span class="p">)</span>
+</pre></table></code></div></div><pre file="requirements.txt"><code class="language-txt">Flask==3.0.0
+gunicorn==21.2.0
+python-dotenv==1.0.0
+</code></pre><h3 id="basit-dockerfile"><span class="me-2">Basit Dockerfile</span><a href="#basit-dockerfile" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="Dockerfile" class="language-dockerfile highlighter-rouge"><div class="code-header"> <span data-label-text="Dockerfile"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre><td class="rouge-code"><pre><span class="c"># Base image olarak Python 3.11 kullan</span>
+<span class="k">FROM</span><span class="s"> python:3.11-slim</span>
+
+<span class="c"># Çalışma dizinini ayarla</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="c"># Requirements dosyasını kopyala</span>
+<span class="k">COPY</span><span class="s"> requirements.txt .</span>
+
+<span class="c"># Bağımlılıkları yükle</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> <span class="nt">--no-cache-dir</span> <span class="nt">-r</span> requirements.txt
+
+<span class="c"># Uygulama kodunu kopyala</span>
+<span class="k">COPY</span><span class="s"> . .</span>
+
+<span class="c"># Port tanımla (dokümantasyon amaçlı)</span>
+<span class="k">EXPOSE</span><span class="s"> 5000</span>
+
+<span class="c"># Environment variable tanımla</span>
+<span class="k">ENV</span><span class="s"> ENVIRONMENT=production</span>
+
+<span class="c"># Uygulamayı başlat</span>
+<span class="k">CMD</span><span class="s"> ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "app:app"]</span>
+</pre></table></code></div></div><h3 id="image-oluşturma-ve-çalıştırma"><span class="me-2">Image Oluşturma ve Çalıştırma</span><a href="#image-oluşturma-ve-çalıştırma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+</pre><td class="rouge-code"><pre><span class="c"># Image'ı build et</span>
+docker build <span class="nt">-t</span> flask-app:v1 <span class="nb">.</span>
+
+<span class="c"># Build sürecini izle</span>
+<span class="s2">"""
+[+] Building 45.2s (10/10) FINISHED
+ =&gt; [internal] load build definition from Dockerfile
+ =&gt; [internal] load .dockerignore
+ =&gt; [internal] load metadata for docker.io/library/python:3.11-slim
+ =&gt; [1/5] FROM docker.io/library/python:3.11-slim
+ =&gt; [2/5] WORKDIR /app
+ =&gt; [3/5] COPY requirements.txt .
+ =&gt; [4/5] RUN pip install --no-cache-dir -r requirements.txt
+ =&gt; [5/5] COPY . .
+ =&gt; exporting to image
+ =&gt; =&gt; naming to docker.io/library/flask-app:v1
+"""</span>
+
+<span class="c"># Image boyutunu kontrol et</span>
+docker images flask-app:v1
+<span class="s2">"""
+REPOSITORY   TAG       IMAGE ID       CREATED         SIZE
+flask-app    v1        abc123def456   2 minutes ago   195MB
+"""</span>
+
+<span class="c"># Container'ı çalıştır</span>
+docker run <span class="nt">-d</span> <span class="nt">-p</span> 5000:5000 <span class="nt">--name</span> my-flask-app flask-app:v1
+
+<span class="c"># Uygulamayı test et</span>
+curl http://localhost:5000
+<span class="s2">"""
+{
+  "</span>message<span class="s2">": "</span>Hello from Docker!<span class="s2">",
+  "</span><span class="nb">hostname</span><span class="s2">": "</span>abc123def456<span class="s2">",
+  "</span>python_version<span class="s2">": "</span>3.11.6 ...<span class="s2">",
+  "</span>environment<span class="s2">": "</span>production<span class="s2">"
+}
+"""</span>
+
+<span class="c"># Logları kontrol et</span>
+docker logs my-flask-app
+
+<span class="c"># Container'ı durdur ve sil</span>
+docker stop my-flask-app
+docker <span class="nb">rm </span>my-flask-app
+</pre></table></code></div></div><h2 id="multi-stage-builds-ile-optimizasyon"><span class="me-2">Multi-Stage Builds ile Optimizasyon</span><a href="#multi-stage-builds-ile-optimizasyon" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Multi-stage build, Docker’ın en güçlü özelliklerinden biridir. Birden fazla <code class="language-plaintext highlighter-rouge">FROM</code> statement kullanarak, build aşamasında kullanılan araçları final image’dan uzak tutabilir ve image boyutunu dramatik şekilde küçültebilirsiniz.</p><p><a href="/assets/img/posts/docker-multi-stage-build-layers.png" class="popup img-link shimmer"><img src="/assets/img/posts/docker-multi-stage-build-layers.png" alt="Docker Multi-Stage Build Layers" loading="lazy"></a> <em>Şekil 1: Multi-Stage Build ile katmanlı image oluşturma süreci</em></p><h3 id="multi-stage-dockerfile"><span class="me-2">Multi-Stage Dockerfile</span><a href="#multi-stage-dockerfile" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="Dockerfile" class="language-dockerfile highlighter-rouge"><div class="code-header"> <span data-label-text="Dockerfile"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+</pre><td class="rouge-code"><pre><span class="c"># ==========================================</span>
+<span class="c"># STAGE 1: Builder - Bağımlılıkları derle</span>
+<span class="c"># ==========================================</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">python:3.11-slim</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">builder</span>
+
+<span class="c"># Build araçlarını yükle</span>
+<span class="k">RUN </span>apt-get update <span class="o">&amp;&amp;</span> apt-get <span class="nb">install</span> <span class="nt">-y</span> <span class="se">\
+</span>    gcc <span class="se">\
+</span>    g++ <span class="se">\
+</span>    postgresql-dev <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span>
+
+<span class="c"># Virtual environment oluştur</span>
+<span class="k">RUN </span>python <span class="nt">-m</span> venv /opt/venv
+<span class="k">ENV</span><span class="s"> PATH="/opt/venv/bin:$PATH"</span>
+
+<span class="c"># Requirements'ı kopyala ve yükle</span>
+<span class="k">COPY</span><span class="s"> requirements.txt .</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> <span class="nt">--no-cache-dir</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip <span class="nb">install</span> <span class="nt">--no-cache-dir</span> <span class="nt">-r</span> requirements.txt
+
+<span class="c"># ==========================================</span>
+<span class="c"># STAGE 2: Runtime - Sadece gerekli dosyalar</span>
+<span class="c"># ==========================================</span>
+<span class="k">FROM</span><span class="s"> python:3.11-slim</span>
+
+<span class="c"># Runtime bağımlılıklarını yükle</span>
+<span class="k">RUN </span>apt-get update <span class="o">&amp;&amp;</span> apt-get <span class="nb">install</span> <span class="nt">-y</span> <span class="se">\
+</span>    libpq5 <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span>
+
+<span class="c"># Non-root user oluştur (güvenlik için)</span>
+<span class="k">RUN </span>useradd <span class="nt">-m</span> <span class="nt">-u</span> 1000 appuser <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="nb">mkdir</span> <span class="nt">-p</span> /app <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="nb">chown</span> <span class="nt">-R</span> appuser:appuser /app
+
+<span class="c"># Virtual environment'ı builder'dan kopyala</span>
+<span class="k">COPY</span><span class="s"> --from=builder /opt/venv /opt/venv</span>
+
+<span class="c"># Çalışma dizini ve PATH</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+<span class="k">ENV</span><span class="s"> PATH="/opt/venv/bin:$PATH"</span>
+<span class="k">ENV</span><span class="s"> PYTHONUNBUFFERED=1</span>
+<span class="k">ENV</span><span class="s"> PYTHONDONTWRITEBYTECODE=1</span>
+
+<span class="c"># Uygulama dosyalarını kopyala</span>
+<span class="k">COPY</span><span class="s"> --chown=appuser:appuser . .</span>
+
+<span class="c"># Non-root user olarak çalıştır</span>
+<span class="k">USER</span><span class="s"> appuser</span>
+
+<span class="c"># Health check ekle</span>
+<span class="k">HEALTHCHECK</span><span class="s"> --interval=30s --timeout=3s --start-period=40s --retries=3 \</span>
+    CMD python -c "import requests; requests.get('http://localhost:5000/health')" || exit 1
+
+<span class="c"># Port expose et</span>
+<span class="k">EXPOSE</span><span class="s"> 5000</span>
+
+<span class="c"># Entrypoint ve CMD</span>
+<span class="k">ENTRYPOINT</span><span class="s"> ["gunicorn"]</span>
+<span class="k">CMD</span><span class="s"> ["--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "60", "app:app"]</span>
+</pre></table></code></div></div><h3 id="image-boyutu-karşılaştırması"><span class="me-2">Image Boyutu Karşılaştırması</span><a href="#image-boyutu-karşılaştırması" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="c"># Single-stage build</span>
+docker build <span class="nt">-t</span> flask-app:single-stage <span class="nt">-f</span> Dockerfile.single <span class="nb">.</span>
+docker images flask-app:single-stage
+<span class="s2">"""
+REPOSITORY   TAG            SIZE
+flask-app    single-stage   395MB  # Tüm build araçları dahil
+"""</span>
+
+<span class="c"># Multi-stage build</span>
+docker build <span class="nt">-t</span> flask-app:multi-stage <span class="nt">-f</span> Dockerfile.multi <span class="nb">.</span>
+docker images flask-app:multi-stage
+<span class="s2">"""
+REPOSITORY   TAG            SIZE
+flask-app    multi-stage    165MB  # %58 daha küçük!
+"""</span>
+
+<span class="c"># Build history'yi incele</span>
+docker <span class="nb">history </span>flask-app:multi-stage
+</pre></table></code></div></div><h3 id="dockerignore-dosyası"><span class="me-2">.dockerignore Dosyası</span><a href="#dockerignore-dosyası" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><code class="language-plaintext highlighter-rouge">.dockerignore</code> dosyası, build context’e dahil edilmemesi gereken dosyaları belirtir:</p><div file=".dockerignore" class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text=".dockerignore"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+</pre><td class="rouge-code"><pre><span class="c"># .dockerignore</span>
+<span class="c"># Python</span>
+__pycache__/
+<span class="k">*</span>.py[cod]
+<span class="k">*</span><span class="nv">$py</span>.class
+<span class="k">*</span>.so
+.Python
+<span class="nb">env</span>/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+<span class="k">*</span>.egg-info/
+.installed.cfg
+<span class="k">*</span>.egg
+
+<span class="c"># Testing</span>
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+<span class="c"># IDEs</span>
+.vscode/
+.idea/
+<span class="k">*</span>.swp
+<span class="k">*</span>.swo
+<span class="k">*</span>~
+
+<span class="c"># Git</span>
+.git/
+.gitignore
+
+<span class="c"># Docker</span>
+Dockerfile<span class="k">*</span>
+docker-compose<span class="k">*</span>.yml
+.dockerignore
+
+<span class="c"># Documentation</span>
+README.md
+docs/
+<span class="k">*</span>.md
+
+<span class="c"># Environment</span>
+.env
+.env.<span class="k">*</span>
+<span class="o">!</span>.env.example
+
+<span class="c"># Logs</span>
+<span class="k">*</span>.log
+logs/
+
+<span class="c"># OS</span>
+.DS_Store
+Thumbs.db
+</pre></table></code></div></div><h2 id="docker-compose-ile-multi-container-uygulamalar"><span class="me-2">Docker Compose ile Multi-Container Uygulamalar</span><a href="#docker-compose-ile-multi-container-uygulamalar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Docker Compose, birden fazla container’dan oluşan uygulamaları tanımlamak ve çalıştırmak için kullanılır. Özellikle mikroservis mimarilerinde vazgeçilmezdir.</p><p><a href="/assets/img/posts/docker-compose-microservices-architecture.png" class="popup img-link shimmer"><img src="/assets/img/posts/docker-compose-microservices-architecture.png" alt="Docker Compose Microservices Architecture" loading="lazy"></a> <em>Şekil 2: Docker Compose ile mikroservis mimarisi</em></p><h3 id="kapsamlı-docker-compose-örneği"><span class="me-2">Kapsamlı Docker Compose Örneği</span><a href="#kapsamlı-docker-compose-örneği" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="docker-compose.yml" class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="docker-compose.yml"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+</pre><td class="rouge-code"><pre><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.8'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="c1"># ==========================================</span>
+  <span class="c1"># Web Application (Flask API)</span>
+  <span class="c1"># ==========================================</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span>
+      <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
+      <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">Dockerfile</span>
+      <span class="na">args</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">BUILD_DATE=${BUILD_DATE}</span>
+        <span class="pi">-</span> <span class="s">VERSION=${VERSION:-latest}</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">flask-app:${VERSION:-latest}</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">flask-web</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5000:5000"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">ENVIRONMENT=production</span>
+      <span class="pi">-</span> <span class="s">DATABASE_URL=postgresql://postgres:password@db:5432/appdb</span>
+      <span class="pi">-</span> <span class="s">REDIS_URL=redis://redis:6379/0</span>
+      <span class="pi">-</span> <span class="s">SECRET_KEY=${SECRET_KEY}</span>
+    <span class="na">env_file</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">.env</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="na">db</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">service_healthy</span>
+      <span class="na">redis</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">service_started</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">app-network</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./logs:/app/logs</span>
+      <span class="pi">-</span> <span class="s">./uploads:/app/uploads</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">curl"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">-f"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">http://localhost:5000/health"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">30s</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">3</span>
+      <span class="na">start_period</span><span class="pi">:</span> <span class="s">40s</span>
+    <span class="na">labels</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">com.example.description=Flask</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">Service"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">com.example.version=${VERSION:-latest}"</span>
+
+  <span class="c1"># ==========================================</span>
+  <span class="c1"># PostgreSQL Database</span>
+  <span class="c1"># ==========================================</span>
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:15-alpine</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">postgres-db</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_DB=appdb</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_USER=postgres</span>
+      <span class="pi">-</span> <span class="s">POSTGRES_PASSWORD=password</span>
+      <span class="pi">-</span> <span class="s">PGDATA=/var/lib/postgresql/data/pgdata</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">postgres-data:/var/lib/postgresql/data</span>
+      <span class="pi">-</span> <span class="s">./init-scripts:/docker-entrypoint-initdb.d</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">app-network</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5432:5432"</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD-SHELL"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">pg_isready</span><span class="nv"> </span><span class="s">-U</span><span class="nv"> </span><span class="s">postgres"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">5s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">5</span>
+
+  <span class="c1"># ==========================================</span>
+  <span class="c1"># Redis Cache</span>
+  <span class="c1"># ==========================================</span>
+  <span class="na">redis</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:7-alpine</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-cache</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="s">redis-server --appendonly yes --requirepass redispassword</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redis-data:/data</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">app-network</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">6379:6379"</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">redis-cli"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">ping"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">3s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">5</span>
+
+  <span class="c1"># ==========================================</span>
+  <span class="c1"># Celery Worker (Background Tasks)</span>
+  <span class="c1"># ==========================================</span>
+  <span class="na">worker</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span>
+      <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
+      <span class="na">dockerfile</span><span class="pi">:</span> <span class="s">Dockerfile</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">flask-app:${VERSION:-latest}</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">celery-worker</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="s">celery -A tasks.celery worker --loglevel=info --concurrency=4</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">ENVIRONMENT=production</span>
+      <span class="pi">-</span> <span class="s">DATABASE_URL=postgresql://postgres:password@db:5432/appdb</span>
+      <span class="pi">-</span> <span class="s">REDIS_URL=redis://redis:6379/0</span>
+      <span class="pi">-</span> <span class="s">CELERY_BROKER_URL=redis://redis:6379/1</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db</span>
+      <span class="pi">-</span> <span class="s">redis</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">app-network</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./logs:/app/logs</span>
+
+  <span class="c1"># ==========================================</span>
+  <span class="c1"># Nginx Reverse Proxy</span>
+  <span class="c1"># ==========================================</span>
+  <span class="na">nginx</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:alpine</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">nginx-proxy</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">80:80"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">443:443"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./nginx/nginx.conf:/etc/nginx/nginx.conf:ro</span>
+      <span class="pi">-</span> <span class="s">./nginx/ssl:/etc/nginx/ssl:ro</span>
+      <span class="pi">-</span> <span class="s">./static:/usr/share/nginx/html/static:ro</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">web</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">app-network</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">nginx"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">-t"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">30s</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">3</span>
+
+  <span class="c1"># ==========================================</span>
+  <span class="c1"># pgAdmin (Database Management - Optional)</span>
+  <span class="c1"># ==========================================</span>
+  <span class="na">pgadmin</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">dpage/pgadmin4:latest</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">pgadmin</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">PGADMIN_DEFAULT_EMAIL=admin@example.com</span>
+      <span class="pi">-</span> <span class="s">PGADMIN_DEFAULT_PASSWORD=admin</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5050:80"</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">app-network</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">pgadmin-data:/var/lib/pgadmin</span>
+    <span class="na">profiles</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">tools</span>  <span class="c1"># Bu servisi sadece "tools" profile ile çalıştır</span>
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># Networks</span>
+<span class="c1"># ==========================================</span>
+<span class="na">networks</span><span class="pi">:</span>
+  <span class="na">app-network</span><span class="pi">:</span>
+    <span class="na">driver</span><span class="pi">:</span> <span class="s">bridge</span>
+    <span class="na">ipam</span><span class="pi">:</span>
+      <span class="na">config</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">subnet</span><span class="pi">:</span> <span class="s">172.28.0.0/16</span>
+
+<span class="c1"># ==========================================</span>
+<span class="c1"># Volumes</span>
+<span class="c1"># ==========================================</span>
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">postgres-data</span><span class="pi">:</span>
+    <span class="na">driver</span><span class="pi">:</span> <span class="s">local</span>
+  <span class="na">redis-data</span><span class="pi">:</span>
+    <span class="na">driver</span><span class="pi">:</span> <span class="s">local</span>
+  <span class="na">pgadmin-data</span><span class="pi">:</span>
+    <span class="na">driver</span><span class="pi">:</span> <span class="s">local</span>
+</pre></table></code></div></div><h3 id="docker-compose-komutları"><span class="me-2">Docker Compose Komutları</span><a href="#docker-compose-komutları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+</pre><td class="rouge-code"><pre><span class="c"># Tüm servisleri başlat</span>
+docker compose up <span class="nt">-d</span>
+
+<span class="c"># Specific servis başlat</span>
+docker compose up <span class="nt">-d</span> web db
+
+<span class="c"># Build ile başlat</span>
+docker compose up <span class="nt">-d</span> <span class="nt">--build</span>
+
+<span class="c"># Logları takip et</span>
+docker compose logs <span class="nt">-f</span>
+docker compose logs <span class="nt">-f</span> web  <span class="c"># Sadece web servisinin logları</span>
+
+<span class="c"># Servisleri listele</span>
+docker compose ps
+
+<span class="c"># Servis detaylarını göster</span>
+docker compose ps <span class="nt">--format</span> json | jq
+
+<span class="c"># Belirli bir servisi yeniden başlat</span>
+docker compose restart web
+
+<span class="c"># Servisleri durdur (container'lar kalır)</span>
+docker compose stop
+
+<span class="c"># Servisleri durdur ve container'ları sil</span>
+docker compose down
+
+<span class="c"># Volume'ları da sil</span>
+docker compose down <span class="nt">-v</span>
+
+<span class="c"># Image'ları da sil</span>
+docker compose down <span class="nt">--rmi</span> all
+
+<span class="c"># Servisleri scale et</span>
+docker compose up <span class="nt">-d</span> <span class="nt">--scale</span> <span class="nv">web</span><span class="o">=</span>3
+
+<span class="c"># Belirli bir servise komut çalıştır</span>
+docker compose <span class="nb">exec </span>web python manage.py migrate
+docker compose <span class="nb">exec </span>db psql <span class="nt">-U</span> postgres <span class="nt">-d</span> appdb
+
+<span class="c"># Tools profile ile çalıştır (pgadmin dahil)</span>
+docker compose <span class="nt">--profile</span> tools up <span class="nt">-d</span>
+
+<span class="c"># Environment variable ile çalıştır</span>
+<span class="nv">VERSION</span><span class="o">=</span>v2.0 <span class="nv">BUILD_DATE</span><span class="o">=</span><span class="si">$(</span><span class="nb">date</span> <span class="nt">-u</span> +<span class="s2">"%Y-%m-%dT%H:%M:%SZ"</span><span class="si">)</span> docker compose up <span class="nt">-d</span>
+
+<span class="c"># Config dosyasını validate et</span>
+docker compose config
+
+<span class="c"># Resource kullanımını göster</span>
+docker compose stats
+</pre></table></code></div></div><h3 id="environment-variables-yönetimi"><span class="me-2">Environment Variables Yönetimi</span><a href="#environment-variables-yönetimi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file=".env" class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text=".env"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre><td class="rouge-code"><pre><span class="c"># .env dosyası</span>
+<span class="c"># Application</span>
+<span class="nv">ENVIRONMENT</span><span class="o">=</span>production
+<span class="nv">SECRET_KEY</span><span class="o">=</span>your-secret-key-here
+<span class="nv">DEBUG</span><span class="o">=</span>False
+
+<span class="c"># Database</span>
+<span class="nv">DATABASE_URL</span><span class="o">=</span>postgresql://postgres:password@db:5432/appdb
+<span class="nv">DB_POOL_SIZE</span><span class="o">=</span>20
+<span class="nv">DB_MAX_OVERFLOW</span><span class="o">=</span>10
+
+<span class="c"># Redis</span>
+<span class="nv">REDIS_URL</span><span class="o">=</span>redis://redis:6379/0
+<span class="nv">REDIS_PASSWORD</span><span class="o">=</span>redispassword
+
+<span class="c"># Celery</span>
+<span class="nv">CELERY_BROKER_URL</span><span class="o">=</span>redis://redis:6379/1
+<span class="nv">CELERY_RESULT_BACKEND</span><span class="o">=</span>redis://redis:6379/2
+
+<span class="c"># Build</span>
+<span class="nv">VERSION</span><span class="o">=</span>v1.0.0
+<span class="nv">BUILD_DATE</span><span class="o">=</span>2024-10-14T09:30:00Z
+
+<span class="c"># Security</span>
+<span class="nv">ALLOWED_HOSTS</span><span class="o">=</span>localhost,127.0.0.1
+<span class="nv">CORS_ORIGINS</span><span class="o">=</span>http://localhost:3000,https://example.com
+
+<span class="c"># Monitoring</span>
+<span class="nv">LOG_LEVEL</span><span class="o">=</span>INFO
+<span class="nv">SENTRY_DSN</span><span class="o">=</span>https://your-sentry-dsn
+</pre></table></code></div></div><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+</pre><td class="rouge-code"><pre><span class="c1"># config.py - Environment variable yönetimi
+</span><span class="kn">import</span> <span class="n">os</span>
+<span class="kn">from</span> <span class="n">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="c1"># .env dosyasını yükle
+</span><span class="nf">load_dotenv</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Base configuration</span><span class="sh">"""</span>
+    
+    <span class="c1"># Application
+</span>    <span class="n">ENVIRONMENT</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">ENVIRONMENT</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">development</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">SECRET_KEY</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">dev-secret-key</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">DEBUG</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">False</span><span class="sh">'</span><span class="p">).</span><span class="nf">lower</span><span class="p">()</span> <span class="o">==</span> <span class="sh">'</span><span class="s">true</span><span class="sh">'</span>
+    
+    <span class="c1"># Database
+</span>    <span class="n">DATABASE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">DATABASE_URL</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">sqlite:///app.db</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">DB_POOL_SIZE</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">DB_POOL_SIZE</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">20</span><span class="sh">'</span><span class="p">))</span>
+    <span class="n">DB_MAX_OVERFLOW</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">DB_MAX_OVERFLOW</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">10</span><span class="sh">'</span><span class="p">))</span>
+    
+    <span class="c1"># Redis
+</span>    <span class="n">REDIS_URL</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">REDIS_URL</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">redis://localhost:6379/0</span><span class="sh">'</span><span class="p">)</span>
+    
+    <span class="c1"># Celery
+</span>    <span class="n">CELERY_BROKER_URL</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">CELERY_BROKER_URL</span><span class="sh">'</span><span class="p">,</span> <span class="n">REDIS_URL</span><span class="p">)</span>
+    <span class="n">CELERY_RESULT_BACKEND</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">CELERY_RESULT_BACKEND</span><span class="sh">'</span><span class="p">,</span> <span class="n">REDIS_URL</span><span class="p">)</span>
+    
+    <span class="c1"># Security
+</span>    <span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">ALLOWED_HOSTS</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">localhost</span><span class="sh">'</span><span class="p">).</span><span class="nf">split</span><span class="p">(</span><span class="sh">'</span><span class="s">,</span><span class="sh">'</span><span class="p">)</span>
+    
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="sh">"""</span><span class="s">Validate required configuration</span><span class="sh">"""</span>
+        <span class="n">required_vars</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">SECRET_KEY</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">DATABASE_URL</span><span class="sh">'</span><span class="p">]</span>
+        <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">var</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">required_vars</span> <span class="k">if</span> <span class="ow">not</span> <span class="nf">getattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">var</span><span class="p">)]</span>
+        
+        <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nc">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Missing required environment variables: </span><span class="si">{</span><span class="sh">'</span><span class="s">, </span><span class="sh">'</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_database_config</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sh">"""</span><span class="s">Get database configuration</span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">url</span><span class="sh">'</span><span class="p">:</span> <span class="n">cls</span><span class="p">.</span><span class="n">DATABASE_URL</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">pool_size</span><span class="sh">'</span><span class="p">:</span> <span class="n">cls</span><span class="p">.</span><span class="n">DB_POOL_SIZE</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">max_overflow</span><span class="sh">'</span><span class="p">:</span> <span class="n">cls</span><span class="p">.</span><span class="n">DB_MAX_OVERFLOW</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">echo</span><span class="sh">'</span><span class="p">:</span> <span class="n">cls</span><span class="p">.</span><span class="n">DEBUG</span>
+        <span class="p">}</span>
+
+<span class="c1"># Konfigürasyonu validate et
+</span><span class="n">Config</span><span class="p">.</span><span class="nf">validate</span><span class="p">()</span>
+</pre></table></code></div></div><h2 id="production-deployment-stratejileri"><span class="me-2">Production Deployment Stratejileri</span><a href="#production-deployment-stratejileri" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="nginx-reverse-proxy-konfigürasyonu"><span class="me-2">Nginx Reverse Proxy Konfigürasyonu</span><a href="#nginx-reverse-proxy-konfigürasyonu" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-nginx highlighter-rouge"><div class="code-header"> <span data-label-text="Nginx"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+</pre><td class="rouge-code"><pre><span class="c1"># nginx/nginx.conf</span>
+<span class="k">user</span> <span class="s">nginx</span><span class="p">;</span>
+<span class="k">worker_processes</span> <span class="s">auto</span><span class="p">;</span>
+<span class="k">error_log</span> <span class="n">/var/log/nginx/error.log</span> <span class="s">warn</span><span class="p">;</span>
+<span class="k">pid</span> <span class="n">/var/run/nginx.pid</span><span class="p">;</span>
+
+<span class="k">events</span> <span class="p">{</span>
+    <span class="kn">worker_connections</span> <span class="mi">1024</span><span class="p">;</span>
+    <span class="kn">use</span> <span class="s">epoll</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">http</span> <span class="p">{</span>
+    <span class="kn">include</span> <span class="n">/etc/nginx/mime.types</span><span class="p">;</span>
+    <span class="kn">default_type</span> <span class="nc">application/octet-stream</span><span class="p">;</span>
+
+    <span class="c1"># Logging</span>
+    <span class="kn">log_format</span> <span class="s">main</span> <span class="s">'</span><span class="nv">$remote_addr</span> <span class="s">-</span> <span class="nv">$remote_user</span> <span class="s">[</span><span class="nv">$time_local</span><span class="s">]</span> <span class="s">"</span><span class="nv">$request</span><span class="s">"</span> <span class="s">'</span>
+                    <span class="s">'</span><span class="nv">$status</span> <span class="nv">$body_bytes_sent</span> <span class="s">"</span><span class="nv">$http_referer</span><span class="s">"</span> <span class="s">'</span>
+                    <span class="s">'"</span><span class="nv">$http_user_agent</span><span class="s">"</span> <span class="s">"</span><span class="nv">$http_x_forwarded_for</span><span class="s">"'</span><span class="p">;</span>
+    
+    <span class="kn">access_log</span> <span class="n">/var/log/nginx/access.log</span> <span class="s">main</span><span class="p">;</span>
+
+    <span class="c1"># Performance</span>
+    <span class="kn">sendfile</span> <span class="no">on</span><span class="p">;</span>
+    <span class="kn">tcp_nopush</span> <span class="no">on</span><span class="p">;</span>
+    <span class="kn">tcp_nodelay</span> <span class="no">on</span><span class="p">;</span>
+    <span class="kn">keepalive_timeout</span> <span class="mi">65</span><span class="p">;</span>
+    <span class="kn">types_hash_max_size</span> <span class="mi">2048</span><span class="p">;</span>
+    <span class="kn">client_max_body_size</span> <span class="mi">20M</span><span class="p">;</span>
+
+    <span class="c1"># Gzip compression</span>
+    <span class="kn">gzip</span> <span class="no">on</span><span class="p">;</span>
+    <span class="kn">gzip_vary</span> <span class="no">on</span><span class="p">;</span>
+    <span class="kn">gzip_proxied</span> <span class="s">any</span><span class="p">;</span>
+    <span class="kn">gzip_comp_level</span> <span class="mi">6</span><span class="p">;</span>
+    <span class="kn">gzip_types</span> <span class="nc">text/plain</span> <span class="nc">text/css</span> <span class="nc">text/xml</span> <span class="nc">text/javascript</span> 
+               <span class="nc">application/json</span> <span class="nc">application/javascript</span> <span class="nc">application/xml</span><span class="s">+rss</span><span class="p">;</span>
+
+    <span class="c1"># Rate limiting</span>
+    <span class="kn">limit_req_zone</span> <span class="nv">$binary_remote_addr</span> <span class="s">zone=api_limit:10m</span> <span class="s">rate=10r/s</span><span class="p">;</span>
+    <span class="kn">limit_conn_zone</span> <span class="nv">$binary_remote_addr</span> <span class="s">zone=addr:10m</span><span class="p">;</span>
+
+    <span class="c1"># Upstream servers</span>
+    <span class="kn">upstream</span> <span class="s">flask_app</span> <span class="p">{</span>
+        <span class="kn">least_conn</span><span class="p">;</span>
+        <span class="kn">server</span> <span class="nf">web</span><span class="p">:</span><span class="mi">5000</span> <span class="s">max_fails=3</span> <span class="s">fail_timeout=30s</span><span class="p">;</span>
+        <span class="kn">keepalive</span> <span class="mi">32</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># HTTP Server</span>
+    <span class="kn">server</span> <span class="p">{</span>
+        <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+        <span class="kn">server_name</span> <span class="s">example.com</span> <span class="s">www.example.com</span><span class="p">;</span>
+
+        <span class="c1"># Redirect to HTTPS</span>
+        <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://</span><span class="nv">$server_name$request_uri</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># HTTPS Server</span>
+    <span class="kn">server</span> <span class="p">{</span>
+        <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+        <span class="kn">server_name</span> <span class="s">example.com</span> <span class="s">www.example.com</span><span class="p">;</span>
+
+        <span class="c1"># SSL Configuration</span>
+        <span class="kn">ssl_certificate</span> <span class="n">/etc/nginx/ssl/fullchain.pem</span><span class="p">;</span>
+        <span class="kn">ssl_certificate_key</span> <span class="n">/etc/nginx/ssl/privkey.pem</span><span class="p">;</span>
+        <span class="kn">ssl_protocols</span> <span class="s">TLSv1.2</span> <span class="s">TLSv1.3</span><span class="p">;</span>
+        <span class="kn">ssl_ciphers</span> <span class="s">HIGH:!aNULL:!MD5</span><span class="p">;</span>
+        <span class="kn">ssl_prefer_server_ciphers</span> <span class="no">on</span><span class="p">;</span>
+        <span class="kn">ssl_session_cache</span> <span class="s">shared:SSL:10m</span><span class="p">;</span>
+        <span class="kn">ssl_session_timeout</span> <span class="mi">10m</span><span class="p">;</span>
+
+        <span class="c1"># Security headers</span>
+        <span class="kn">add_header</span> <span class="s">Strict-Transport-Security</span> <span class="s">"max-age=31536000</span><span class="p">;</span> <span class="kn">includeSubDomains"</span> <span class="s">always</span><span class="p">;</span>
+        <span class="kn">add_header</span> <span class="s">X-Frame-Options</span> <span class="s">"SAMEORIGIN"</span> <span class="s">always</span><span class="p">;</span>
+        <span class="kn">add_header</span> <span class="s">X-Content-Type-Options</span> <span class="s">"nosniff"</span> <span class="s">always</span><span class="p">;</span>
+        <span class="kn">add_header</span> <span class="s">X-XSS-Protection</span> <span class="s">"1</span><span class="p">;</span> <span class="kn">mode=block"</span> <span class="s">always</span><span class="p">;</span>
+        <span class="kn">add_header</span> <span class="s">Referrer-Policy</span> <span class="s">"no-referrer-when-downgrade"</span> <span class="s">always</span><span class="p">;</span>
+
+        <span class="c1"># Root location</span>
+        <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+            <span class="c1"># Rate limiting</span>
+            <span class="kn">limit_req</span> <span class="s">zone=api_limit</span> <span class="s">burst=20</span> <span class="s">nodelay</span><span class="p">;</span>
+            <span class="kn">limit_conn</span> <span class="s">addr</span> <span class="mi">10</span><span class="p">;</span>
+
+            <span class="c1"># Proxy settings</span>
+            <span class="kn">proxy_pass</span> <span class="s">http://flask_app</span><span class="p">;</span>
+            <span class="kn">proxy_http_version</span> <span class="mf">1.1</span><span class="p">;</span>
+            
+            <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+            <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>
+            <span class="kn">proxy_set_header</span> <span class="s">Connection</span> <span class="s">""</span><span class="p">;</span>
+            
+            <span class="c1"># Timeouts</span>
+            <span class="kn">proxy_connect_timeout</span> <span class="s">60s</span><span class="p">;</span>
+            <span class="kn">proxy_send_timeout</span> <span class="s">60s</span><span class="p">;</span>
+            <span class="kn">proxy_read_timeout</span> <span class="s">60s</span><span class="p">;</span>
+            
+            <span class="c1"># Buffering</span>
+            <span class="kn">proxy_buffering</span> <span class="no">on</span><span class="p">;</span>
+            <span class="kn">proxy_buffer_size</span> <span class="mi">4k</span><span class="p">;</span>
+            <span class="kn">proxy_buffers</span> <span class="mi">8</span> <span class="mi">4k</span><span class="p">;</span>
+            <span class="kn">proxy_busy_buffers_size</span> <span class="mi">8k</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Static files</span>
+        <span class="kn">location</span> <span class="n">/static/</span> <span class="p">{</span>
+            <span class="kn">alias</span> <span class="n">/usr/share/nginx/html/static/</span><span class="p">;</span>
+            <span class="kn">expires</span> <span class="s">30d</span><span class="p">;</span>
+            <span class="kn">add_header</span> <span class="s">Cache-Control</span> <span class="s">"public,</span> <span class="s">immutable"</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Health check</span>
+        <span class="kn">location</span> <span class="n">/health</span> <span class="p">{</span>
+            <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+            <span class="kn">proxy_pass</span> <span class="s">http://flask_app</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Deny access to sensitive files</span>
+        <span class="kn">location</span> <span class="p">~</span> <span class="sr">/\.</span> <span class="p">{</span>
+            <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+            <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+            <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></table></code></div></div><h3 id="health-checks-ve-monitoring"><span class="me-2">Health Checks ve Monitoring</span><a href="#health-checks-ve-monitoring" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+</pre><td class="rouge-code"><pre><span class="c1"># health.py - Comprehensive health check system
+</span><span class="kn">from</span> <span class="n">flask</span> <span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">import</span> <span class="n">psycopg2</span>
+<span class="kn">import</span> <span class="n">redis</span>
+<span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="n">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+<span class="n">health_bp</span> <span class="o">=</span> <span class="nc">Blueprint</span><span class="p">(</span><span class="sh">'</span><span class="s">health</span><span class="sh">'</span><span class="p">,</span> <span class="n">__name__</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">check_timeout</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Decorator to add timeout to health checks</span><span class="sh">"""</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="nf">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">healthy</span><span class="sh">'</span> <span class="k">if</span> <span class="n">result</span> <span class="k">else</span> <span class="sh">'</span><span class="s">unhealthy</span><span class="sh">'</span><span class="p">,</span>
+                    <span class="sh">'</span><span class="s">response_time</span><span class="sh">'</span><span class="p">:</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="p">.</span><span class="mi">3</span><span class="n">f</span><span class="si">}</span><span class="s">s</span><span class="sh">"</span>
+                <span class="p">}</span>
+            <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">unhealthy</span><span class="sh">'</span><span class="p">,</span>
+                    <span class="sh">'</span><span class="s">error</span><span class="sh">'</span><span class="p">:</span> <span class="nf">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
+                    <span class="sh">'</span><span class="s">response_time</span><span class="sh">'</span><span class="p">:</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="p">.</span><span class="mi">3</span><span class="n">f</span><span class="si">}</span><span class="s">s</span><span class="sh">"</span>
+                <span class="p">}</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+
+<span class="nd">@check_timeout</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">check_database</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Check database connectivity</span><span class="sh">"""</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">DATABASE_URL</span><span class="sh">'</span><span class="p">))</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="nf">cursor</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="sh">'</span><span class="s">SELECT 1</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="nf">fetchone</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+    <span class="n">conn</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+
+<span class="nd">@check_timeout</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">check_redis</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Check Redis connectivity</span><span class="sh">"""</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="p">.</span><span class="nf">from_url</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">REDIS_URL</span><span class="sh">'</span><span class="p">))</span>
+    <span class="n">r</span><span class="p">.</span><span class="nf">ping</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+<span class="nd">@check_timeout</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">check_disk_space</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Check disk space availability</span><span class="sh">"""</span>
+    <span class="kn">import</span> <span class="n">shutil</span>
+    <span class="n">stat</span> <span class="o">=</span> <span class="n">shutil</span><span class="p">.</span><span class="nf">disk_usage</span><span class="p">(</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">free_percent</span> <span class="o">=</span> <span class="p">(</span><span class="n">stat</span><span class="p">.</span><span class="n">free</span> <span class="o">/</span> <span class="n">stat</span><span class="p">.</span><span class="n">total</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="k">return</span> <span class="n">free_percent</span> <span class="o">&gt;</span> <span class="mi">10</span>  <span class="c1"># At least 10% free space
+</span>
+<span class="nd">@health_bp.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/health</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">health_check</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Basic health check</span><span class="sh">"""</span>
+    <span class="k">return</span> <span class="nf">jsonify</span><span class="p">({</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">healthy</span><span class="sh">'</span><span class="p">}),</span> <span class="mi">200</span>
+
+<span class="nd">@health_bp.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/health/detailed</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">detailed_health_check</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Detailed health check with all dependencies</span><span class="sh">"""</span>
+    <span class="n">checks</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">database</span><span class="sh">'</span><span class="p">:</span> <span class="nf">check_database</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">redis</span><span class="sh">'</span><span class="p">:</span> <span class="nf">check_redis</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">disk</span><span class="sh">'</span><span class="p">:</span> <span class="nf">check_disk_space</span><span class="p">(),</span>
+    <span class="p">}</span>
+    
+    <span class="c1"># Overall status
+</span>    <span class="n">all_healthy</span> <span class="o">=</span> <span class="nf">all</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="sh">'</span><span class="s">healthy</span><span class="sh">'</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">checks</span><span class="p">.</span><span class="nf">values</span><span class="p">())</span>
+    <span class="n">status_code</span> <span class="o">=</span> <span class="mi">200</span> <span class="k">if</span> <span class="n">all_healthy</span> <span class="k">else</span> <span class="mi">503</span>
+    
+    <span class="n">response</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">healthy</span><span class="sh">'</span> <span class="k">if</span> <span class="n">all_healthy</span> <span class="k">else</span> <span class="sh">'</span><span class="s">unhealthy</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">:</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">checks</span><span class="sh">'</span><span class="p">:</span> <span class="n">checks</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">version</span><span class="sh">'</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">VERSION</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">unknown</span><span class="sh">'</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nf">jsonify</span><span class="p">(</span><span class="n">response</span><span class="p">),</span> <span class="n">status_code</span>
+
+<span class="nd">@health_bp.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/health/liveness</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">liveness</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Kubernetes liveness probe</span><span class="sh">"""</span>
+    <span class="c1"># Basit check - container hala ayakta mı?
+</span>    <span class="k">return</span> <span class="nf">jsonify</span><span class="p">({</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">alive</span><span class="sh">'</span><span class="p">}),</span> <span class="mi">200</span>
+
+<span class="nd">@health_bp.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/health/readiness</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">readiness</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Kubernetes readiness probe</span><span class="sh">"""</span>
+    <span class="c1"># Tüm dependencies hazır mı?
+</span>    <span class="n">db_healthy</span> <span class="o">=</span> <span class="nf">check_database</span><span class="p">()[</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="sh">'</span><span class="s">healthy</span><span class="sh">'</span>
+    <span class="n">redis_healthy</span> <span class="o">=</span> <span class="nf">check_redis</span><span class="p">()[</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">]</span> <span class="o">==</span> <span class="sh">'</span><span class="s">healthy</span><span class="sh">'</span>
+    
+    <span class="k">if</span> <span class="n">db_healthy</span> <span class="ow">and</span> <span class="n">redis_healthy</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nf">jsonify</span><span class="p">({</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">ready</span><span class="sh">'</span><span class="p">}),</span> <span class="mi">200</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nf">jsonify</span><span class="p">({</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">not_ready</span><span class="sh">'</span><span class="p">}),</span> <span class="mi">503</span>
+</pre></table></code></div></div><p><a href="/assets/img/posts/docker-deployment-workflow-lifecycle.png" class="popup img-link shimmer"><img src="/assets/img/posts/docker-deployment-workflow-lifecycle.png" alt="Docker Deployment Workflow" loading="lazy"></a> <em>Şekil 3: Docker container deployment lifecycle ve workflow</em></p><h3 id="logging-stratejisi"><span class="me-2">Logging Stratejisi</span><a href="#logging-stratejisi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+</pre><td class="rouge-code"><pre><span class="c1"># logging_config.py - Structured logging for containers
+</span><span class="kn">import</span> <span class="n">logging</span>
+<span class="kn">import</span> <span class="n">json</span>
+<span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="k">class</span> <span class="nc">JsonFormatter</span><span class="p">(</span><span class="n">logging</span><span class="p">.</span><span class="n">Formatter</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Format logs as JSON for easy parsing</span><span class="sh">"""</span>
+    
+    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="p">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">log_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">timestamp</span><span class="sh">'</span><span class="p">:</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">utcnow</span><span class="p">().</span><span class="nf">isoformat</span><span class="p">(),</span>
+            <span class="sh">'</span><span class="s">level</span><span class="sh">'</span><span class="p">:</span> <span class="n">record</span><span class="p">.</span><span class="n">levelname</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">logger</span><span class="sh">'</span><span class="p">:</span> <span class="n">record</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">message</span><span class="sh">'</span><span class="p">:</span> <span class="n">record</span><span class="p">.</span><span class="nf">getMessage</span><span class="p">(),</span>
+            <span class="sh">'</span><span class="s">module</span><span class="sh">'</span><span class="p">:</span> <span class="n">record</span><span class="p">.</span><span class="n">module</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">function</span><span class="sh">'</span><span class="p">:</span> <span class="n">record</span><span class="p">.</span><span class="n">funcName</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">line</span><span class="sh">'</span><span class="p">:</span> <span class="n">record</span><span class="p">.</span><span class="n">lineno</span><span class="p">,</span>
+        <span class="p">}</span>
+        
+        <span class="c1"># Add exception info if present
+</span>        <span class="k">if</span> <span class="n">record</span><span class="p">.</span><span class="n">exc_info</span><span class="p">:</span>
+            <span class="n">log_data</span><span class="p">[</span><span class="sh">'</span><span class="s">exception</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">formatException</span><span class="p">(</span><span class="n">record</span><span class="p">.</span><span class="n">exc_info</span><span class="p">)</span>
+        
+        <span class="c1"># Add custom fields
+</span>        <span class="k">if</span> <span class="nf">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="sh">'</span><span class="s">user_id</span><span class="sh">'</span><span class="p">):</span>
+            <span class="n">log_data</span><span class="p">[</span><span class="sh">'</span><span class="s">user_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">record</span><span class="p">.</span><span class="n">user_id</span>
+        <span class="k">if</span> <span class="nf">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="sh">'</span><span class="s">request_id</span><span class="sh">'</span><span class="p">):</span>
+            <span class="n">log_data</span><span class="p">[</span><span class="sh">'</span><span class="s">request_id</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">record</span><span class="p">.</span><span class="n">request_id</span>
+        
+        <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="nf">dumps</span><span class="p">(</span><span class="n">log_data</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="n">app_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">'</span><span class="s">flask-app</span><span class="sh">'</span><span class="p">,</span> <span class="n">log_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">'</span><span class="s">INFO</span><span class="sh">'</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Setup logging configuration</span><span class="sh">"""</span>
+    
+    <span class="c1"># Create logger
+</span>    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="nf">getLogger</span><span class="p">(</span><span class="n">app_name</span><span class="p">)</span>
+    <span class="n">logger</span><span class="p">.</span><span class="nf">setLevel</span><span class="p">(</span><span class="nf">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">log_level</span><span class="p">.</span><span class="nf">upper</span><span class="p">()))</span>
+    
+    <span class="c1"># Clear existing handlers
+</span>    <span class="n">logger</span><span class="p">.</span><span class="n">handlers</span><span class="p">.</span><span class="nf">clear</span><span class="p">()</span>
+    
+    <span class="c1"># Console handler (for Docker logs)
+</span>    <span class="n">console_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="nc">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="n">console_handler</span><span class="p">.</span><span class="nf">setFormatter</span><span class="p">(</span><span class="nc">JsonFormatter</span><span class="p">())</span>
+    <span class="n">logger</span><span class="p">.</span><span class="nf">addHandler</span><span class="p">(</span><span class="n">console_handler</span><span class="p">)</span>
+    
+    <span class="c1"># File handler (optional, for persistent logs)
+</span>    <span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="sh">'</span><span class="s">/app/logs</span><span class="sh">'</span><span class="p">):</span>
+        <span class="n">file_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="nc">FileHandler</span><span class="p">(</span><span class="sh">'</span><span class="s">/app/logs/app.log</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">file_handler</span><span class="p">.</span><span class="nf">setFormatter</span><span class="p">(</span><span class="nc">JsonFormatter</span><span class="p">())</span>
+        <span class="n">logger</span><span class="p">.</span><span class="nf">addHandler</span><span class="p">(</span><span class="n">file_handler</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">logger</span>
+
+<span class="c1"># Usage
+</span><span class="n">logger</span> <span class="o">=</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="sh">'</span><span class="s">flask-app</span><span class="sh">'</span><span class="p">,</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">LOG_LEVEL</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">INFO</span><span class="sh">'</span><span class="p">))</span>
+
+<span class="nd">@app.before_request</span>
+<span class="k">def</span> <span class="nf">log_request</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Log incoming requests</span><span class="sh">"""</span>
+    <span class="n">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="sh">'</span><span class="s">Incoming request</span><span class="sh">'</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span>
+        <span class="sh">'</span><span class="s">request_id</span><span class="sh">'</span><span class="p">:</span> <span class="n">request</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">X-Request-ID</span><span class="sh">'</span><span class="p">),</span>
+        <span class="sh">'</span><span class="s">method</span><span class="sh">'</span><span class="p">:</span> <span class="n">request</span><span class="p">.</span><span class="n">method</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">path</span><span class="sh">'</span><span class="p">:</span> <span class="n">request</span><span class="p">.</span><span class="n">path</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">ip</span><span class="sh">'</span><span class="p">:</span> <span class="n">request</span><span class="p">.</span><span class="n">remote_addr</span>
+    <span class="p">})</span>
+</pre></table></code></div></div><h3 id="docker-secrets-yönetimi"><span class="me-2">Docker Secrets Yönetimi</span><a href="#docker-secrets-yönetimi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="c"># Docker Swarm secrets (production için)</span>
+<span class="c"># Secret oluştur</span>
+<span class="nb">echo</span> <span class="s2">"my-db-password"</span> | docker secret create db_password -
+
+<span class="c"># Compose file ile secrets kullan</span>
+</pre></table></code></div></div><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="c1"># docker-compose.prod.yml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.8'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">flask-app:latest</span>
+    <span class="na">secrets</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db_password</span>
+      <span class="pi">-</span> <span class="s">api_key</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">DATABASE_PASSWORD_FILE=/run/secrets/db_password</span>
+      <span class="pi">-</span> <span class="s">API_KEY_FILE=/run/secrets/api_key</span>
+
+<span class="na">secrets</span><span class="pi">:</span>
+  <span class="na">db_password</span><span class="pi">:</span>
+    <span class="na">external</span><span class="pi">:</span> <span class="kc">true</span>
+  <span class="na">api_key</span><span class="pi">:</span>
+    <span class="na">external</span><span class="pi">:</span> <span class="kc">true</span>
+</pre></table></code></div></div><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre><td class="rouge-code"><pre><span class="c1"># secrets.py - Read secrets from files
+</span><span class="kn">import</span> <span class="n">os</span>
+<span class="kn">from</span> <span class="n">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="k">def</span> <span class="nf">get_secret</span><span class="p">(</span><span class="n">secret_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Read secret from Docker secret file or environment variable
+    
+    Docker secrets are mounted at /run/secrets/secret_name
+    Falls back to environment variable if secret file doesn</span><span class="sh">'</span><span class="s">t exist
+    </span><span class="sh">"""</span>
+    <span class="n">secret_file</span> <span class="o">=</span> <span class="nc">Path</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">/run/secrets/</span><span class="si">{</span><span class="n">secret_name</span><span class="si">}</span><span class="sh">'</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">secret_file</span><span class="p">.</span><span class="nf">exists</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">secret_file</span><span class="p">.</span><span class="nf">read_text</span><span class="p">().</span><span class="nf">strip</span><span class="p">()</span>
+    
+    <span class="c1"># Fallback to environment variable
+</span>    <span class="n">env_var</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">secret_name</span><span class="p">.</span><span class="nf">upper</span><span class="p">()</span><span class="si">}</span><span class="s">_FILE</span><span class="sh">'</span>
+    <span class="k">if</span> <span class="n">env_var</span> <span class="ow">in</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nc">Path</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="n">env_var</span><span class="p">]).</span><span class="nf">read_text</span><span class="p">().</span><span class="nf">strip</span><span class="p">()</span>
+    
+    <span class="c1"># Final fallback to direct environment variable
+</span>    <span class="k">return</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="n">secret_name</span><span class="p">.</span><span class="nf">upper</span><span class="p">(),</span> <span class="n">default</span><span class="p">)</span>
+
+<span class="c1"># Usage
+</span><span class="n">DATABASE_PASSWORD</span> <span class="o">=</span> <span class="nf">get_secret</span><span class="p">(</span><span class="sh">'</span><span class="s">db_password</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="nf">get_secret</span><span class="p">(</span><span class="sh">'</span><span class="s">api_key</span><span class="sh">'</span><span class="p">)</span>
+</pre></table></code></div></div><h2 id="best-practices-ve-güvenlik"><span class="me-2">Best Practices ve Güvenlik</span><a href="#best-practices-ve-güvenlik" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="dockerfile-best-practices"><span class="me-2">Dockerfile Best Practices</span><a href="#dockerfile-best-practices" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-dockerfile highlighter-rouge"><div class="code-header"> <span data-label-text="Dockerfile"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+</pre><td class="rouge-code"><pre><span class="c"># Dockerfile.best-practices</span>
+
+<span class="c"># 1. Use specific base image versions (avoid 'latest')</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">python:3.11.6-slim-bookworm</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">builder</span>
+
+<span class="c"># 2. Set labels for documentation</span>
+<span class="k">LABEL</span><span class="s"> maintainer="your-email@example.com" \</span>
+      version="1.0" \
+      description="Flask application container"
+
+# 3. Update packages and install dependencies in one layer
+<span class="k">RUN </span>apt-get update <span class="o">&amp;&amp;</span> apt-get <span class="nb">install</span> <span class="nt">-y</span> <span class="se">\
+</span>    gcc <span class="se">\
+</span>    postgresql-dev <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> apt-get clean
+
+<span class="c"># 4. Create virtual environment</span>
+<span class="k">ENV</span><span class="s"> VIRTUAL_ENV=/opt/venv</span>
+<span class="k">RUN </span>python <span class="nt">-m</span> venv <span class="nv">$VIRTUAL_ENV</span>
+<span class="k">ENV</span><span class="s"> PATH="$VIRTUAL_ENV/bin:$PATH"</span>
+
+<span class="c"># 5. Copy only requirements first (leverage Docker cache)</span>
+<span class="k">COPY</span><span class="s"> requirements.txt .</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> <span class="nt">--no-cache-dir</span> <span class="nt">--upgrade</span> pip <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    pip <span class="nb">install</span> <span class="nt">--no-cache-dir</span> <span class="nt">-r</span> requirements.txt
+
+<span class="c"># 6. Runtime stage</span>
+<span class="k">FROM</span><span class="s"> python:3.11.6-slim-bookworm</span>
+
+<span class="c"># 7. Install only runtime dependencies</span>
+<span class="k">RUN </span>apt-get update <span class="o">&amp;&amp;</span> apt-get <span class="nb">install</span> <span class="nt">-y</span> <span class="se">\
+</span>    libpq5 <span class="se">\
+</span>    curl <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span>
+
+<span class="c"># 8. Copy virtual environment from builder</span>
+<span class="k">COPY</span><span class="s"> --from=builder /opt/venv /opt/venv</span>
+<span class="k">ENV</span><span class="s"> PATH="/opt/venv/bin:$PATH"</span>
+
+<span class="c"># 9. Create non-root user</span>
+<span class="k">RUN </span>groupadd <span class="nt">-r</span> appuser <span class="o">&amp;&amp;</span> useradd <span class="nt">-r</span> <span class="nt">-g</span> appuser appuser
+
+<span class="c"># 10. Set working directory with proper permissions</span>
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+<span class="k">RUN </span><span class="nb">chown </span>appuser:appuser /app
+
+<span class="c"># 11. Copy application files</span>
+<span class="k">COPY</span><span class="s"> --chown=appuser:appuser . .</span>
+
+<span class="c"># 12. Set environment variables</span>
+<span class="k">ENV</span><span class="s"> PYTHONUNBUFFERED=1 \</span>
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+<span class="c"># 13. Switch to non-root user</span>
+<span class="k">USER</span><span class="s"> appuser</span>
+
+<span class="c"># 14. Expose port (documentation only)</span>
+<span class="k">EXPOSE</span><span class="s"> 5000</span>
+
+<span class="c"># 15. Health check</span>
+<span class="k">HEALTHCHECK</span><span class="s"> --interval=30s --timeout=3s --start-period=5s --retries=3 \</span>
+    CMD curl -f http://localhost:5000/health || exit 1
+
+<span class="c"># 16. Use ENTRYPOINT for executable, CMD for default args</span>
+<span class="k">ENTRYPOINT</span><span class="s"> ["gunicorn"]</span>
+<span class="k">CMD</span><span class="s"> ["--bind", "0.0.0.0:5000", "--workers", "4", "app:app"]</span>
+</pre></table></code></div></div><h3 id="güvenlik-kontrol-listesi"><span class="me-2">Güvenlik Kontrol Listesi</span><a href="#güvenlik-kontrol-listesi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre><td class="rouge-code"><pre><span class="c"># 1. Base image güvenlik taraması</span>
+docker scan flask-app:latest
+
+<span class="c"># 2. Trivy ile vulnerability scanning</span>
+trivy image flask-app:latest
+
+<span class="c"># 3. Container içeriğini incele</span>
+docker <span class="nb">history </span>flask-app:latest
+docker image inspect flask-app:latest
+
+<span class="c"># 4. Non-root user kontrolü</span>
+docker run <span class="nt">--rm</span> flask-app:latest <span class="nb">id</span>
+<span class="s2">"""
+uid=1000(appuser) gid=1000(appuser) groups=1000(appuser)
+"""</span>
+
+<span class="c"># 5. Read-only root filesystem (mümkün olduğunda)</span>
+docker run <span class="nt">--read-only</span> <span class="nt">--tmpfs</span> /tmp flask-app:latest
+
+<span class="c"># 6. Resource limits</span>
+docker run <span class="nt">-m</span> 512m <span class="nt">--cpus</span><span class="o">=</span>1 flask-app:latest
+
+<span class="c"># 7. Security options</span>
+docker run <span class="se">\</span>
+    <span class="nt">--security-opt</span><span class="o">=</span>no-new-privileges <span class="se">\</span>
+    <span class="nt">--cap-drop</span><span class="o">=</span>ALL <span class="se">\</span>
+    <span class="nt">--cap-add</span><span class="o">=</span>NET_BIND_SERVICE <span class="se">\</span>
+    flask-app:latest
+</pre></table></code></div></div><h3 id="docker-compose-production-overrides"><span class="me-2">Docker Compose Production Overrides</span><a href="#docker-compose-production-overrides" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre><td class="rouge-code"><pre><span class="c1"># docker-compose.override.yml (development)</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.8'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">.:/app</span>  <span class="c1"># Hot reload için kod mount</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">DEBUG=True</span>
+      <span class="pi">-</span> <span class="s">ENVIRONMENT=development</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="s">flask run --host=0.0.0.0 --reload</span>
+
+<span class="c1"># docker-compose.prod.yml (production)</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.8'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">web</span><span class="pi">:</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">replicas</span><span class="pi">:</span> <span class="m">3</span>
+      <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">limits</span><span class="pi">:</span>
+          <span class="na">cpus</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1'</span>
+          <span class="na">memory</span><span class="pi">:</span> <span class="s">512M</span>
+        <span class="na">reservations</span><span class="pi">:</span>
+          <span class="na">cpus</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0.5'</span>
+          <span class="na">memory</span><span class="pi">:</span> <span class="s">256M</span>
+      <span class="na">restart_policy</span><span class="pi">:</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">on-failure</span>
+        <span class="na">delay</span><span class="pi">:</span> <span class="s">5s</span>
+        <span class="na">max_attempts</span><span class="pi">:</span> <span class="m">3</span>
+    <span class="na">logging</span><span class="pi">:</span>
+      <span class="na">driver</span><span class="pi">:</span> <span class="s2">"</span><span class="s">json-file"</span>
+      <span class="na">options</span><span class="pi">:</span>
+        <span class="na">max-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">10m"</span>
+        <span class="na">max-file</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3"</span>
+</pre></table></code></div></div><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="c"># Development ortamı</span>
+docker compose up
+
+<span class="c"># Production ortamı</span>
+docker compose <span class="nt">-f</span> docker-compose.yml <span class="nt">-f</span> docker-compose.prod.yml up <span class="nt">-d</span>
+</pre></table></code></div></div><h2 id="performance-optimization"><span class="me-2">Performance Optimization</span><a href="#performance-optimization" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="image-build-optimization"><span class="me-2">Image Build Optimization</span><a href="#image-build-optimization" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-dockerfile highlighter-rouge"><div class="code-header"> <span data-label-text="Dockerfile"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre><span class="c"># Optimize layer caching</span>
+<span class="c"># Bad practice:</span>
+<span class="k">COPY</span><span class="s"> . .</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+
+<span class="c"># Good practice:</span>
+<span class="k">COPY</span><span class="s"> requirements.txt .</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+<span class="k">COPY</span><span class="s"> . .</span>
+
+<span class="c"># Use BuildKit for better caching</span>
+<span class="c"># Enable BuildKit:</span>
+<span class="c"># export DOCKER_BUILDKIT=1</span>
+</pre></table></code></div></div><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre><span class="c"># Build with cache mount (BuildKit)</span>
+docker build <span class="se">\</span>
+    <span class="nt">--build-arg</span> <span class="nv">BUILDKIT_INLINE_CACHE</span><span class="o">=</span>1 <span class="se">\</span>
+    <span class="nt">--cache-from</span> flask-app:latest <span class="se">\</span>
+    <span class="nt">-t</span> flask-app:v2 <span class="nb">.</span>
+
+<span class="c"># Multi-platform build</span>
+docker buildx build <span class="se">\</span>
+    <span class="nt">--platform</span> linux/amd64,linux/arm64 <span class="se">\</span>
+    <span class="nt">-t</span> flask-app:multiarch <span class="se">\</span>
+    <span class="nt">--push</span> <span class="nb">.</span>
+</pre></table></code></div></div><h3 id="runtime-performance"><span class="me-2">Runtime Performance</span><a href="#runtime-performance" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+</pre><td class="rouge-code"><pre><span class="c1"># gunicorn_config.py - Production server configuration
+</span><span class="kn">import</span> <span class="n">multiprocessing</span>
+<span class="kn">import</span> <span class="n">os</span>
+
+<span class="c1"># Server socket
+</span><span class="n">bind</span> <span class="o">=</span> <span class="sh">'</span><span class="s">0.0.0.0:5000</span><span class="sh">'</span>
+<span class="n">backlog</span> <span class="o">=</span> <span class="mi">2048</span>
+
+<span class="c1"># Worker processes
+</span><span class="n">workers</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">GUNICORN_WORKERS</span><span class="sh">'</span><span class="p">,</span> <span class="n">multiprocessing</span><span class="p">.</span><span class="nf">cpu_count</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">worker_class</span> <span class="o">=</span> <span class="sh">'</span><span class="s">sync</span><span class="sh">'</span>  <span class="c1"># or 'gevent', 'eventlet' for async
+</span><span class="n">worker_connections</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">max_requests</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">max_requests_jitter</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">timeout</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">keepalive</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Logging
+</span><span class="n">accesslog</span> <span class="o">=</span> <span class="sh">'</span><span class="s">-</span><span class="sh">'</span>  <span class="c1"># stdout
+</span><span class="n">errorlog</span> <span class="o">=</span> <span class="sh">'</span><span class="s">-</span><span class="sh">'</span>   <span class="c1"># stderr
+</span><span class="n">loglevel</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">LOG_LEVEL</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">info</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">access_log_format</span> <span class="o">=</span> <span class="sh">'</span><span class="s">%(h)s %(l)s %(u)s %(t)s </span><span class="sh">"</span><span class="s">%(r)s</span><span class="sh">"</span><span class="s"> %(s)s %(b)s </span><span class="sh">"</span><span class="s">%(f)s</span><span class="sh">"</span><span class="s"> </span><span class="sh">"</span><span class="s">%(a)s</span><span class="sh">"</span><span class="s"> %(D)s</span><span class="sh">'</span>
+
+<span class="c1"># Process naming
+</span><span class="n">proc_name</span> <span class="o">=</span> <span class="sh">'</span><span class="s">flask-app</span><span class="sh">'</span>
+
+<span class="c1"># Server mechanics
+</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">pidfile</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">umask</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">user</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">group</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">tmp_upload_dir</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="c1"># SSL (if needed)
+# keyfile = '/path/to/key.pem'
+# certfile = '/path/to/cert.pem'
+</span>
+<span class="c1"># Hooks
+</span><span class="k">def</span> <span class="nf">on_starting</span><span class="p">(</span><span class="n">server</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Called just before the master process is initialized</span><span class="sh">"""</span>
+    <span class="n">server</span><span class="p">.</span><span class="n">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="sh">'</span><span class="s">Starting Flask application</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">when_ready</span><span class="p">(</span><span class="n">server</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Called just after the server is started</span><span class="sh">"""</span>
+    <span class="n">server</span><span class="p">.</span><span class="n">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="sh">'</span><span class="s">Server is ready. Spawning workers</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">on_reload</span><span class="p">(</span><span class="n">server</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Called to recycle workers during a reload via SIGHUP</span><span class="sh">"""</span>
+    <span class="n">server</span><span class="p">.</span><span class="n">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="sh">'</span><span class="s">Reloading workers</span><span class="sh">'</span><span class="p">)</span>
+</pre></table></code></div></div><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre><span class="c"># Dockerfile ile gunicorn config kullanımı</span>
+CMD <span class="o">[</span><span class="s2">"gunicorn"</span>, <span class="s2">"--config"</span>, <span class="s2">"gunicorn_config.py"</span>, <span class="s2">"app:app"</span><span class="o">]</span>
+</pre></table></code></div></div><h2 id="debugging-ve-troubleshooting"><span class="me-2">Debugging ve Troubleshooting</span><a href="#debugging-ve-troubleshooting" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="container-i̇çine-erişim"><span class="me-2">Container İçine Erişim</span><a href="#container-i̇çine-erişim" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre><span class="c"># Running container'a bash erişimi</span>
+docker <span class="nb">exec</span> <span class="nt">-it</span> container_name bash
+
+<span class="c"># Python shell başlat</span>
+docker <span class="nb">exec</span> <span class="nt">-it</span> container_name python
+
+<span class="c"># Specific komut çalıştır</span>
+docker <span class="nb">exec</span> <span class="nt">-it</span> container_name <span class="nb">ls</span> <span class="nt">-la</span> /app
+
+<span class="c"># Environment variables göster</span>
+docker <span class="nb">exec </span>container_name <span class="nb">env</span>
+
+<span class="c"># Process listesi</span>
+docker <span class="nb">exec </span>container_name ps aux
+</pre></table></code></div></div><h3 id="log-analysis"><span class="me-2">Log Analysis</span><a href="#log-analysis" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="c"># Tüm logları göster</span>
+docker logs container_name
+
+<span class="c"># Son 100 satır</span>
+docker logs <span class="nt">--tail</span> 100 container_name
+
+<span class="c"># Realtime follow</span>
+docker logs <span class="nt">-f</span> container_name
+
+<span class="c"># Timestamp ile</span>
+docker logs <span class="nt">-t</span> container_name
+
+<span class="c"># Belirli zaman aralığı</span>
+docker logs <span class="nt">--since</span> 1h container_name
+docker logs <span class="nt">--since</span> <span class="s2">"2024-10-14T10:00:00"</span> container_name
+
+<span class="c"># JSON format logları parse et</span>
+docker logs container_name 2&gt;&amp;1 | jq <span class="s1">'.level, .message'</span>
+</pre></table></code></div></div><h3 id="network-debugging"><span class="me-2">Network Debugging</span><a href="#network-debugging" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre><span class="c"># Container network bilgileri</span>
+docker network inspect bridge
+
+<span class="c"># Container IP adresi</span>
+docker inspect <span class="nt">-f</span> <span class="s1">'{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'</span> container_name
+
+<span class="c"># Port mapping kontrolü</span>
+docker port container_name
+
+<span class="c"># Network connectivity test</span>
+docker <span class="nb">exec </span>container_name ping db
+docker <span class="nb">exec </span>container_name curl http://web:5000/health
+
+<span class="c"># DNS resolution test</span>
+docker <span class="nb">exec </span>container_name nslookup db
+docker <span class="nb">exec </span>container_name <span class="nb">cat</span> /etc/hosts
+</pre></table></code></div></div><h3 id="performance-monitoring"><span class="me-2">Performance Monitoring</span><a href="#performance-monitoring" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="c"># Resource kullanımı</span>
+docker stats
+
+<span class="c"># Specific container stats</span>
+docker stats container_name
+
+<span class="c"># Top processes</span>
+docker top container_name
+
+<span class="c"># Disk usage</span>
+docker system <span class="nb">df
+</span>docker system <span class="nb">df</span> <span class="nt">-v</span>
+
+<span class="c"># Container inspect</span>
+docker inspect container_name
+
+<span class="c"># Image layers</span>
+docker <span class="nb">history </span>flask-app:latest
+</pre></table></code></div></div><h2 id="cicd-pipeline-entegrasyonu"><span class="me-2">CI/CD Pipeline Entegrasyonu</span><a href="#cicd-pipeline-entegrasyonu" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="github-actions-workflow"><span class="me-2">GitHub Actions Workflow</span><a href="#github-actions-workflow" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+</pre><td class="rouge-code"><pre><span class="c1"># .github/workflows/docker-build.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">Docker Build and Push</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span> <span class="nv">main</span><span class="pi">,</span> <span class="nv">develop</span> <span class="pi">]</span>
+    <span class="na">tags</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">v*'</span> <span class="pi">]</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span> <span class="nv">main</span> <span class="pi">]</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="na">REGISTRY</span><span class="pi">:</span> <span class="s">ghcr.io</span>
+  <span class="na">IMAGE_NAME</span><span class="pi">:</span> <span class="s">$</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v3</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Python</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">python-version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.11'</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install dependencies</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">python -m pip install --upgrade pip</span>
+          <span class="s">pip install -r requirements.txt</span>
+          <span class="s">pip install pytest pytest-cov</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">pytest --cov=app tests/</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload coverage</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">codecov/codecov-action@v3</span>
+
+  <span class="na">build-and-push</span><span class="pi">:</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">test</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">permissions</span><span class="pi">:</span>
+      <span class="na">contents</span><span class="pi">:</span> <span class="s">read</span>
+      <span class="na">packages</span><span class="pi">:</span> <span class="s">write</span>
+    
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout code</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v3</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Docker Buildx</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/setup-buildx-action@v2</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Log in to Container Registry</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/login-action@v2</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">registry</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">username</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">password</span><span class="pi">:</span> <span class="s">$</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Extract metadata</span>
+        <span class="na">id</span><span class="pi">:</span> <span class="s">meta</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/metadata-action@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">images</span><span class="pi">:</span> <span class="s">$/$</span>
+          <span class="na">tags</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">type=ref,event=branch</span>
+            <span class="s">type=ref,event=pr</span>
+            <span class="s">type=semver,pattern={{version}}</span>
+            <span class="s">type=semver,pattern={{major}}.{{minor}}</span>
+            <span class="s">type=sha</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build and push</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/build-push-action@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
+          <span class="na">push</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">tags</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">labels</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">cache-from</span><span class="pi">:</span> <span class="s">type=gha</span>
+          <span class="na">cache-to</span><span class="pi">:</span> <span class="s">type=gha,mode=max</span>
+          <span class="na">build-args</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">BUILD_DATE=$</span>
+            <span class="s">VERSION=$</span>
+
+  <span class="na">deploy</span><span class="pi">:</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="s">build-and-push</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">if</span><span class="pi">:</span> <span class="s">github.ref == 'refs/heads/main'</span>
+    
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy to production</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">appleboy/ssh-action@master</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">host</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">username</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">script</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">cd /opt/flask-app</span>
+            <span class="s">docker compose pull</span>
+            <span class="s">docker compose up -d</span>
+            <span class="s">docker system prune -f</span>
+</pre></table></code></div></div><h2 id="kubernetes-deployment-bonus"><span class="me-2">Kubernetes Deployment (Bonus)</span><a href="#kubernetes-deployment-bonus" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Kubernetes’e geçiş için temel manifesto:</p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+</pre><td class="rouge-code"><pre><span class="c1"># k8s/deployment.yaml</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flask-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">flask-app</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">3</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">flask-app</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">flask-app</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">flask-app</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">flask-app:latest</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">5000</span>
+        <span class="na">env</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ENVIRONMENT</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">production"</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DATABASE_URL</span>
+          <span class="na">valueFrom</span><span class="pi">:</span>
+            <span class="na">secretKeyRef</span><span class="pi">:</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">flask-secrets</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s">database-url</span>
+        <span class="na">resources</span><span class="pi">:</span>
+          <span class="na">requests</span><span class="pi">:</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">256Mi"</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">250m"</span>
+          <span class="na">limits</span><span class="pi">:</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">512Mi"</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">500m"</span>
+        <span class="na">livenessProbe</span><span class="pi">:</span>
+          <span class="na">httpGet</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/health/liveness</span>
+            <span class="na">port</span><span class="pi">:</span> <span class="m">5000</span>
+          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="m">30</span>
+          <span class="na">periodSeconds</span><span class="pi">:</span> <span class="m">10</span>
+        <span class="na">readinessProbe</span><span class="pi">:</span>
+          <span class="na">httpGet</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/health/readiness</span>
+            <span class="na">port</span><span class="pi">:</span> <span class="m">5000</span>
+          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="m">5</span>
+          <span class="na">periodSeconds</span><span class="pi">:</span> <span class="m">5</span>
+
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flask-app-service</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">flask-app</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="na">targetPort</span><span class="pi">:</span> <span class="m">5000</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">LoadBalancer</span>
+</pre></table></code></div></div><h2 id="sonuç-ve-öneriler"><span class="me-2">Sonuç ve Öneriler</span><a href="#sonuç-ve-öneriler" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Docker ile Python uygulamalarını containerize etmek, modern yazılım geliştirme süreçlerinin vazgeçilmez bir parçası haline gelmiştir. Bu rehberde öğrendiğiniz tekniklerle:</p><h3 id="-kazanımlar"><span class="me-2">✅ Kazanımlar</span><a href="#-kazanımlar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ol><li><strong>Tutarlı Ortamlar</strong>: Development, staging ve production ortamları arasında tam tutarlılık<li><strong>Kolay Deployment</strong>: Tek bir komutla uygulamanızı herhangi bir yere deploy edebilme<li><strong>Ölçeklenebilirlik</strong>: Docker Compose ve Kubernetes ile kolayca scale edilebilir mikroservisler<li><strong>İzolasyon</strong>: Her servis kendi container’ında çalışır, bağımlılık çakışmaları ortadan kalkar<li><strong>Hızlı Geliştirme</strong>: Multi-stage builds ile optimize edilmiş image boyutları ve hızlı build süreleri</ol><h3 id="-best-practices-özeti"><span class="me-2">📊 Best Practices Özeti</span><a href="#-best-practices-özeti" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Dockerfile:</strong></p><ul><li>✅ Multi-stage builds kullan<li>✅ Specific base image versiyonları tercih et<li>✅ Layer caching’i optimize et<li>✅ Non-root user kullan<li>✅ Health check ekle<li>✅ .dockerignore dosyası oluştur</ul><p><strong>Docker Compose:</strong></p><ul><li>✅ Environment variables ile konfigürasyon<li>✅ Named volumes kullan<li>✅ Health checks ve depends_on tanımla<li>✅ Network izolasyonu sağla<li>✅ Resource limits belirle</ul><p><strong>Güvenlik:</strong></p><ul><li>✅ Minimal base image’lar (alpine, slim)<li>✅ Secrets management<li>✅ Regular security scans<li>✅ Non-root execution<li>✅ Read-only root filesystem</ul><p><strong>Production:</strong></p><ul><li>✅ Reverse proxy kullan (Nginx)<li>✅ Structured logging implement et<li>✅ Comprehensive health checks<li>✅ Resource limits ve monitoring<li>✅ Automated backups</ul><h3 id="-sonraki-adımlar"><span class="me-2">🚀 Sonraki Adımlar</span><a href="#-sonraki-adımlar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ol><li><strong>Monitoring ve Observability</strong>: Prometheus, Grafana, ELK Stack entegrasyonu<li><strong>Service Mesh</strong>: Istio veya Linkerd ile advanced networking<li><strong>CI/CD Maturity</strong>: GitOps, ArgoCD ile declarative deployment<li><strong>Cloud Native</strong>: AWS ECS, GKE, Azure Container Instances<li><strong>Advanced Orchestration</strong>: Kubernetes advanced patterns (operators, CRDs)</ol><h3 id="-ek-kaynaklar"><span class="me-2">📚 Ek Kaynaklar</span><a href="#-ek-kaynaklar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ul><li><a href="https://docs.docker.com/">Docker Official Documentation</a><li><a href="https://docs.docker.com/develop/dev-best-practices/">Docker Best Practices</a><li><a href="https://hub.docker.com/_/python">Python Docker Images</a><li><a href="https://docs.docker.com/compose/">Docker Compose Documentation</a><li><a href="https://docs.docker.com/engine/reference/builder/">Dockerfile Reference</a><li><a href="https://docs.docker.com/build/building/multi-stage/">Multi-Stage Builds Guide</a><li><a href="https://docs.docker.com/engine/security/">Docker Security Best Practices</a><li><a href="https://kubernetes.io/docs/home/">Kubernetes Documentation</a></ul><h3 id="-son-tavsiyeler"><span class="me-2">💡 Son Tavsiyeler</span><a href="#-son-tavsiyeler" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Docker öğrenmek bir yolculuktur. Başlangıçta karmaşık görünebilir, ancak temel prensipleri öğrendikten sonra development workflow’unuzu büyük ölçüde geliştirecektir. Küçük projelerle başlayın, deneyler yapın ve yavaş yavaş production-ready sistemlere doğru ilerleyin.</p><p>Containerization sadece bir teknoloji değil, aynı zamanda bir kültür değişimidir. DevOps prensiplerini benimseyin, otomasyona yatırım yapın ve sürekli öğrenmeye devam edin. Happy Dockerizing! 🐳</p><hr /><p><strong>Sorularınız mı var?</strong> Docker ve Python containerization hakkında deneyimlerinizi yorumlarda paylaşabilirsiniz. Bu yazının faydalı olduğunu düşünüyorsanız, sosyal medyada paylaşmayı unutmayın!</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw me-1"></i> <a href="/categories/devops/">DevOps</a>, <a href="/categories/python/">Python</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw me-1"></i> <a href="/tags/docker/" class="post-tag no-text-decoration" >docker</a> <a href="/tags/python/" class="post-tag no-text-decoration" >python</a> <a href="/tags/containerization/" class="post-tag no-text-decoration" >containerization</a> <a href="/tags/devops/" class="post-tag no-text-decoration" >devops</a> <a href="/tags/deployment/" class="post-tag no-text-decoration" >deployment</a> <a href="/tags/microservices/" class="post-tag no-text-decoration" >microservices</a> <a href="/tags/kubernetes/" class="post-tag no-text-decoration" >kubernetes</a></div><div class=" post-tail-bottom d-flex justify-content-between align-items-center mt-5 pb-2 " ><div class="license-wrapper"> Bu gönderi <a href="https://creativecommons.org/licenses/by/4.0/deed.tr"> CC BY 4.0 </a> lisansı altındadır.</div><div class="share-wrapper d-flex align-items-center"> <span class="share-label text-muted">Paylaş</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Docker%20ile%20Python%20Uygulamas%C4%B1%20Containerization%20-%20Furkan%20K%C3%B6yk%C4%B1ran&url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fdocker-ile-python-uygulamasi-containerization%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter"> <i class="fa-fw fa-brands fa-square-x-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Docker%20ile%20Python%20Uygulamas%C4%B1%20Containerization%20-%20Furkan%20K%C3%B6yk%C4%B1ran&u=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fdocker-ile-python-uygulamasi-containerization%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fdocker-ile-python-uygulamasi-containerization%2F&text=Docker%20ile%20Python%20Uygulamas%C4%B1%20Containerization%20-%20Furkan%20K%C3%B6yk%C4%B1ran" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <button id="copy-link" aria-label="Copy link" class="btn small" data-bs-toggle="tooltip" data-bs-placement="top" title="Linki kopyala" data-title-succeed="Link kopyalandı." > <i class="fa-fw fas fa-link pe-none fs-6"></i> </button> </span></div></div></div></article></main><aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted"><div class="access"><section id="access-lastmod"><h2 class="panel-heading">Son Güncellenenler</h2><ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2"><li class="text-truncate lh-lg"> <a href="/posts/apache-kafka-event-streaming/">Apache Kafka ile Event Streaming: Gerçek Zamanlı Veri Pipeline'ları</a><li class="text-truncate lh-lg"> <a href="/posts/git-is-akisi-branch-stratejileri/">Git İş Akışı ve Branch Stratejileri: GitFlow, Trunk-Based, GitHub Flow</a><li class="text-truncate lh-lg"> <a href="/posts/python-context-managers-kaynak-yonetimi/">Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</a><li class="text-truncate lh-lg"> <a href="/posts/modern-web-arayuzu-css-javascript/">Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</a><li class="text-truncate lh-lg"> <a href="/posts/python-ile-eposta-otomasyonu/">Python ile E-posta Otomasyonu</a></ul></section><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div class="toc-border-cover z-3"></div><section id="toc-wrapper" class="invisible position-sticky ps-0 pe-4 pb-4"><h2 class="panel-heading ps-3 pb-2 mb-0">İçindekiler</h2><nav id="toc"></nav></section></aside></div><div class="row"><div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4"><aside id="related-posts" aria-labelledby="related-label"><h3 class="mb-4" id="related-label">Benzer Gönderiler</h3><nav class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4"><article class="col"> <a href="/posts/kubernetes-container-orkestrasyon/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1751958000" data-df="DD/MM/YYYY" > 08/07/2025 </time><h4 class="pt-0 my-2">Kubernetes ile Container Orkestrasyon: Pod, Service ve Deployment Yönetimi</h4><div class="text-muted"><p>Kubernetes ile production-grade container orkestrasyon. Pod, Service, Deployment, ConfigMap, Secret yönetimi, HPA autoscaling, monitoring ve debugging best practices.</p></div></div></a></article><article class="col"> <a href="/posts/github-actions-cicd-pipeline/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1742626800" data-df="DD/MM/YYYY" > 22/03/2025 </time><h4 class="pt-0 my-2">GitHub Actions ile CI/CD Pipeline: Otomatik Test ve Deployment</h4><div class="text-muted"><p>GitHub Actions ile CI/CD pipeline oluşturma rehberi. Otomatik test, Docker build, multi-environment deployment ve güvenlik best practices.</p></div></div></a></article><article class="col"> <a href="/posts/systemd-python-servis-yonetimi/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1736661600" data-df="DD/MM/YYYY" > 12/01/2025 </time><h4 class="pt-0 my-2">Systemd ile Python Servis Yönetimi</h4><div class="text-muted"><p>Python uygulamalarını systemd ile production servis haline getirme rehberi. Unit file yapılandırması, journald logging, watchdog, socket activation ve deployment.</p></div></div></a></article></nav></aside><nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation"> <a href="/posts/gas-optimization-techniques-solidity/" class="btn btn-outline-primary" aria-label="Geri" ><p>Gas Optimization Techniques for Solidity Smart Contracts</p></a> <a href="/posts/understanding-ethereum-2-staking/" class="btn btn-outline-primary" aria-label="İleri" ><p>Understanding Ethereum 2.0 Staking: Complete Validator Guide</p></a></nav><footer aria-label="Site Info" class=" d-flex flex-column justify-content-center text-muted flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3 " ><p>© <time>2025</time> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a>. <span data-bs-toggle="tooltip" data-bs-placement="top" title="Aksi belirtilmediği sürece, bu sitedeki gönderiler Creative Commons Atıf 4.0 Uluslararası (CC BY 4.0) Lisansı altındadır. Kısaca sayfa linkini vererek değiştirebilir / paylaşabilirsiniz." >Bazı hakları saklıdır.</span></p><p><a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> ve <a data-bs-toggle="tooltip" data-bs-placement="top" title="v7.4.1" href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener" >Chirpy</a> teması</p></footer></div></div><div id="search-result-wrapper" class="d-flex justify-content-center d-none"><div class="col-11 content"><div id="search-hints"><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><aside aria-label="Scroll to Top"> <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow"> <i class="fas fa-angle-up"></i> </button></aside></div><div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div><script> document.addEventListener('DOMContentLoaded', () => { SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<article class="px-1 px-sm-2 px-lg-4 px-xl-0"><header><h2><a href="{url}">{title}</a></h2><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div></header><p>{content}</p></article>', noResultsText: '<p class="mt-5">Hop! Öyle bir şey bulamadım.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); }); </script>

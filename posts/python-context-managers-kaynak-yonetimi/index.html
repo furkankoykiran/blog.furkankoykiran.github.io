@@ -1,0 +1,1275 @@
+<!doctype html><html lang="tr-TR" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover" ><meta name="generator" content="Jekyll v4.4.1" /><meta property="og:title" content="Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices" /><meta property="og:locale" content="tr_TR" /><meta name="description" content="Python context managers ile otomatik kaynak yönetimi. enter ve exit protokolü, contextlib decorator’ları, database connection pool, file handling ve advanced patterns." /><meta property="og:description" content="Python context managers ile otomatik kaynak yönetimi. enter ve exit protokolü, contextlib decorator’ları, database connection pool, file handling ve advanced patterns." /><link rel="canonical" href="https://blog.furkankoykiran.com.tr/posts/python-context-managers-kaynak-yonetimi/" /><meta property="og:url" content="https://blog.furkankoykiran.com.tr/posts/python-context-managers-kaynak-yonetimi/" /><meta property="og:site_name" content="Furkan Köykıran" /><meta property="og:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/python-context-manager-with-statement.jpg" /><meta property="og:image:alt" content="Python Context Manager ve With Statement" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2025-11-22T11:00:00+03:00" /><meta name="twitter:card" content="summary_large_image" /><meta property="twitter:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/python-context-manager-with-statement.jpg" /><meta name="twitter:image:alt" content="Python Context Manager ve With Statement" /><meta property="twitter:title" content="Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices" /><meta name="twitter:site" content="@furkankoykiran" /><meta name="google-site-verification" content="LEiVauGuhGdPxwWU7bq-uQaNYrEu9Aqhv8TM3SaoSsM" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-12-05T04:47:46+03:00","datePublished":"2025-11-22T11:00:00+03:00","description":"Python context managers ile otomatik kaynak yönetimi. enter ve exit protokolü, contextlib decorator’ları, database connection pool, file handling ve advanced patterns.","headline":"Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices","image":{"alt":"Python Context Manager ve With Statement","url":"https://blog.furkankoykiran.com.tr/assets/img/posts/python-context-manager-with-statement.jpg","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.furkankoykiran.com.tr/posts/python-context-managers-kaynak-yonetimi/"},"url":"https://blog.furkankoykiran.com.tr/posts/python-context-managers-kaynak-yonetimi/"}</script><title>Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices | Furkan Köykıran</title><link rel="icon" type="image/png" href="/assets/img/favicons/favicon-96x96.png" sizes="96x96"><link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.36.4/dist/tocbot.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css"> <script src="/assets/js/dist/theme.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/glightbox@3.3.0/dist/js/glightbox.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.18/dayjs.min.js,npm/dayjs@1.11.18/locale/tr.js,npm/dayjs@1.11.18/plugin/relativeTime.js,npm/dayjs@1.11.18/plugin/localizedFormat.js,npm/tocbot@4.36.4/dist/tocbot.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script><body><aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end"><header class="profile-wrapper"> <a href="/" id="avatar" class="rounded-circle"><img src="https://blog.furkankoykiran.com.tr/assets/img/avatar.png" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a> <a class="site-title d-block" href="/">Furkan Köykıran</a><p class="site-subtitle fst-italic mb-0">Kişisel Websitesi</p></header><nav class="flex-column flex-grow-1 w-100 ps-0"><ul class="nav"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home"></i> <span>ANA SAYFA</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream"></i> <span>KATEGORILER</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tags"></i> <span>ETIKETLER</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive"></i> <span>ARŞIV</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle"></i> <span>HAKKINDA</span> </a><li class="nav-item"> <a href="/contact/" class="nav-link"> <i class="fa-fw far fa-address-book"></i> <span>İLETIŞIM</span> </a></ul></nav><div class="sidebar-bottom d-flex flex-wrap align-items-center w-100"> <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/furkankoykiran" aria-label="github" target="_blank" rel="noopener noreferrer" > <i class="fab fa-github"></i> </a> <a href="https://twitter.com/furkankoykiran" aria-label="twitter" target="_blank" rel="noopener noreferrer" > <i class="fa-brands fa-x-twitter"></i> </a> <a href="javascript:location.href = 'mailto:' + ['furkankoykiran','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></aside><div id="main-wrapper" class="d-flex justify-content-center"><div class="container d-flex flex-column px-xxl-5"><header id="topbar-wrapper" class="flex-shrink-0" aria-label="Top Bar"><div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100" ><nav id="breadcrumb" aria-label="Breadcrumb"> <span> <a href="/">Ana sayfa</a> </span> <span>Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</span></nav><button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Sidebar"> <i class="fas fa-bars fa-fw"></i> </button><div id="topbar-title"> Gönderi</div><button type="button" id="search-trigger" class="btn btn-link" aria-label="Search"> <i class="fas fa-search fa-fw"></i> </button> <search id="search" class="align-items-center ms-3 ms-lg-0"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Ara......" > </search> <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">İptal</button></div></header><div class="row flex-grow-1"><main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4"><article class="px-1" data-toc="true"><header><h1 data-toc-skip>Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</h1><p class="post-desc fw-light mb-4">Python context managers ile otomatik kaynak yönetimi. __enter__ ve __exit__ protokolü, contextlib decorator'ları, database connection pool, file handling ve advanced patterns.</p><div class="post-meta text-muted"> <span> Gönderim <time data-ts="1763798400" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 22/11/2025 </time> </span> <span> Güncelleme <time data-ts="1764899266" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 05/12/2025 </time> </span><div class="mt-3 mb-3"> <a href="/assets/img/posts/python-context-manager-with-statement.jpg" class="popup img-link preview-img shimmer"><img src="/assets/img/posts/python-context-manager-with-statement.jpg" alt="Python Context Manager ve With Statement" width="1200" height="630" loading="lazy"></a><figcaption class="text-center pt-2 pb-2">Python Context Manager ve With Statement</figcaption></div><div class="d-flex justify-content-between"> <span> Yazan <em> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a> </em> </span><div> <span class="readtime" data-bs-toggle="tooltip" data-bs-placement="bottom" title="2585 sözcük" > <em>14 dakikada</em> okunabilir</span></div></div></div></header><div id="toc-bar" class="d-flex align-items-center justify-content-between invisible"> <span class="label text-truncate">Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</span> <button type="button" class="toc-trigger btn me-1"> <i class="fa-solid fa-list-ul fa-fw"></i> </button></div><button id="toc-solo-trigger" type="button" class="toc-trigger btn btn-outline-secondary btn-sm"> <span class="label ps-2 pe-1">İçindekiler</span> <i class="fa-solid fa-angle-right fa-fw"></i> </button> <dialog id="toc-popup" class="p-0"><div class="header d-flex flex-row align-items-center justify-content-between"><div class="label text-truncate py-2 ms-4">Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</div><button id="toc-popup-close" type="button" class="btn mx-1 my-1 opacity-75"> <i class="fas fa-close"></i> </button></div><div id="toc-popup-content" class="px-4 py-3 pb-4"></div></dialog><div class="content"><p>Python’da kaynak yönetimi, özellikle dosya işlemleri, veritabanı bağlantıları, network soketleri gibi dış kaynaklarla çalışırken kritik öneme sahiptir. Context managers, bu kaynakların güvenli ve otomatik olarak yönetilmesini sağlayan güçlü bir Python özelliğidir.</p><h2 id="context-manager-nedir"><span class="me-2">Context Manager Nedir?</span><a href="#context-manager-nedir" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Context manager, <code class="language-plaintext highlighter-rouge">with</code> statement ile birlikte kullanılan ve kaynakların otomatik olarak açılıp kapatılmasını sağlayan Python objesidir. En bilinen örneği dosya işlemleridir.</p><p><strong>Temel Kullanım:</strong></p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre><span class="c1"># Context manager ile dosya işlemi
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">'</span><span class="s">dosya.txt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<span class="c1"># Dosya otomatik olarak kapatıldı
+</span>
+<span class="c1"># Context manager olmadan (eski yöntem)
+</span><span class="n">f</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">'</span><span class="s">dosya.txt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>  <span class="c1"># Manuel kapatma gerekli
+</span></pre></table></code></div></div><p>Context manager kullanmanın avantajları:</p><ul><li>Otomatik kaynak temizleme<li>Exception handling garantisi<li>Daha temiz ve okunabilir kod<li>Resource leak’lerden korunma</ul><p><a href="/assets/img/posts/python-context-manager-with-statement.jpg" class="popup img-link shimmer"><img src="/assets/img/posts/python-context-manager-with-statement.jpg" alt="Python Context Manager ve With Statement" width="700" height="400" class="shadow" loading="lazy"></a> <em>Python context manager yapısı ve with statement kullanımı</em></p><blockquote class="prompt-tip"><p>Context manager kullanımı, dosya, veritabanı bağlantısı gibi kaynakların exception durumunda bile otomatik kapatılmasını garanti eder.</p></blockquote><h2 id="context-manager-protocol"><span class="me-2">Context Manager Protocol</span><a href="#context-manager-protocol" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Context manager olmak için bir sınıfın <code class="language-plaintext highlighter-rouge">__enter__</code> ve <code class="language-plaintext highlighter-rouge">__exit__</code> methodlarını implement etmesi gerekir.</p><div file="file_manager.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="file_manager.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">FileManager</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="n">self</span><span class="p">.</span><span class="nb">file</span> <span class="o">=</span> <span class="bp">None</span>
+    
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        with bloğuna girildiğinde çağrılır.
+        Return edilen değer </span><span class="sh">'</span><span class="s">as</span><span class="sh">'</span><span class="s"> keyword</span><span class="sh">'</span><span class="s">ünden sonra atanır.
+        </span><span class="sh">"""</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Opening </span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">filename</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nb">file</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">mode</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nb">file</span>
+    
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">exc_traceback</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        with bloğundan çıkıldığında çağrılır.
+        
+        Args:
+            exc_type: Exception tipi (hata yoksa None)
+            exc_value: Exception değeri (hata yoksa None)
+            exc_traceback: Traceback objesi (hata yoksa None)
+        
+        Returns:
+            True: Exception</span><span class="sh">'</span><span class="s">ı suppress et
+            False/None: Exception</span><span class="sh">'</span><span class="s">ı propagate et
+        </span><span class="sh">"""</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Closing </span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">filename</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="nb">file</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="nb">file</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+        
+        <span class="c1"># Exception handling
+</span>        <span class="k">if</span> <span class="n">exc_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Exception occurred: </span><span class="si">{</span><span class="n">exc_type</span><span class="p">.</span><span class="n">__name__</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">exc_value</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+            <span class="c1"># False dönerek exception'ı yukarı fırlat
+</span>            <span class="k">return</span> <span class="bp">False</span>
+        
+        <span class="k">return</span> <span class="bp">True</span>
+
+<span class="c1"># Kullanım
+</span><span class="k">with</span> <span class="nc">FileManager</span><span class="p">(</span><span class="sh">'</span><span class="s">test.txt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">'</span><span class="s">Hello, Context Manager!</span><span class="sh">'</span><span class="p">)</span>
+    <span class="c1"># Exception test
+</span>    <span class="c1"># raise ValueError("Test error")
+</span>
+<span class="c1"># Output:
+# Opening test.txt
+# Closing test.txt
+</span></pre></table></code></div></div><h2 id="database-connection-manager"><span class="me-2">Database Connection Manager</span><a href="#database-connection-manager" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Veritabanı bağlantıları için context manager örneği:</p><div file="database_manager.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="database_manager.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">psycopg2</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="k">class</span> <span class="nc">DatabaseConnection</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">database</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">connection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">psycopg2</span><span class="p">.</span><span class="n">extensions</span><span class="p">.</span><span class="n">connection</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">cursor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">psycopg2</span><span class="p">.</span><span class="n">extensions</span><span class="p">.</span><span class="n">cursor</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+    
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Veritabanı bağlantısı ve cursor oluştur</span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">host</span><span class="p">,</span>
+            <span class="n">database</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">database</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">password</span>
+        <span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">connection</span><span class="p">.</span><span class="nf">cursor</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">cursor</span>
+    
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">exc_traceback</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Bağlantıyı kapat. 
+        Exception yoksa commit, varsa rollback yap.
+        </span><span class="sh">"""</span>
+        <span class="k">if</span> <span class="n">exc_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c1"># Başarılı, commit yap
+</span>            <span class="n">self</span><span class="p">.</span><span class="n">connection</span><span class="p">.</span><span class="nf">commit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Hata oluştu, rollback yap
+</span>            <span class="n">self</span><span class="p">.</span><span class="n">connection</span><span class="p">.</span><span class="nf">rollback</span><span class="p">()</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Transaction rolled back due to: </span><span class="si">{</span><span class="n">exc_value</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        
+        <span class="c1"># Kaynakları temizle
+</span>        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">cursor</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">cursor</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">connection</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">connection</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+        
+        <span class="c1"># Exception'ı propagate et
+</span>        <span class="k">return</span> <span class="bp">False</span>
+
+<span class="c1"># Kullanım
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nc">DatabaseConnection</span><span class="p">(</span><span class="sh">'</span><span class="s">localhost</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">mydb</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">user</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">pass</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">cursor</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="sh">"</span><span class="s">INSERT INTO users (name, email) VALUES (%s, %s)</span><span class="sh">"</span><span class="p">,</span> 
+                      <span class="p">(</span><span class="sh">'</span><span class="s">John Doe</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">john@example.com</span><span class="sh">'</span><span class="p">))</span>
+        <span class="n">cursor</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="sh">"</span><span class="s">SELECT * FROM users WHERE name = %s</span><span class="sh">"</span><span class="p">,</span> <span class="p">(</span><span class="sh">'</span><span class="s">John Doe</span><span class="sh">'</span><span class="p">,))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="nf">fetchall</span><span class="p">()</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="c1"># Hata olursa otomatik rollback
+</span>        <span class="c1"># raise Exception("Something went wrong")
+</span><span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Bağlantı otomatik olarak kapatıldı ve commit edildi
+</span></pre></table></code></div></div><h2 id="contextlib-ile-context-manager-oluşturma"><span class="me-2">contextlib ile Context Manager Oluşturma</span><a href="#contextlib-ile-context-manager-oluşturma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p><code class="language-plaintext highlighter-rouge">contextlib</code> modülü, context manager oluşturmayı kolaylaştıran decorator’lar sağlar.</p><p><a href="/assets/img/posts/python-contextlib-decorator.png" class="popup img-link shimmer"><img src="/assets/img/posts/python-contextlib-decorator.png" alt="Contextlib Decorator" width="700" height="400" class="shadow" loading="lazy"></a> <em>Python contextlib ile basitleştirilmiş context manager oluşturma</em></p><h3 id="contextmanager-decorator"><span class="me-2">@contextmanager Decorator</span><a href="#contextmanager-decorator" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">import</span> <span class="n">time</span>
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">timer</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Kod bloğunun çalışma süresini ölçen context manager</span><span class="sh">"""</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">[</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">] Starting...</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>  <span class="c1"># with bloğuna geç
+</span>    <span class="k">finally</span><span class="p">:</span>
+        <span class="c1"># with bloğu bittikten sonra burası çalışır
+</span>        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">[</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">] Finished in </span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s"> seconds</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Kullanım
+</span><span class="k">with</span> <span class="nf">timer</span><span class="p">(</span><span class="sh">"</span><span class="s">Database Query</span><span class="sh">"</span><span class="p">):</span>
+    <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Simüle edilen işlem
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Executing query...</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Output:
+# [Database Query] Starting...
+# Executing query...
+# [Database Query] Finished in 2.0001 seconds
+</span></pre></table></code></div></div><h3 id="i̇ç-i̇çe-context-managers"><span class="me-2">İç İçe Context Managers</span><a href="#i̇ç-i̇çe-context-managers" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre><td class="rouge-code"><pre><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">logging_context</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Log mesajları ile context manager</span><span class="sh">"""</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">&gt;&gt;&gt; Entering </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">!!! Exception in </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">raise</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">&lt;&lt;&lt; Exiting </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># İç içe kullanım
+</span><span class="k">with</span> <span class="nf">logging_context</span><span class="p">(</span><span class="sh">"</span><span class="s">Outer</span><span class="sh">"</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">In outer context</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="k">with</span> <span class="nf">logging_context</span><span class="p">(</span><span class="sh">"</span><span class="s">Inner</span><span class="sh">"</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">In inner context</span><span class="sh">"</span><span class="p">)</span>
+        <span class="c1"># raise ValueError("Test error")
+</span>    
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Back to outer context</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Output:
+# &gt;&gt;&gt; Entering Outer
+# In outer context
+# &gt;&gt;&gt; Entering Inner
+# In inner context
+# &lt;&lt;&lt; Exiting Inner
+# Back to outer context
+# &lt;&lt;&lt; Exiting Outer
+</span></pre></table></code></div></div><h2 id="gerçek-dünya-örnekleri"><span class="me-2">Gerçek Dünya Örnekleri</span><a href="#gerçek-dünya-örnekleri" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="api-rate-limiter"><span class="me-2">API Rate Limiter</span><a href="#api-rate-limiter" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="n">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
+
+<span class="k">class</span> <span class="nc">RateLimiter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">max_calls</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">time_frame</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Args:
+            max_calls: Time frame içinde izin verilen maksimum çağrı sayısı
+            time_frame: Zaman dilimi (saniye)
+        </span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">max_calls</span> <span class="o">=</span> <span class="n">max_calls</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">time_frame</span> <span class="o">=</span> <span class="n">time_frame</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">calls</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">lock</span> <span class="o">=</span> <span class="nc">Lock</span><span class="p">()</span>
+    
+    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Rate limiting context manager</span><span class="sh">"""</span>
+        <span class="k">with</span> <span class="n">self</span><span class="p">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+            
+            <span class="c1"># Eski çağrıları temizle
+</span>            <span class="n">self</span><span class="p">.</span><span class="n">calls</span> <span class="o">=</span> <span class="p">[</span><span class="n">call_time</span> <span class="k">for</span> <span class="n">call_time</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">calls</span> 
+                         <span class="k">if</span> <span class="n">now</span> <span class="o">-</span> <span class="n">call_time</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">time_frame</span><span class="p">]</span>
+            
+            <span class="c1"># Limit kontrolü
+</span>            <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">calls</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">max_calls</span><span class="p">:</span>
+                <span class="c1"># Bekle
+</span>                <span class="n">sleep_time</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">time_frame</span> <span class="o">-</span> <span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">calls</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Rate limit reached. Waiting </span><span class="si">{</span><span class="n">sleep_time</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">s...</span><span class="sh">"</span><span class="p">)</span>
+                <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span>
+                <span class="n">self</span><span class="p">.</span><span class="n">calls</span> <span class="o">=</span> <span class="p">[]</span>
+            
+            <span class="c1"># Çağrıyı kaydet
+</span>            <span class="n">self</span><span class="p">.</span><span class="n">calls</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">())</span>
+        
+        <span class="k">yield</span>
+
+<span class="c1"># Kullanım
+</span><span class="n">rate_limiter</span> <span class="o">=</span> <span class="nc">RateLimiter</span><span class="p">(</span><span class="n">max_calls</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">time_frame</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">make_api_call</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">rate_limiter</span><span class="p">.</span><span class="nf">limit</span><span class="p">():</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Making API call </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s"> at </span><span class="si">{</span><span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="c1"># API çağrısı simülasyonu
+</span>        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># 10 çağrı yap (5'ten sonra bekleyecek)
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nf">make_api_call</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></table></code></div></div><p><a href="/assets/img/posts/custom-context-managers-python.png" class="popup img-link shimmer"><img src="/assets/img/posts/custom-context-managers-python.png" alt="Custom Context Managers" loading="lazy"></a></p><h3 id="temporary-directory-manager"><span class="me-2">Temporary Directory Manager</span><a href="#temporary-directory-manager" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">os</span>
+<span class="kn">import</span> <span class="n">tempfile</span>
+<span class="kn">import</span> <span class="n">shutil</span>
+<span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">temporary_directory</span><span class="p">(</span><span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">''</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">'</span><span class="s">tmp</span><span class="sh">'</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Geçici dizin oluşturur ve işlem bitince siler.
+    </span><span class="sh">"""</span>
+    <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="p">.</span><span class="nf">mkdtemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Created temporary directory: </span><span class="si">{</span><span class="n">temp_dir</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">temp_dir</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="c1"># Dizini ve içeriğini sil
+</span>        <span class="n">shutil</span><span class="p">.</span><span class="nf">rmtree</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Cleaned up temporary directory: </span><span class="si">{</span><span class="n">temp_dir</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Kullanım
+</span><span class="k">with</span> <span class="nf">temporary_directory</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="sh">'</span><span class="s">myapp_</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">temp_dir</span><span class="p">:</span>
+    <span class="c1"># Geçici dosyalar oluştur
+</span>    <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="sh">'</span><span class="s">test.txt</span><span class="sh">'</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">'</span><span class="s">Temporary data</span><span class="sh">'</span><span class="p">)</span>
+    
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Working with: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">File exists: </span><span class="si">{</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Dizin otomatik olarak silindi
+</span></pre></table></code></div></div><h3 id="configuration-override-manager"><span class="me-2">Configuration Override Manager</span><a href="#configuration-override-manager" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">import</span> <span class="n">copy</span>
+
+<span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Global configuration singleton</span><span class="sh">"""</span>
+    <span class="n">_instance</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_config</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">debug</span><span class="sh">'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">api_url</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">https://api.example.com</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">timeout</span><span class="sh">'</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">retry_count</span><span class="sh">'</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="p">}</span>
+    
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cls</span><span class="p">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">cls</span><span class="p">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="nf">super</span><span class="p">().</span><span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">_instance</span>
+    
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_config</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_config</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">updates</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">_config</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">updates</span><span class="p">)</span>
+    
+    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">override</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">**</span><span class="n">overrides</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Geçici olarak config değerlerini override et.
+        Context</span><span class="sh">'</span><span class="s">ten çıkınca eski değerlere dön.
+        </span><span class="sh">"""</span>
+        <span class="c1"># Mevcut değerleri kaydet
+</span>        <span class="n">original_values</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">_config</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> 
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">overrides</span><span class="p">.</span><span class="nf">keys</span><span class="p">()</span>
+        <span class="p">}</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Override değerlerini uygula
+</span>            <span class="n">self</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">overrides</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">self</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="c1"># Eski değerlere dön
+</span>            <span class="n">self</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">original_values</span><span class="p">)</span>
+
+<span class="c1"># Kullanım
+</span><span class="n">config</span> <span class="o">=</span> <span class="nc">Config</span><span class="p">()</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Original debug: </span><span class="si">{</span><span class="n">config</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">debug</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># False
+</span>
+<span class="k">with</span> <span class="n">config</span><span class="p">.</span><span class="nf">override</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Overridden debug: </span><span class="si">{</span><span class="n">config</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">debug</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># True
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Overridden timeout: </span><span class="si">{</span><span class="n">config</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">timeout</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 60
+</span>    
+    <span class="c1"># Test kodları çalıştır
+</span>    <span class="c1"># ...
+</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Restored debug: </span><span class="si">{</span><span class="n">config</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">debug</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># False
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Restored timeout: </span><span class="si">{</span><span class="n">config</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">timeout</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 30
+</span></pre></table></code></div></div><h3 id="http-session-manager"><span class="me-2">HTTP Session Manager</span><a href="#http-session-manager" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="k">class</span> <span class="nc">SessionManager</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">base_url</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">requests</span><span class="p">.</span><span class="n">Session</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+    
+    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">get_session</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        HTTP session context manager.
+        Connection pooling ve automatic retry sağlar.
+        </span><span class="sh">"""</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nc">Session</span><span class="p">()</span>
+        
+        <span class="c1"># Default headers
+</span>        <span class="n">session</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">update</span><span class="p">({</span>
+            <span class="sh">'</span><span class="s">User-Agent</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">MyApp/1.0</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">Accept</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">application/json</span><span class="sh">'</span>
+        <span class="p">})</span>
+        
+        <span class="c1"># Custom headers
+</span>        <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
+            <span class="n">session</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+        
+        <span class="c1"># Retry adapter
+</span>        <span class="kn">from</span> <span class="n">requests.adapters</span> <span class="kn">import</span> <span class="n">HTTPAdapter</span>
+        <span class="kn">from</span> <span class="n">urllib3.util.retry</span> <span class="kn">import</span> <span class="n">Retry</span>
+        
+        <span class="n">retry_strategy</span> <span class="o">=</span> <span class="nc">Retry</span><span class="p">(</span>
+            <span class="n">total</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">backoff_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">status_forcelist</span><span class="o">=</span><span class="p">[</span><span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">adapter</span> <span class="o">=</span> <span class="nc">HTTPAdapter</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="n">retry_strategy</span><span class="p">)</span>
+        <span class="n">session</span><span class="p">.</span><span class="nf">mount</span><span class="p">(</span><span class="sh">"</span><span class="s">http://</span><span class="sh">"</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
+        <span class="n">session</span><span class="p">.</span><span class="nf">mount</span><span class="p">(</span><span class="sh">"</span><span class="s">https://</span><span class="sh">"</span><span class="p">,</span> <span class="n">adapter</span><span class="p">)</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">session</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">session</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">'</span><span class="s">GET</span><span class="sh">'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Session ile HTTP request yap</span><span class="sh">"""</span>
+        <span class="k">with</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">base_url</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">endpoint</span><span class="p">.</span><span class="nf">lstrip</span><span class="p">(</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span>
+                <span class="n">method</span><span class="p">,</span> 
+                <span class="n">url</span><span class="p">,</span> 
+                <span class="n">timeout</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+            <span class="n">response</span><span class="p">.</span><span class="nf">raise_for_status</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="nf">json</span><span class="p">()</span>
+
+<span class="c1"># Kullanım
+</span><span class="n">api</span> <span class="o">=</span> <span class="nc">SessionManager</span><span class="p">(</span><span class="sh">'</span><span class="s">https://api.github.com</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># Tekli request
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">api</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="sh">'</span><span class="s">users/octocat</span><span class="sh">'</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">])</span>
+<span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Çoklu request (aynı session)
+</span><span class="k">with</span> <span class="n">api</span><span class="p">.</span><span class="nf">get_session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="c1"># Connection pooling sayesinde hızlı
+</span>    <span class="k">for</span> <span class="n">username</span> <span class="ow">in</span> <span class="p">[</span><span class="sh">'</span><span class="s">octocat</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">torvalds</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">gvanrossum</span><span class="sh">'</span><span class="p">]:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">api</span><span class="p">.</span><span class="n">base_url</span><span class="si">}</span><span class="s">/users/</span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="nf">json</span><span class="p">()</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">public_repos</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s"> repos</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h2 id="contextlib-utilities"><span class="me-2">contextlib Utilities</span><a href="#contextlib-utilities" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="suppress-exceptionları-bastırma"><span class="me-2">suppress: Exception’ları Bastırma</span><a href="#suppress-exceptionları-bastırma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">suppress</span>
+<span class="kn">import</span> <span class="n">os</span>
+
+<span class="c1"># Exception handling olmadan
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="sh">'</span><span class="s">nonexistent.txt</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">FileNotFoundError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="c1"># suppress ile daha temiz
+</span><span class="k">with</span> <span class="nf">suppress</span><span class="p">(</span><span class="nb">FileNotFoundError</span><span class="p">):</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="sh">'</span><span class="s">nonexistent.txt</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># Çoklu exception
+</span><span class="k">with</span> <span class="nf">suppress</span><span class="p">(</span><span class="nb">FileNotFoundError</span><span class="p">,</span> <span class="nb">PermissionError</span><span class="p">):</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="sh">'</span><span class="s">protected_file.txt</span><span class="sh">'</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="redirect_stdout-ve-redirect_stderr"><span class="me-2">redirect_stdout ve redirect_stderr</span><a href="#redirect_stdout-ve-redirect_stderr" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">redirect_stdout</span><span class="p">,</span> <span class="n">redirect_stderr</span>
+<span class="kn">import</span> <span class="n">sys</span>
+<span class="kn">import</span> <span class="n">io</span>
+
+<span class="c1"># stdout'u dosyaya yönlendir
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">'</span><span class="s">output.txt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nf">redirect_stdout</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Bu dosyaya yazılacak</span><span class="sh">'</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Terminal</span><span class="sh">'</span><span class="n">de</span> <span class="n">görünmeyecek</span><span class="sh">'</span><span class="s">)
+
+# stdout</span><span class="sh">'</span><span class="n">u</span> <span class="n">string</span> <span class="nb">buffer</span><span class="sh">'</span><span class="s">a yönlendir
+output = io.StringIO()
+with redirect_stdout(output):
+    print(</span><span class="sh">'</span><span class="n">Captured</span> <span class="n">output</span><span class="sh">'</span><span class="s">)
+    help(str.upper)
+
+captured = output.getvalue()
+print(f</span><span class="sh">"</span><span class="s">Captured {len(captured)} characters</span><span class="sh">"</span><span class="s">)
+
+# stderr yönlendirme
+error_log = io.StringIO()
+with redirect_stderr(error_log):
+    print(</span><span class="sh">"</span><span class="s">This is an error</span><span class="sh">"</span><span class="s">, file=sys.stderr)
+
+print(error_log.getvalue())
+</span></pre></table></code></div></div><h3 id="exitstack-dinamik-context-managerlar"><span class="me-2">ExitStack: Dinamik Context Manager’lar</span><a href="#exitstack-dinamik-context-managerlar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">ExitStack</span>
+<span class="kn">import</span> <span class="n">os</span>
+
+<span class="k">def</span> <span class="nf">process_files</span><span class="p">(</span><span class="n">filenames</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Birden fazla dosyayı aynı anda aç</span><span class="sh">"""</span>
+    <span class="k">with</span> <span class="nc">ExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">stack</span><span class="p">:</span>
+        <span class="c1"># Dinamik sayıda dosya aç
+</span>        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">stack</span><span class="p">.</span><span class="nf">enter_context</span><span class="p">(</span><span class="nf">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">filenames</span>
+        <span class="p">]</span>
+        
+        <span class="c1"># Tüm dosyalarla çalış
+</span>        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">f</span><span class="p">.</span><span class="n">name</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="si">}</span><span class="s"> bytes</span><span class="sh">"</span><span class="p">)</span>
+        
+        <span class="c1"># ExitStack otomatik olarak tüm dosyaları kapatır
+</span>
+<span class="c1"># Kullanım
+</span><span class="n">file_list</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">file1.txt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">file2.txt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">file3.txt</span><span class="sh">'</span><span class="p">]</span>
+<span class="c1"># Önce dosyaları oluştur
+</span><span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">'</span><span class="s">Content of </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="nf">process_files</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span>
+
+<span class="c1"># Cleanup
+</span><span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="callback-ile-exitstack"><span class="me-2">Callback ile ExitStack</span><a href="#callback-ile-exitstack" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">ExitStack</span>
+
+<span class="k">def</span> <span class="nf">setup_resources</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Callback</span><span class="sh">'</span><span class="s">lerle kaynak yönetimi</span><span class="sh">"""</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="nc">ExitStack</span><span class="p">()</span>
+    
+    <span class="c1"># Kaynak ayır
+</span>    <span class="n">resource1</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Database Connection</span><span class="sh">"</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Opening </span><span class="si">{</span><span class="n">resource1</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="c1"># Cleanup callback kaydet
+</span>    <span class="n">stack</span><span class="p">.</span><span class="nf">callback</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Closing </span><span class="si">{</span><span class="n">resource1</span><span class="si">}</span><span class="sh">"</span><span class="p">))</span>
+    
+    <span class="c1"># Başka kaynak
+</span>    <span class="n">resource2</span> <span class="o">=</span> <span class="sh">"</span><span class="s">File Handle</span><span class="sh">"</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Opening </span><span class="si">{</span><span class="n">resource2</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">stack</span><span class="p">.</span><span class="nf">callback</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Closing </span><span class="si">{</span><span class="n">resource2</span><span class="si">}</span><span class="sh">"</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">stack</span>
+
+<span class="c1"># Kullanım
+</span><span class="k">with</span> <span class="nf">setup_resources</span><span class="p">():</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Working with resources...</span><span class="sh">"</span><span class="p">)</span>
+    <span class="c1"># İşlemler yap
+</span>
+<span class="c1"># Output:
+# Opening Database Connection
+# Opening File Handle
+# Working with resources...
+# Closing File Handle
+# Closing Database Connection
+</span></pre></table></code></div></div><h2 id="async-context-managers"><span class="me-2">Async Context Managers</span><a href="#async-context-managers" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Asenkron programlama için async context manager’lar:</p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">asyncio</span>
+<span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span>
+
+<span class="k">class</span> <span class="nc">AsyncDatabaseConnection</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">connection_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">connection_string</span> <span class="o">=</span> <span class="n">connection_string</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">None</span>
+    
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aenter__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Async enter method</span><span class="sh">"""</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Connecting to database...</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Simüle edilen bağlantı
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">connection</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">Connection to </span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">connection_string</span><span class="si">}</span><span class="sh">"</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">connection</span>
+    
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aexit__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">exc_traceback</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Async exit method</span><span class="sh">"""</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Closing database connection...</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Simüle edilen kapatma
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">connection</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+<span class="c1"># asynccontextmanager decorator ile
+</span><span class="nd">@asynccontextmanager</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">async_timer</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Async işlemler için timer</span><span class="sh">"""</span>
+    <span class="kn">import</span> <span class="n">time</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">[</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">] Started</span><span class="sh">"</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">[</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">] Completed in </span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">s</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Kullanım
+</span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Async context manager
+</span>    <span class="k">async</span> <span class="k">with</span> <span class="nc">AsyncDatabaseConnection</span><span class="p">(</span><span class="sh">"</span><span class="s">postgresql://localhost</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Using </span><span class="si">{</span><span class="n">conn</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Async timer
+</span>    <span class="k">async</span> <span class="k">with</span> <span class="nf">async_timer</span><span class="p">(</span><span class="sh">"</span><span class="s">API Call</span><span class="sh">"</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Making API call...</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Çalıştır
+</span><span class="n">asyncio</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="nf">main</span><span class="p">())</span>
+</pre></table></code></div></div><h2 id="best-practices"><span class="me-2">Best Practices</span><a href="#best-practices" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="1-her-zaman-context-manager-kullan"><span class="me-2">1. Her Zaman Context Manager Kullan</span><a href="#1-her-zaman-context-manager-kullan" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre><span class="c1"># ❌ Kötü: Manuel kaynak yönetimi
+</span><span class="nb">file</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="sh">'</span><span class="s">data.txt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">)</span>
+<span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">'</span><span class="s">data</span><span class="sh">'</span><span class="p">)</span>
+<span class="nb">file</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>  <span class="c1"># Hata olursa çalışmaz!
+</span>
+<span class="c1"># ✅ İyi: Context manager
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">'</span><span class="s">data.txt</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+    <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">'</span><span class="s">data</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># Otomatik kapatma garantisi
+</span></pre></table></code></div></div><h3 id="2-custom-exception-handling"><span class="me-2">2. Custom Exception Handling</span><a href="#2-custom-exception-handling" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">TransactionContext</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">db</span>
+    
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">begin_transaction</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span>
+    
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">exc_traceback</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">exc_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">commit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">rollback</span><span class="p">()</span>
+            <span class="c1"># Specific exception handling
+</span>            <span class="k">if</span> <span class="n">exc_type</span> <span class="o">==</span> <span class="nb">ValueError</span><span class="p">:</span>
+                <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">ValueError occurred, rolling back</span><span class="sh">"</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">True</span>  <span class="c1"># Suppress exception
+</span>        <span class="k">return</span> <span class="bp">False</span>  <span class="c1"># Propagate other exceptions
+</span></pre></table></code></div></div><h3 id="3-reusable-context-managers"><span class="me-2">3. Reusable Context Managers</span><a href="#3-reusable-context-managers" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+<span class="k">def</span> <span class="nf">retry_context</span><span class="p">(</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Decorator for retrying context manager operations</span><span class="sh">"""</span>
+    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">():</span>
+        <span class="n">last_exception</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">attempt</span>
+                <span class="k">break</span>
+            <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">last_exception</span> <span class="o">=</span> <span class="n">e</span>
+                <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Attempt </span><span class="si">{</span><span class="n">attempt</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s"> failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="n">max_attempts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">last_exception</span>
+    
+    <span class="k">return</span> <span class="nf">wrapper</span><span class="p">()</span>
+
+<span class="c1"># Kullanım
+</span><span class="k">with</span> <span class="nf">retry_context</span><span class="p">(</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="c1"># Başarısız olabilecek işlem
+</span>    <span class="kn">import</span> <span class="n">random</span>
+    <span class="k">if</span> <span class="n">random</span><span class="p">.</span><span class="nf">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.7</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nc">ConnectionError</span><span class="p">(</span><span class="sh">"</span><span class="s">Connection failed</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Success!</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h2 id="performans-i̇puçları"><span class="me-2">Performans İpuçları</span><a href="#performans-i̇puçları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">measure_performance</span><span class="p">(</span><span class="n">operation_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Performans ölçümü için context manager</span><span class="sh">"""</span>
+    <span class="kn">import</span> <span class="n">tracemalloc</span>
+    
+    <span class="c1"># Memory tracking başlat
+</span>    <span class="n">tracemalloc</span><span class="p">.</span><span class="nf">start</span><span class="p">()</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">perf_counter</span><span class="p">()</span>
+    <span class="n">start_memory</span> <span class="o">=</span> <span class="n">tracemalloc</span><span class="p">.</span><span class="nf">get_traced_memory</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="nf">perf_counter</span><span class="p">()</span>
+        <span class="n">end_memory</span> <span class="o">=</span> <span class="n">tracemalloc</span><span class="p">.</span><span class="nf">get_traced_memory</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">tracemalloc</span><span class="p">.</span><span class="nf">stop</span><span class="p">()</span>
+        
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="n">memory_used</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_memory</span> <span class="o">-</span> <span class="n">start_memory</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1024</span> <span class="o">/</span> <span class="mi">1024</span>  <span class="c1"># MB
+</span>        
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="si">{</span><span class="n">operation_name</span><span class="si">}</span><span class="s"> Performance:</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  Time: </span><span class="si">{</span><span class="n">duration</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s"> seconds</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  Memory: </span><span class="si">{</span><span class="n">memory_used</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> MB</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Kullanım
+</span><span class="k">with</span> <span class="nf">measure_performance</span><span class="p">(</span><span class="sh">"</span><span class="s">List Comprehension</span><span class="sh">"</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)]</span>
+
+<span class="k">with</span> <span class="nf">measure_performance</span><span class="p">(</span><span class="sh">"</span><span class="s">Generator Expression</span><span class="sh">"</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">))</span>
+</pre></table></code></div></div><h2 id="sonuç"><span class="me-2">Sonuç</span><a href="#sonuç" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Context managers, Python’da kaynak yönetiminin temel taşlarından biridir. <code class="language-plaintext highlighter-rouge">with</code> statement ve context manager protocol kullanarak:</p><ul><li><strong>Otomatik kaynak temizleme</strong> garantisi sağlarsınız<li><strong>Exception-safe</strong> kod yazarsınız<li><strong>Daha okunabilir</strong> ve maintainable kod üretirsiniz<li><strong>Resource leak’lerden</strong> korunursunuz</ul><p><strong>Önemli noktalar:</strong></p><ul><li><code class="language-plaintext highlighter-rouge">__enter__</code> ve <code class="language-plaintext highlighter-rouge">__exit__</code> methodlarını doğru implement edin<li><code class="language-plaintext highlighter-rouge">contextlib.contextmanager</code> decorator’ı basit durumlar için kullanın<li>Async operasyonlar için <code class="language-plaintext highlighter-rouge">async with</code> ve <code class="language-plaintext highlighter-rouge">__aenter__</code>/<code class="language-plaintext highlighter-rouge">__aexit__</code> kullanın<li><code class="language-plaintext highlighter-rouge">ExitStack</code> dinamik kaynak yönetimi için idealdir<li>Her dış kaynak erişiminde context manager kullanmayı düşünün</ul><p>Context managers, clean code prensiplerine uygun, güvenli ve profesyonel Python kodu yazmanın vazgeçilmez aracıdır.</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw me-1"></i> <a href="/categories/python/">Python</a>, <a href="/categories/software-development/">Software Development</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw me-1"></i> <a href="/tags/python/" class="post-tag no-text-decoration" >python</a> <a href="/tags/context-managers/" class="post-tag no-text-decoration" >context-managers</a> <a href="/tags/resource-management/" class="post-tag no-text-decoration" >resource-management</a> <a href="/tags/contextlib/" class="post-tag no-text-decoration" >contextlib</a> <a href="/tags/with-statement/" class="post-tag no-text-decoration" >with-statement</a> <a href="/tags/clean-code/" class="post-tag no-text-decoration" >clean-code</a> <a href="/tags/best-practices/" class="post-tag no-text-decoration" >best-practices</a> <a href="/tags/design-patterns/" class="post-tag no-text-decoration" >design-patterns</a></div><div class=" post-tail-bottom d-flex justify-content-between align-items-center mt-5 pb-2 " ><div class="license-wrapper"> Bu gönderi <a href="https://creativecommons.org/licenses/by/4.0/deed.tr"> CC BY 4.0 </a> lisansı altındadır.</div><div class="share-wrapper d-flex align-items-center"> <span class="share-label text-muted">Paylaş</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Python%20Context%20Managers:%20%C4%B0leri%20Seviye%20Kaynak%20Y%C3%B6netimi%20ve%20Best%20Practices%20-%20Furkan%20K%C3%B6yk%C4%B1ran&url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fpython-context-managers-kaynak-yonetimi%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter"> <i class="fa-fw fa-brands fa-square-x-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Python%20Context%20Managers:%20%C4%B0leri%20Seviye%20Kaynak%20Y%C3%B6netimi%20ve%20Best%20Practices%20-%20Furkan%20K%C3%B6yk%C4%B1ran&u=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fpython-context-managers-kaynak-yonetimi%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fpython-context-managers-kaynak-yonetimi%2F&text=Python%20Context%20Managers:%20%C4%B0leri%20Seviye%20Kaynak%20Y%C3%B6netimi%20ve%20Best%20Practices%20-%20Furkan%20K%C3%B6yk%C4%B1ran" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <button id="copy-link" aria-label="Copy link" class="btn small" data-bs-toggle="tooltip" data-bs-placement="top" title="Linki kopyala" data-title-succeed="Link kopyalandı." > <i class="fa-fw fas fa-link pe-none fs-6"></i> </button> </span></div></div></div></article></main><aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted"><div class="access"><section id="access-lastmod"><h2 class="panel-heading">Son Güncellenenler</h2><ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2"><li class="text-truncate lh-lg"> <a href="/posts/apache-kafka-event-streaming/">Apache Kafka ile Event Streaming: Gerçek Zamanlı Veri Pipeline'ları</a><li class="text-truncate lh-lg"> <a href="/posts/git-is-akisi-branch-stratejileri/">Git İş Akışı ve Branch Stratejileri: GitFlow, Trunk-Based, GitHub Flow</a><li class="text-truncate lh-lg"> <a href="/posts/python-context-managers-kaynak-yonetimi/">Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</a><li class="text-truncate lh-lg"> <a href="/posts/modern-web-arayuzu-css-javascript/">Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</a><li class="text-truncate lh-lg"> <a href="/posts/python-ile-eposta-otomasyonu/">Python ile E-posta Otomasyonu</a></ul></section><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div class="toc-border-cover z-3"></div><section id="toc-wrapper" class="invisible position-sticky ps-0 pe-4 pb-4"><h2 class="panel-heading ps-3 pb-2 mb-0">İçindekiler</h2><nav id="toc"></nav></section></aside></div><div class="row"><div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4"><aside id="related-posts" aria-labelledby="related-label"><h3 class="mb-4" id="related-label">Benzer Gönderiler</h3><nav class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4"><article class="col"> <a href="/posts/python-loglama-en-iyi-uygulamalar/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1740204000" data-df="DD/MM/YYYY" > 22/02/2025 </time><h4 class="pt-0 my-2">Python Loglama En İyi Uygulamaları - Production Logging Rehberi</h4><div class="text-muted"><p>Production-ready Python logging stratejileri. Structured logging, JSON formatı, log rotation, ELK Stack entegrasyonu ve monitoring best practices.</p></div></div></a></article><article class="col"> <a href="/posts/systemd-python-servis-yonetimi/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1736661600" data-df="DD/MM/YYYY" > 12/01/2025 </time><h4 class="pt-0 my-2">Systemd ile Python Servis Yönetimi</h4><div class="text-muted"><p>Python uygulamalarını systemd ile production servis haline getirme rehberi. Unit file yapılandırması, journald logging, watchdog, socket activation ve deployment.</p></div></div></a></article><article class="col"> <a href="/posts/mongodb-nosql-veri-yonetimi/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1736056800" data-df="DD/MM/YYYY" > 05/01/2025 </time><h4 class="pt-0 my-2">MongoDB ile NoSQL Veri Yönetimi</h4><div class="text-muted"><p>Python ile MongoDB kullanarak NoSQL veri yönetimi rehberi. PyMongo ve Motor ile CRUD işlemleri, aggregation pipeline, indexing stratejileri ve best practices.</p></div></div></a></article></nav></aside><nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation"> <a href="/posts/modern-web-arayuzu-css-javascript/" class="btn btn-outline-primary" aria-label="Geri" ><p>Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</p></a> <a href="/posts/git-is-akisi-branch-stratejileri/" class="btn btn-outline-primary" aria-label="İleri" ><p>Git İş Akışı ve Branch Stratejileri: GitFlow, Trunk-Based, GitHub Flow</p></a></nav><footer aria-label="Site Info" class=" d-flex flex-column justify-content-center text-muted flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3 " ><p>© <time>2025</time> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a>. <span data-bs-toggle="tooltip" data-bs-placement="top" title="Aksi belirtilmediği sürece, bu sitedeki gönderiler Creative Commons Atıf 4.0 Uluslararası (CC BY 4.0) Lisansı altındadır. Kısaca sayfa linkini vererek değiştirebilir / paylaşabilirsiniz." >Bazı hakları saklıdır.</span></p><p><a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> ve <a data-bs-toggle="tooltip" data-bs-placement="top" title="v7.4.1" href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener" >Chirpy</a> teması</p></footer></div></div><div id="search-result-wrapper" class="d-flex justify-content-center d-none"><div class="col-11 content"><div id="search-hints"><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><aside aria-label="Scroll to Top"> <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow"> <i class="fas fa-angle-up"></i> </button></aside></div><div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div><script> document.addEventListener('DOMContentLoaded', () => { SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<article class="px-1 px-sm-2 px-lg-4 px-xl-0"><header><h2><a href="{url}">{title}</a></h2><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div></header><p>{content}</p></article>', noResultsText: '<p class="mt-5">Hop! Öyle bir şey bulamadım.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); }); </script>

@@ -1,0 +1,1771 @@
+<!doctype html><html lang="tr-TR" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover" ><meta name="generator" content="Jekyll v4.4.1" /><meta property="og:title" content="Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript" /><meta property="og:locale" content="tr_TR" /><meta name="description" content="CSS Grid ve Flexbox ile modern responsive layout’lar oluşturun. Vanilla JavaScript ile DOM manipülasyonu, event handling ve component geliştirme teknikleri. CSS Variables ve performans optimizasyonu." /><meta property="og:description" content="CSS Grid ve Flexbox ile modern responsive layout’lar oluşturun. Vanilla JavaScript ile DOM manipülasyonu, event handling ve component geliştirme teknikleri. CSS Variables ve performans optimizasyonu." /><link rel="canonical" href="https://blog.furkankoykiran.com.tr/posts/modern-web-arayuzu-css-javascript/" /><meta property="og:url" content="https://blog.furkankoykiran.com.tr/posts/modern-web-arayuzu-css-javascript/" /><meta property="og:site_name" content="Furkan Köykıran" /><meta property="og:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/css-flexbox-grid-comparison.jpeg" /><meta property="og:image:alt" content="CSS Flexbox ve Grid Karşılaştırması" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2025-11-15T10:00:00+03:00" /><meta name="twitter:card" content="summary_large_image" /><meta property="twitter:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/css-flexbox-grid-comparison.jpeg" /><meta name="twitter:image:alt" content="CSS Flexbox ve Grid Karşılaştırması" /><meta property="twitter:title" content="Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript" /><meta name="twitter:site" content="@furkankoykiran" /><meta name="google-site-verification" content="LEiVauGuhGdPxwWU7bq-uQaNYrEu9Aqhv8TM3SaoSsM" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-12-05T04:46:58+03:00","datePublished":"2025-11-15T10:00:00+03:00","description":"CSS Grid ve Flexbox ile modern responsive layout’lar oluşturun. Vanilla JavaScript ile DOM manipülasyonu, event handling ve component geliştirme teknikleri. CSS Variables ve performans optimizasyonu.","headline":"Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript","image":{"alt":"CSS Flexbox ve Grid Karşılaştırması","url":"https://blog.furkankoykiran.com.tr/assets/img/posts/css-flexbox-grid-comparison.jpeg","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.furkankoykiran.com.tr/posts/modern-web-arayuzu-css-javascript/"},"url":"https://blog.furkankoykiran.com.tr/posts/modern-web-arayuzu-css-javascript/"}</script><title>Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript | Furkan Köykıran</title><link rel="icon" type="image/png" href="/assets/img/favicons/favicon-96x96.png" sizes="96x96"><link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.36.4/dist/tocbot.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css"> <script src="/assets/js/dist/theme.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/glightbox@3.3.0/dist/js/glightbox.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.18/dayjs.min.js,npm/dayjs@1.11.18/locale/tr.js,npm/dayjs@1.11.18/plugin/relativeTime.js,npm/dayjs@1.11.18/plugin/localizedFormat.js,npm/tocbot@4.36.4/dist/tocbot.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script><body><aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end"><header class="profile-wrapper"> <a href="/" id="avatar" class="rounded-circle"><img src="https://blog.furkankoykiran.com.tr/assets/img/avatar.png" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a> <a class="site-title d-block" href="/">Furkan Köykıran</a><p class="site-subtitle fst-italic mb-0">Kişisel Websitesi</p></header><nav class="flex-column flex-grow-1 w-100 ps-0"><ul class="nav"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home"></i> <span>ANA SAYFA</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream"></i> <span>KATEGORILER</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tags"></i> <span>ETIKETLER</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive"></i> <span>ARŞIV</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle"></i> <span>HAKKINDA</span> </a><li class="nav-item"> <a href="/contact/" class="nav-link"> <i class="fa-fw far fa-address-book"></i> <span>İLETIŞIM</span> </a></ul></nav><div class="sidebar-bottom d-flex flex-wrap align-items-center w-100"> <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/furkankoykiran" aria-label="github" target="_blank" rel="noopener noreferrer" > <i class="fab fa-github"></i> </a> <a href="https://twitter.com/furkankoykiran" aria-label="twitter" target="_blank" rel="noopener noreferrer" > <i class="fa-brands fa-x-twitter"></i> </a> <a href="javascript:location.href = 'mailto:' + ['furkankoykiran','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></aside><div id="main-wrapper" class="d-flex justify-content-center"><div class="container d-flex flex-column px-xxl-5"><header id="topbar-wrapper" class="flex-shrink-0" aria-label="Top Bar"><div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100" ><nav id="breadcrumb" aria-label="Breadcrumb"> <span> <a href="/">Ana sayfa</a> </span> <span>Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</span></nav><button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Sidebar"> <i class="fas fa-bars fa-fw"></i> </button><div id="topbar-title"> Gönderi</div><button type="button" id="search-trigger" class="btn btn-link" aria-label="Search"> <i class="fas fa-search fa-fw"></i> </button> <search id="search" class="align-items-center ms-3 ms-lg-0"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Ara......" > </search> <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">İptal</button></div></header><div class="row flex-grow-1"><main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4"><article class="px-1" data-toc="true"><header><h1 data-toc-skip>Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</h1><p class="post-desc fw-light mb-4">CSS Grid ve Flexbox ile modern responsive layout'lar oluşturun. Vanilla JavaScript ile DOM manipülasyonu, event handling ve component geliştirme teknikleri. CSS Variables ve performans optimizasyonu.</p><div class="post-meta text-muted"> <span> Gönderim <time data-ts="1763190000" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 15/11/2025 </time> </span> <span> Güncelleme <time data-ts="1764899218" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 05/12/2025 </time> </span><div class="mt-3 mb-3"> <a href="/assets/img/posts/css-flexbox-grid-comparison.jpeg" class="popup img-link preview-img shimmer"><img src="/assets/img/posts/css-flexbox-grid-comparison.jpeg" alt="CSS Flexbox ve Grid Karşılaştırması" width="1200" height="630" loading="lazy"></a><figcaption class="text-center pt-2 pb-2">CSS Flexbox ve Grid Karşılaştırması</figcaption></div><div class="d-flex justify-content-between"> <span> Yazan <em> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a> </em> </span><div> <span class="readtime" data-bs-toggle="tooltip" data-bs-placement="bottom" title="3205 sözcük" > <em>17 dakikada</em> okunabilir</span></div></div></div></header><div id="toc-bar" class="d-flex align-items-center justify-content-between invisible"> <span class="label text-truncate">Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</span> <button type="button" class="toc-trigger btn me-1"> <i class="fa-solid fa-list-ul fa-fw"></i> </button></div><button id="toc-solo-trigger" type="button" class="toc-trigger btn btn-outline-secondary btn-sm"> <span class="label ps-2 pe-1">İçindekiler</span> <i class="fa-solid fa-angle-right fa-fw"></i> </button> <dialog id="toc-popup" class="p-0"><div class="header d-flex flex-row align-items-center justify-content-between"><div class="label text-truncate py-2 ms-4">Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</div><button id="toc-popup-close" type="button" class="btn mx-1 my-1 opacity-75"> <i class="fas fa-close"></i> </button></div><div id="toc-popup-content" class="px-4 py-3 pb-4"></div></dialog><div class="content"><p>Modern web geliştirmede kullanıcı arayüzü tasarımı, hem görsel çekicilik hem de işlevsellik açısından kritik öneme sahiptir. Bu yazıda, CSS Grid, Flexbox ve vanilla JavaScript kullanarak modern, responsive ve performanslı web arayüzleri oluşturmayı ele alacağız.</p><h2 id="css-grid-ve-flexbox-modern-layout-sistemleri"><span class="me-2">CSS Grid ve Flexbox: Modern Layout Sistemleri</span><a href="#css-grid-ve-flexbox-modern-layout-sistemleri" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="css-grid-i̇ki-boyutlu-layout"><span class="me-2">CSS Grid: İki Boyutlu Layout</span><a href="#css-grid-i̇ki-boyutlu-layout" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>CSS Grid, satır ve sütunlarla çalışan iki boyutlu bir layout sistemidir. Karmaşık sayfa düzenlerini kolayca oluşturmanıza olanak tanır.</p><p><strong>Temel Grid Yapısı:</strong></p><div class="language-css highlighter-rouge"><div class="code-header"> <span data-label-text="CSS"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre><td class="rouge-code"><pre><span class="c">/* Grid Container */</span>
+<span class="nc">.container</span> <span class="p">{</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">grid</span><span class="p">;</span>
+    <span class="nl">grid-template-columns</span><span class="p">:</span> <span class="nf">repeat</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">1fr</span><span class="p">);</span>
+    <span class="nl">grid-template-rows</span><span class="p">:</span> <span class="nb">auto</span><span class="p">;</span>
+    <span class="nl">gap</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* Grid Items */</span>
+<span class="nc">.item</span> <span class="p">{</span>
+    <span class="nl">background</span><span class="p">:</span> <span class="nx">#f0f0f0</span><span class="p">;</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="nl">border-radius</span><span class="p">:</span> <span class="m">8px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* Responsive Grid */</span>
+<span class="k">@media</span> <span class="p">(</span><span class="n">max-width</span><span class="p">:</span> <span class="m">768px</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nc">.container</span> <span class="p">{</span>
+        <span class="nl">grid-template-columns</span><span class="p">:</span> <span class="m">1fr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p><strong>Grid Template Areas ile Layout:</strong></p><div file="grid-layout.css" class="language-css highlighter-rouge"><div class="code-header"> <span data-label-text="grid-layout.css"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+</pre><td class="rouge-code"><pre><span class="nc">.page-layout</span> <span class="p">{</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">grid</span><span class="p">;</span>
+    <span class="nl">grid-template-areas</span><span class="p">:</span>
+        <span class="s1">"header header header"</span>
+        <span class="s1">"sidebar main main"</span>
+        <span class="s1">"footer footer footer"</span><span class="p">;</span>
+    <span class="nl">grid-template-columns</span><span class="p">:</span> <span class="m">250px</span> <span class="m">1fr</span> <span class="m">1fr</span><span class="p">;</span>
+    <span class="nl">grid-template-rows</span><span class="p">:</span> <span class="m">80px</span> <span class="m">1fr</span> <span class="m">60px</span><span class="p">;</span>
+    <span class="nl">min-height</span><span class="p">:</span> <span class="m">100vh</span><span class="p">;</span>
+    <span class="nl">gap</span><span class="p">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.header</span> <span class="p">{</span>
+    <span class="nl">grid-area</span><span class="p">:</span> <span class="n">header</span><span class="p">;</span>
+    <span class="nl">background</span><span class="p">:</span> <span class="nx">#333</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="nx">white</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.sidebar</span> <span class="p">{</span>
+    <span class="nl">grid-area</span><span class="p">:</span> <span class="n">sidebar</span><span class="p">;</span>
+    <span class="nl">background</span><span class="p">:</span> <span class="nx">#f5f5f5</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.main</span> <span class="p">{</span>
+    <span class="nl">grid-area</span><span class="p">:</span> <span class="n">main</span><span class="p">;</span>
+    <span class="nl">background</span><span class="p">:</span> <span class="nx">white</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.footer</span> <span class="p">{</span>
+    <span class="nl">grid-area</span><span class="p">:</span> <span class="n">footer</span><span class="p">;</span>
+    <span class="nl">background</span><span class="p">:</span> <span class="nx">#333</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="nx">white</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* Responsive düzenleme */</span>
+<span class="k">@media</span> <span class="p">(</span><span class="n">max-width</span><span class="p">:</span> <span class="m">1024px</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nc">.page-layout</span> <span class="p">{</span>
+        <span class="nl">grid-template-areas</span><span class="p">:</span>
+            <span class="s1">"header"</span>
+            <span class="s1">"main"</span>
+            <span class="s1">"sidebar"</span>
+            <span class="s1">"footer"</span><span class="p">;</span>
+        <span class="nl">grid-template-columns</span><span class="p">:</span> <span class="m">1fr</span><span class="p">;</span>
+        <span class="nl">grid-template-rows</span><span class="p">:</span> <span class="nb">auto</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p><a href="/assets/img/posts/css-flexbox-grid-comparison.jpeg" class="popup img-link shimmer"><img src="/assets/img/posts/css-flexbox-grid-comparison.jpeg" alt="CSS Flexbox ve Grid Karşılaştırması" width="800" height="450" class="shadow" loading="lazy"></a> <em>CSS Grid ve Flexbox karşılaştırması - layout sistemleri</em></p><blockquote class="prompt-tip"><p>CSS Grid iki boyutlu (satır ve sütun) layout için idealdir. Karmaşık sayfa düzenlerinde Grid, basit tek yönlü hizalamalarda Flexbox tercih edilmelidir.</p></blockquote><h3 id="css-flexbox-tek-boyutlu-layout"><span class="me-2">CSS Flexbox: Tek Boyutlu Layout</span><a href="#css-flexbox-tek-boyutlu-layout" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Flexbox, öğeleri tek bir yönde (satır veya sütun) hizalamak için idealdir. Navbar, card layouts ve component hizalamaları için mükemmeldir.</p><p><strong>Temel Flexbox Kullanımı:</strong></p><div file="navbar.css" class="language-css highlighter-rouge"><div class="code-header"> <span data-label-text="navbar.css"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre><td class="rouge-code"><pre><span class="c">/* Flex Container */</span>
+<span class="nc">.flex-container</span> <span class="p">{</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">flex</span><span class="p">;</span>
+    <span class="nl">justify-content</span><span class="p">:</span> <span class="nb">space-between</span><span class="p">;</span>
+    <span class="nl">align-items</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+    <span class="nl">gap</span><span class="p">:</span> <span class="m">15px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* Navbar örneği */</span>
+<span class="nc">.navbar</span> <span class="p">{</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">flex</span><span class="p">;</span>
+    <span class="nl">justify-content</span><span class="p">:</span> <span class="nb">space-between</span><span class="p">;</span>
+    <span class="nl">align-items</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">1rem</span> <span class="m">2rem</span><span class="p">;</span>
+    <span class="nl">background</span><span class="p">:</span> <span class="nx">#2c3e50</span><span class="p">;</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="nx">white</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.nav-links</span> <span class="p">{</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">flex</span><span class="p">;</span>
+    <span class="nl">gap</span><span class="p">:</span> <span class="m">2rem</span><span class="p">;</span>
+    <span class="nl">list-style</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.nav-links</span> <span class="nt">a</span> <span class="p">{</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="nx">white</span><span class="p">;</span>
+    <span class="nl">text-decoration</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+    <span class="nl">transition</span><span class="p">:</span> <span class="nb">color</span> <span class="m">0.3s</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.nav-links</span> <span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="nx">#3498db</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p><strong>Card Layout ile Flexbox:</strong></p><div file="card-layout.css" class="language-css highlighter-rouge"><div class="code-header"> <span data-label-text="card-layout.css"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+</pre><td class="rouge-code"><pre><span class="nc">.card-container</span> <span class="p">{</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">flex</span><span class="p">;</span>
+    <span class="nl">flex-wrap</span><span class="p">:</span> <span class="nb">wrap</span><span class="p">;</span>
+    <span class="nl">gap</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">20px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.card</span> <span class="p">{</span>
+    <span class="nl">flex</span><span class="p">:</span> <span class="m">1</span> <span class="m">1</span> <span class="m">300px</span><span class="p">;</span> <span class="c">/* grow shrink basis */</span>
+    <span class="nl">min-width</span><span class="p">:</span> <span class="m">280px</span><span class="p">;</span>
+    <span class="nl">max-width</span><span class="p">:</span> <span class="m">400px</span><span class="p">;</span>
+    <span class="nl">background</span><span class="p">:</span> <span class="nx">white</span><span class="p">;</span>
+    <span class="nl">border-radius</span><span class="p">:</span> <span class="m">12px</span><span class="p">;</span>
+    <span class="nl">box-shadow</span><span class="p">:</span> <span class="m">0</span> <span class="m">4px</span> <span class="m">6px</span> <span class="nf">rgba</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.1</span><span class="p">);</span>
+    <span class="nl">overflow</span><span class="p">:</span> <span class="nb">hidden</span><span class="p">;</span>
+    <span class="nl">transition</span><span class="p">:</span> <span class="n">transform</span> <span class="m">0.3s</span><span class="p">,</span> <span class="n">box-shadow</span> <span class="m">0.3s</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.card</span><span class="nd">:hover</span> <span class="p">{</span>
+    <span class="nl">transform</span><span class="p">:</span> <span class="nf">translateY</span><span class="p">(</span><span class="m">-5px</span><span class="p">);</span>
+    <span class="nl">box-shadow</span><span class="p">:</span> <span class="m">0</span> <span class="m">8px</span> <span class="m">12px</span> <span class="nf">rgba</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.15</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.card-header</span> <span class="p">{</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">1.5rem</span><span class="p">;</span>
+    <span class="nl">background</span><span class="p">:</span> <span class="nf">linear-gradient</span><span class="p">(</span><span class="m">135deg</span><span class="p">,</span> <span class="nx">#667eea</span> <span class="m">0%</span><span class="p">,</span> <span class="nx">#764ba2</span> <span class="m">100%</span><span class="p">);</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="nx">white</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.card-body</span> <span class="p">{</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">1.5rem</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.card-footer</span> <span class="p">{</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="m">1rem</span> <span class="m">1.5rem</span><span class="p">;</span>
+    <span class="nl">background</span><span class="p">:</span> <span class="nx">#f8f9fa</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">flex</span><span class="p">;</span>
+    <span class="nl">justify-content</span><span class="p">:</span> <span class="nb">space-between</span><span class="p">;</span>
+    <span class="nl">align-items</span><span class="p">:</span> <span class="nb">center</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></table></code></div></div><h2 id="css-variables-custom-properties"><span class="me-2">CSS Variables (Custom Properties)</span><a href="#css-variables-custom-properties" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>CSS değişkenleri, tema yönetimi ve dinamik stillendirme için güçlü bir araçtır.</p><div file="variables.css" class="language-css highlighter-rouge"><div class="code-header"> <span data-label-text="variables.css"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+</pre><td class="rouge-code"><pre><span class="nd">:root</span> <span class="p">{</span>
+    <span class="c">/* Renkler */</span>
+    <span class="py">--primary-color</span><span class="p">:</span> <span class="nx">#3498db</span><span class="p">;</span>
+    <span class="py">--secondary-color</span><span class="p">:</span> <span class="nx">#2ecc71</span><span class="p">;</span>
+    <span class="py">--danger-color</span><span class="p">:</span> <span class="nx">#e74c3c</span><span class="p">;</span>
+    <span class="py">--text-color</span><span class="p">:</span> <span class="nx">#333</span><span class="p">;</span>
+    <span class="py">--bg-color</span><span class="p">:</span> <span class="nx">#ffffff</span><span class="p">;</span>
+    
+    <span class="c">/* Spacing */</span>
+    <span class="py">--spacing-xs</span><span class="p">:</span> <span class="m">0.25rem</span><span class="p">;</span>
+    <span class="py">--spacing-sm</span><span class="p">:</span> <span class="m">0.5rem</span><span class="p">;</span>
+    <span class="py">--spacing-md</span><span class="p">:</span> <span class="m">1rem</span><span class="p">;</span>
+    <span class="py">--spacing-lg</span><span class="p">:</span> <span class="m">2rem</span><span class="p">;</span>
+    <span class="py">--spacing-xl</span><span class="p">:</span> <span class="m">4rem</span><span class="p">;</span>
+    
+    <span class="c">/* Typography */</span>
+    <span class="py">--font-size-sm</span><span class="p">:</span> <span class="m">0.875rem</span><span class="p">;</span>
+    <span class="py">--font-size-base</span><span class="p">:</span> <span class="m">1rem</span><span class="p">;</span>
+    <span class="py">--font-size-lg</span><span class="p">:</span> <span class="m">1.25rem</span><span class="p">;</span>
+    <span class="py">--font-size-xl</span><span class="p">:</span> <span class="m">1.5rem</span><span class="p">;</span>
+    
+    <span class="c">/* Border radius */</span>
+    <span class="py">--border-radius-sm</span><span class="p">:</span> <span class="m">4px</span><span class="p">;</span>
+    <span class="py">--border-radius-md</span><span class="p">:</span> <span class="m">8px</span><span class="p">;</span>
+    <span class="py">--border-radius-lg</span><span class="p">:</span> <span class="m">12px</span><span class="p">;</span>
+    
+    <span class="c">/* Shadows */</span>
+    <span class="py">--shadow-sm</span><span class="p">:</span> <span class="m">0</span> <span class="m">2px</span> <span class="m">4px</span> <span class="nf">rgba</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.1</span><span class="p">);</span>
+    <span class="py">--shadow-md</span><span class="p">:</span> <span class="m">0</span> <span class="m">4px</span> <span class="m">6px</span> <span class="nf">rgba</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.1</span><span class="p">);</span>
+    <span class="py">--shadow-lg</span><span class="p">:</span> <span class="m">0</span> <span class="m">8px</span> <span class="m">12px</span> <span class="nf">rgba</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.15</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c">/* Dark mode tema */</span>
+<span class="o">[</span><span class="nt">data-theme</span><span class="o">=</span><span class="s1">"dark"</span><span class="o">]</span> <span class="p">{</span>
+    <span class="py">--primary-color</span><span class="p">:</span> <span class="nx">#5dade2</span><span class="p">;</span>
+    <span class="py">--text-color</span><span class="p">:</span> <span class="nx">#ecf0f1</span><span class="p">;</span>
+    <span class="py">--bg-color</span><span class="p">:</span> <span class="nx">#2c3e50</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c">/* Değişkenleri kullanma */</span>
+<span class="nc">.button</span> <span class="p">{</span>
+    <span class="nl">background</span><span class="p">:</span> <span class="nf">var</span><span class="p">(</span><span class="l">--primary-color</span><span class="p">);</span>
+    <span class="nl">color</span><span class="p">:</span> <span class="nx">white</span><span class="p">;</span>
+    <span class="nl">padding</span><span class="p">:</span> <span class="nf">var</span><span class="p">(</span><span class="l">--spacing-sm</span><span class="p">)</span> <span class="nf">var</span><span class="p">(</span><span class="l">--spacing-md</span><span class="p">);</span>
+    <span class="nl">border-radius</span><span class="p">:</span> <span class="nf">var</span><span class="p">(</span><span class="l">--border-radius-md</span><span class="p">);</span>
+    <span class="nl">box-shadow</span><span class="p">:</span> <span class="nf">var</span><span class="p">(</span><span class="l">--shadow-md</span><span class="p">);</span>
+    <span class="nl">font-size</span><span class="p">:</span> <span class="nf">var</span><span class="p">(</span><span class="l">--font-size-base</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p><a href="/assets/img/posts/css-variables-theming.png" class="popup img-link shimmer"><img src="/assets/img/posts/css-variables-theming.png" alt="CSS Variables Theming" width="700" height="400" class="shadow" loading="lazy"></a> <em>CSS Variables ile dinamik tema yönetimi</em></p><p><strong>JavaScript ile Tema Değiştirme:</strong></p><div file="theme-toggle.js" class="language-javascript highlighter-rouge"><div class="code-header"> <span data-label-text="theme-toggle.js"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre><td class="rouge-code"><pre><span class="c1">// Tema toggle fonksiyonu</span>
+<span class="kd">function</span> <span class="nf">toggleTheme</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">currentTheme</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nf">getAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">data-theme</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">newTheme</span> <span class="o">=</span> <span class="nx">currentTheme</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">dark</span><span class="dl">'</span> <span class="p">?</span> <span class="dl">'</span><span class="s1">light</span><span class="dl">'</span> <span class="p">:</span> <span class="dl">'</span><span class="s1">dark</span><span class="dl">'</span><span class="p">;</span>
+    
+    <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nf">setAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">data-theme</span><span class="dl">'</span><span class="p">,</span> <span class="nx">newTheme</span><span class="p">);</span>
+    <span class="nx">localStorage</span><span class="p">.</span><span class="nf">setItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">theme</span><span class="dl">'</span><span class="p">,</span> <span class="nx">newTheme</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Sayfa yüklendiğinde kaydedilen temayı uygula</span>
+<span class="nb">document</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">DOMContentLoaded</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">savedTheme</span> <span class="o">=</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nf">getItem</span><span class="p">(</span><span class="dl">'</span><span class="s1">theme</span><span class="dl">'</span><span class="p">)</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">light</span><span class="dl">'</span><span class="p">;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nf">setAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">data-theme</span><span class="dl">'</span><span class="p">,</span> <span class="nx">savedTheme</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// CSS değişkenini JavaScript'ten değiştirme</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nf">setProperty</span><span class="p">(</span><span class="dl">'</span><span class="s1">--primary-color</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">#e74c3c</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// CSS değişkenini okuma</span>
+<span class="kd">const</span> <span class="nx">primaryColor</span> <span class="o">=</span> <span class="nf">getComputedStyle</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">getPropertyValue</span><span class="p">(</span><span class="dl">'</span><span class="s1">--primary-color</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">primaryColor</span><span class="p">);</span> <span class="c1">// #3498db</span>
+</pre></table></code></div></div><blockquote class="prompt-tip"><p>CSS Variables (Custom Properties) ile tema yönetimi, runtime’da JavaScript ile kolayca değiştirilebilir. Dark mode/light mode toggle için ideal bir yöntemdir.</p></blockquote><h2 id="vanilla-javascript-ile-dom-manipulation"><span class="me-2">Vanilla JavaScript ile DOM Manipulation</span><a href="#vanilla-javascript-ile-dom-manipulation" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Modern web uygulamalarında, framework kullanmadan vanilla JavaScript ile DOM manipülasyonu yapmak performans ve kontrol açısından avantajlar sağlar.</p><p><a href="/assets/img/posts/vanilla-javascript-dom-manipulation.jpg" class="popup img-link shimmer"><img src="/assets/img/posts/vanilla-javascript-dom-manipulation.jpg" alt="Vanilla JavaScript DOM Manipulation" width="700" height="400" class="shadow" loading="lazy"></a> <em>Vanilla JavaScript ile DOM manipülasyon teknikleri</em></p><h3 id="element-seçme-ve-oluşturma"><span class="me-2">Element Seçme ve Oluşturma</span><a href="#element-seçme-ve-oluşturma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-javascript highlighter-rouge"><div class="code-header"> <span data-label-text="JavaScript"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre><td class="rouge-code"><pre><span class="c1">// Modern element seçme metodları</span>
+<span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.my-class</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">elements</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">.my-class</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">elementById</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">myId</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// Element oluşturma</span>
+<span class="kd">const</span> <span class="nx">div</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">card</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">myCard</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;h2&gt;Başlık&lt;/h2&gt;&lt;p&gt;İçerik&lt;/p&gt;</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// Attribute yönetimi</span>
+<span class="nx">div</span><span class="p">.</span><span class="nf">setAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">data-id</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">123</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">div</span><span class="p">.</span><span class="nf">getAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">data-id</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// "123"</span>
+<span class="nx">div</span><span class="p">.</span><span class="nf">removeAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">data-id</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// Modern özellikler</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">userId</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">456</span><span class="dl">'</span><span class="p">;</span> <span class="c1">// data-user-id="456"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">div</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">userId</span><span class="p">);</span> <span class="c1">// "456"</span>
+
+<span class="c1">// Class yönetimi</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="dl">'</span><span class="s1">active</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">visible</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="dl">'</span><span class="s1">hidden</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">toggle</span><span class="p">(</span><span class="dl">'</span><span class="s1">expanded</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">div</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">active</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// true</span>
+
+<span class="c1">// Element ekleme</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">div</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.container</span><span class="dl">'</span><span class="p">).</span><span class="nf">prepend</span><span class="p">(</span><span class="nx">div</span><span class="p">);</span>
+<span class="nx">element</span><span class="p">.</span><span class="nf">insertAdjacentElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">beforebegin</span><span class="dl">'</span><span class="p">,</span> <span class="nx">div</span><span class="p">);</span>
+</pre></table></code></div></div><h3 id="event-handling"><span class="me-2">Event Handling</span><a href="#event-handling" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="event-handling.js" class="language-javascript highlighter-rouge"><div class="code-header"> <span data-label-text="event-handling.js"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre><td class="rouge-code"><pre><span class="c1">// Event listener ekleme</span>
+<span class="kd">const</span> <span class="nx">button</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.btn</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">button</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nf">preventDefault</span><span class="p">();</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Button clicked!</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// Event delegation (dinamik elementler için)</span>
+<span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.list</span><span class="dl">'</span><span class="p">).</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nf">matches</span><span class="p">(</span><span class="dl">'</span><span class="s1">.list-item</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">List item clicked:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">textContent</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">// Multiple events</span>
+<span class="p">[</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">touchstart</span><span class="dl">'</span><span class="p">].</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">button</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">handleInteraction</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// Event listener kaldırma</span>
+<span class="nx">button</span><span class="p">.</span><span class="nf">removeEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="nx">handleClick</span><span class="p">);</span>
+
+<span class="c1">// Custom events</span>
+<span class="kd">const</span> <span class="nx">customEvent</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CustomEvent</span><span class="p">(</span><span class="dl">'</span><span class="s1">userLoggedIn</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">detail</span><span class="p">:</span> <span class="p">{</span> <span class="na">userId</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="na">username</span><span class="p">:</span> <span class="dl">'</span><span class="s1">john</span><span class="dl">'</span> <span class="p">}</span>
+<span class="p">});</span>
+<span class="nb">document</span><span class="p">.</span><span class="nf">dispatchEvent</span><span class="p">(</span><span class="nx">customEvent</span><span class="p">);</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">userLoggedIn</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">User logged in:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">detail</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></table></code></div></div><h3 id="dinamik-liste-oluşturma"><span class="me-2">Dinamik Liste Oluşturma</span><a href="#dinamik-liste-oluşturma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="todo-list.js" class="language-javascript highlighter-rouge"><div class="code-header"> <span data-label-text="todo-list.js"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+</pre><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">TodoList</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="nx">containerSelector</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">container</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="nx">containerSelector</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">todos</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">render</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">attachEventListeners</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+    <span class="nf">addTodo</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">todo</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">id</span><span class="p">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nf">now</span><span class="p">(),</span>
+            <span class="na">text</span><span class="p">:</span> <span class="nx">text</span><span class="p">,</span>
+            <span class="na">completed</span><span class="p">:</span> <span class="kc">false</span>
+        <span class="p">};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">todos</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="nx">todo</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">render</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+    <span class="nf">removeTodo</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">todos</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">todos</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="nx">todo</span> <span class="o">=&gt;</span> <span class="nx">todo</span><span class="p">.</span><span class="nx">id</span> <span class="o">!==</span> <span class="nx">id</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">render</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+    <span class="nf">toggleTodo</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">todo</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">todos</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nx">t</span> <span class="o">=&gt;</span> <span class="nx">t</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">id</span><span class="p">);</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">todo</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">todo</span><span class="p">.</span><span class="nx">completed</span> <span class="o">=</span> <span class="o">!</span><span class="nx">todo</span><span class="p">.</span><span class="nx">completed</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nf">render</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="nf">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">`
+            &lt;div class="todo-list"&gt;
+                &lt;div class="todo-header"&gt;
+                    &lt;h2&gt;Todo List&lt;/h2&gt;
+                    &lt;input type="text" id="todoInput" placeholder="Yeni görev ekle"&gt;
+                    &lt;button id="addBtn"&gt;Ekle&lt;/button&gt;
+                &lt;/div&gt;
+                &lt;ul class="todo-items"&gt;
+                    </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">todos</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">todo</span> <span class="o">=&gt;</span> <span class="s2">`
+                        &lt;li class="todo-item </span><span class="p">${</span><span class="nx">todo</span><span class="p">.</span><span class="nx">completed</span> <span class="p">?</span> <span class="dl">'</span><span class="s1">completed</span><span class="dl">'</span> <span class="p">:</span> <span class="dl">''</span><span class="p">}</span><span class="s2">" 
+                            data-id="</span><span class="p">${</span><span class="nx">todo</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">"&gt;
+                            &lt;input type="checkbox" 
+                                   </span><span class="p">${</span><span class="nx">todo</span><span class="p">.</span><span class="nx">completed</span> <span class="p">?</span> <span class="dl">'</span><span class="s1">checked</span><span class="dl">'</span> <span class="p">:</span> <span class="dl">''</span><span class="p">}</span><span class="s2">
+                                   class="todo-checkbox"&gt;
+                            &lt;span class="todo-text"&gt;</span><span class="p">${</span><span class="nx">todo</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="s2">&lt;/span&gt;
+                            &lt;button class="delete-btn"&gt;Sil&lt;/button&gt;
+                        &lt;/li&gt;
+                    `</span><span class="p">).</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">)}</span><span class="s2">
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        `</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nf">attachEventListeners</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Event delegation kullanımı</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">todoItem</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nf">closest</span><span class="p">(</span><span class="dl">'</span><span class="s1">.todo-item</span><span class="dl">'</span><span class="p">);</span>
+            <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">todoItem</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+            
+            <span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nf">parseInt</span><span class="p">(</span><span class="nx">todoItem</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+            
+            <span class="k">if </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">delete-btn</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nf">removeTodo</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">todo-checkbox</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nf">toggleTodo</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        
+        <span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">addBtn</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">const</span> <span class="nx">input</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">todoInput</span><span class="dl">'</span><span class="p">);</span>
+                <span class="k">if </span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nf">trim</span><span class="p">())</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nf">addTodo</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nf">trim</span><span class="p">());</span>
+                    <span class="nx">input</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        
+        <span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">keypress</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">todoInput</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">Enter</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">addBtn</span><span class="dl">'</span><span class="p">).</span><span class="nf">click</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Kullanım</span>
+<span class="kd">const</span> <span class="nx">todoList</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TodoList</span><span class="p">(</span><span class="dl">'</span><span class="s1">#app</span><span class="dl">'</span><span class="p">);</span>
+</pre></table></code></div></div><blockquote class="prompt-tip"><p>Vanilla JavaScript ile class-based component yazımı, React benzeri yapılar oluşturmanıza olanak tanır. State yönetimi ve re-rendering için render() metodunu kullanın.</p></blockquote><h3 id="fetch-api-ile-veri-yükleme"><span class="me-2">Fetch API ile Veri Yükleme</span><a href="#fetch-api-ile-veri-yükleme" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-javascript highlighter-rouge"><div class="code-header"> <span data-label-text="JavaScript"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+</pre><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">DataTable</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="nx">containerSelector</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">container</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="nx">containerSelector</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">async</span> <span class="nf">fetchData</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">render</span><span class="p">();</span>
+        
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nf">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+            <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">response</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="s2">`HTTP error! status: </span><span class="p">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">response</span><span class="p">.</span><span class="nf">json</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">catch </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Veri yükleme hatası:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nf">showError</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">loading</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nf">render</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="nf">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">loading</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">&lt;div class="loading"&gt;Yükleniyor...&lt;/div&gt;</span><span class="dl">'</span><span class="p">;</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">`
+            &lt;table class="data-table"&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;ID&lt;/th&gt;
+                        &lt;th&gt;İsim&lt;/th&gt;
+                        &lt;th&gt;Email&lt;/th&gt;
+                        &lt;th&gt;İşlemler&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="nx">item</span> <span class="o">=&gt;</span> <span class="s2">`
+                        &lt;tr data-id="</span><span class="p">${</span><span class="nx">item</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">"&gt;
+                            &lt;td&gt;</span><span class="p">${</span><span class="nx">item</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">&lt;/td&gt;
+                            &lt;td&gt;</span><span class="p">${</span><span class="nx">item</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">&lt;/td&gt;
+                            &lt;td&gt;</span><span class="p">${</span><span class="nx">item</span><span class="p">.</span><span class="nx">email</span><span class="p">}</span><span class="s2">&lt;/td&gt;
+                            &lt;td&gt;
+                                &lt;button class="btn-edit"&gt;Düzenle&lt;/button&gt;
+                                &lt;button class="btn-delete"&gt;Sil&lt;/button&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                    `</span><span class="p">).</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">)}</span><span class="s2">
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        `</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nf">showError</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">`
+            &lt;div class="error"&gt;
+                &lt;p&gt;Hata: </span><span class="p">${</span><span class="nx">message</span><span class="p">}</span><span class="s2">&lt;/p&gt;
+                &lt;button onclick="location.reload()"&gt;Yeniden Dene&lt;/button&gt;
+            &lt;/div&gt;
+        `</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Kullanım</span>
+<span class="kd">const</span> <span class="nx">dataTable</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DataTable</span><span class="p">(</span><span class="dl">'</span><span class="s1">#data-container</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">dataTable</span><span class="p">.</span><span class="nf">fetchData</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://jsonplaceholder.typicode.com/users</span><span class="dl">'</span><span class="p">);</span>
+</pre></table></code></div></div><h2 id="form-validasyonu"><span class="me-2">Form Validasyonu</span><a href="#form-validasyonu" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><div class="language-javascript highlighter-rouge"><div class="code-header"> <span data-label-text="JavaScript"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+</pre><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">FormValidator</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="nx">formSelector</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">form</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="nx">formSelector</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">rules</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">errors</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">attachEventListeners</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+    <span class="nf">addRule</span><span class="p">(</span><span class="nx">fieldName</span><span class="p">,</span> <span class="nx">validators</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">rules</span><span class="p">[</span><span class="nx">fieldName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">validators</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nf">validate</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">errors</span> <span class="o">=</span> <span class="p">{};</span>
+        
+        <span class="k">for </span><span class="p">(</span><span class="kd">const</span> <span class="p">[</span><span class="nx">fieldName</span><span class="p">,</span> <span class="nx">validators</span><span class="p">]</span> <span class="k">of</span> <span class="nb">Object</span><span class="p">.</span><span class="nf">entries</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">rules</span><span class="p">))</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="s2">`[name="</span><span class="p">${</span><span class="nx">fieldName</span><span class="p">}</span><span class="s2">"]`</span><span class="p">);</span>
+            <span class="kd">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">field</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nf">trim</span><span class="p">();</span>
+            
+            <span class="k">for </span><span class="p">(</span><span class="kd">const</span> <span class="nx">validator</span> <span class="k">of</span> <span class="nx">validators</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">const</span> <span class="nx">error</span> <span class="o">=</span> <span class="nf">validator</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">field</span><span class="p">);</span>
+                <span class="k">if </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">errors</span><span class="p">[</span><span class="nx">fieldName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">error</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="k">this</span><span class="p">.</span><span class="nf">displayErrors</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nf">keys</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">errors</span><span class="p">).</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nf">displayErrors</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Önce tüm hataları temizle</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">.error-message</span><span class="dl">'</span><span class="p">).</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">el</span> <span class="o">=&gt;</span> <span class="nx">el</span><span class="p">.</span><span class="nf">remove</span><span class="p">());</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">.invalid</span><span class="dl">'</span><span class="p">).</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">el</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">el</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="dl">'</span><span class="s1">invalid</span><span class="dl">'</span><span class="p">);</span>
+        <span class="p">});</span>
+        
+        <span class="c1">// Yeni hataları göster</span>
+        <span class="k">for </span><span class="p">(</span><span class="kd">const</span> <span class="p">[</span><span class="nx">fieldName</span><span class="p">,</span> <span class="nx">error</span><span class="p">]</span> <span class="k">of</span> <span class="nb">Object</span><span class="p">.</span><span class="nf">entries</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">errors</span><span class="p">))</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">field</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="s2">`[name="</span><span class="p">${</span><span class="nx">fieldName</span><span class="p">}</span><span class="s2">"]`</span><span class="p">);</span>
+            <span class="nx">field</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="dl">'</span><span class="s1">invalid</span><span class="dl">'</span><span class="p">);</span>
+            
+            <span class="kd">const</span> <span class="nx">errorDiv</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+            <span class="nx">errorDiv</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">error-message</span><span class="dl">'</span><span class="p">;</span>
+            <span class="nx">errorDiv</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">error</span><span class="p">;</span>
+            <span class="nx">field</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">errorDiv</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="nf">attachEventListeners</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">submit</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">e</span><span class="p">.</span><span class="nf">preventDefault</span><span class="p">();</span>
+            <span class="k">if </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nf">validate</span><span class="p">())</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nf">handleSubmit</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        
+        <span class="c1">// Real-time validation</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">blur</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nf">matches</span><span class="p">(</span><span class="dl">'</span><span class="s1">input, textarea, select</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nf">validate</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">},</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="nf">handleSubmit</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">formData</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FormData</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nf">fromEntries</span><span class="p">(</span><span class="nx">formData</span><span class="p">.</span><span class="nf">entries</span><span class="p">());</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Form submitted:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+        
+        <span class="c1">// API'ye gönderme</span>
+        <span class="nf">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">/api/submit</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+            <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span> <span class="p">},</span>
+            <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nf">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="nx">response</span><span class="p">.</span><span class="nf">json</span><span class="p">())</span>
+        <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nx">result</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Success:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">result</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nf">reset</span><span class="p">();</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Error:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">error</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Validator fonksiyonları</span>
+<span class="kd">const</span> <span class="nx">validators</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">required</span><span class="p">:</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">value</span> <span class="p">?</span> <span class="kc">null</span> <span class="p">:</span> <span class="dl">'</span><span class="s1">Bu alan zorunludur</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">},</span>
+    
+    <span class="na">email</span><span class="p">:</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">emailRegex</span> <span class="o">=</span> <span class="sr">/^</span><span class="se">[^\s</span><span class="sr">@</span><span class="se">]</span><span class="sr">+@</span><span class="se">[^\s</span><span class="sr">@</span><span class="se">]</span><span class="sr">+</span><span class="se">\.[^\s</span><span class="sr">@</span><span class="se">]</span><span class="sr">+$/</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nx">emailRegex</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">?</span> <span class="kc">null</span> <span class="p">:</span> <span class="dl">'</span><span class="s1">Geçerli bir email adresi girin</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">},</span>
+    
+    <span class="na">minLength</span><span class="p">:</span> <span class="p">(</span><span class="nx">min</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">value</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;=</span> <span class="nx">min</span> <span class="p">?</span> <span class="kc">null</span> <span class="p">:</span> <span class="s2">`En az </span><span class="p">${</span><span class="nx">min</span><span class="p">}</span><span class="s2"> karakter olmalıdır`</span><span class="p">;</span>
+    <span class="p">},</span>
+    
+    <span class="na">maxLength</span><span class="p">:</span> <span class="p">(</span><span class="nx">max</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">value</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;=</span> <span class="nx">max</span> <span class="p">?</span> <span class="kc">null</span> <span class="p">:</span> <span class="s2">`En fazla </span><span class="p">${</span><span class="nx">max</span><span class="p">}</span><span class="s2"> karakter olabilir`</span><span class="p">;</span>
+    <span class="p">},</span>
+    
+    <span class="na">pattern</span><span class="p">:</span> <span class="p">(</span><span class="nx">regex</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">regex</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">?</span> <span class="kc">null</span> <span class="p">:</span> <span class="nx">message</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// Kullanım</span>
+<span class="kd">const</span> <span class="nx">formValidator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FormValidator</span><span class="p">(</span><span class="dl">'</span><span class="s1">#myForm</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">formValidator</span><span class="p">.</span><span class="nf">addRule</span><span class="p">(</span><span class="dl">'</span><span class="s1">username</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
+    <span class="nx">validators</span><span class="p">.</span><span class="nx">required</span><span class="p">,</span>
+    <span class="nx">validators</span><span class="p">.</span><span class="nf">minLength</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+    <span class="nx">validators</span><span class="p">.</span><span class="nf">maxLength</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="p">]);</span>
+
+<span class="nx">formValidator</span><span class="p">.</span><span class="nf">addRule</span><span class="p">(</span><span class="dl">'</span><span class="s1">email</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
+    <span class="nx">validators</span><span class="p">.</span><span class="nx">required</span><span class="p">,</span>
+    <span class="nx">validators</span><span class="p">.</span><span class="nx">email</span>
+<span class="p">]);</span>
+
+<span class="nx">formValidator</span><span class="p">.</span><span class="nf">addRule</span><span class="p">(</span><span class="dl">'</span><span class="s1">password</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span>
+    <span class="nx">validators</span><span class="p">.</span><span class="nx">required</span><span class="p">,</span>
+    <span class="nx">validators</span><span class="p">.</span><span class="nf">minLength</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span>
+    <span class="nx">validators</span><span class="p">.</span><span class="nf">pattern</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">A-Z</span><span class="se">]</span><span class="sr">/</span><span class="p">,</span> <span class="dl">'</span><span class="s1">En az bir büyük harf içermelidir</span><span class="dl">'</span><span class="p">),</span>
+    <span class="nx">validators</span><span class="p">.</span><span class="nf">pattern</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">0-9</span><span class="se">]</span><span class="sr">/</span><span class="p">,</span> <span class="dl">'</span><span class="s1">En az bir rakam içermelidir</span><span class="dl">'</span><span class="p">)</span>
+<span class="p">]);</span>
+</pre></table></code></div></div><h2 id="modaldialog-component"><span class="me-2">Modal/Dialog Component</span><a href="#modaldialog-component" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><div class="language-javascript highlighter-rouge"><div class="code-header"> <span data-label-text="JavaScript"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+</pre><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">Modal</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">modal</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">closeCallback</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nf">open</span><span class="p">(</span><span class="nx">options</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="p">{</span>
+            <span class="nx">title</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Modal</span><span class="dl">'</span><span class="p">,</span>
+            <span class="nx">content</span> <span class="o">=</span> <span class="dl">''</span><span class="p">,</span>
+            <span class="nx">buttons</span> <span class="o">=</span> <span class="p">[{</span> <span class="na">text</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Kapat</span><span class="dl">'</span><span class="p">,</span> <span class="na">onClick</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span> <span class="p">}],</span>
+            <span class="nx">closeOnOverlay</span> <span class="o">=</span> <span class="kc">true</span>
+        <span class="p">}</span> <span class="o">=</span> <span class="nx">options</span><span class="p">;</span>
+        
+        <span class="c1">// Modal HTML oluştur</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">modal</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">modal-overlay</span><span class="dl">'</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="s2">`
+            &lt;div class="modal-content"&gt;
+                &lt;div class="modal-header"&gt;
+                    &lt;h3&gt;</span><span class="p">${</span><span class="nx">title</span><span class="p">}</span><span class="s2">&lt;/h3&gt;
+                    &lt;button class="modal-close"&gt;&amp;times;&lt;/button&gt;
+                &lt;/div&gt;
+                &lt;div class="modal-body"&gt;
+                    </span><span class="p">${</span><span class="nx">content</span><span class="p">}</span><span class="s2">
+                &lt;/div&gt;
+                &lt;div class="modal-footer"&gt;
+                    </span><span class="p">${</span><span class="nx">buttons</span><span class="p">.</span><span class="nf">map</span><span class="p">((</span><span class="nx">btn</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="s2">`
+                        &lt;button class="btn btn-</span><span class="p">${</span><span class="nx">btn</span><span class="p">.</span><span class="nx">type</span> <span class="o">||</span> <span class="dl">'</span><span class="s1">default</span><span class="dl">'</span><span class="p">}</span><span class="s2">" 
+                                data-btn-index="</span><span class="p">${</span><span class="nx">index</span><span class="p">}</span><span class="s2">"&gt;
+                            </span><span class="p">${</span><span class="nx">btn</span><span class="p">.</span><span class="nx">text</span><span class="p">}</span><span class="s2">
+                        &lt;/button&gt;
+                    `</span><span class="p">).</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">)}</span><span class="s2">
+                &lt;/div&gt;
+            &lt;/div&gt;
+        `</span><span class="p">;</span>
+        
+        <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">);</span>
+        
+        <span class="c1">// Animasyon için timeout</span>
+        <span class="nf">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="dl">'</span><span class="s1">active</span><span class="dl">'</span><span class="p">),</span> <span class="mi">10</span><span class="p">);</span>
+        
+        <span class="c1">// Event listeners</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.modal-close</span><span class="dl">'</span><span class="p">).</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nf">close</span><span class="p">();</span>
+        <span class="p">});</span>
+        
+        <span class="k">if </span><span class="p">(</span><span class="nx">closeOnOverlay</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="k">if </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nf">close</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+        
+        <span class="c1">// Button click handlers</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-btn-index]</span><span class="dl">'</span><span class="p">).</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">btn</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">btn</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="kd">const</span> <span class="nx">index</span> <span class="o">=</span> <span class="nf">parseInt</span><span class="p">(</span><span class="nx">btn</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">btnIndex</span><span class="p">);</span>
+                <span class="k">if </span><span class="p">(</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">onClick</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">buttons</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nf">onClick</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+        
+        <span class="c1">// ESC tuşu ile kapatma</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">keyHandler</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">Escape</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nf">close</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">keydown</span><span class="dl">'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">keyHandler</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="nf">close</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        
+        <span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="dl">'</span><span class="s1">active</span><span class="dl">'</span><span class="p">);</span>
+        
+        <span class="nf">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">modal</span><span class="p">.</span><span class="nf">remove</span><span class="p">();</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">modal</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+            <span class="nb">document</span><span class="p">.</span><span class="nf">removeEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">keydown</span><span class="dl">'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">keyHandler</span><span class="p">);</span>
+            
+            <span class="k">if </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">closeCallback</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nf">closeCallback</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">},</span> <span class="mi">300</span><span class="p">);</span> <span class="c1">// Animation duration</span>
+    <span class="p">}</span>
+    
+    <span class="nf">onClose</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">closeCallback</span> <span class="o">=</span> <span class="nx">callback</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// CSS (örnek)</span>
+<span class="kd">const</span> <span class="nx">modalStyles</span> <span class="o">=</span> <span class="s2">`
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: background 0.3s;
+}
+
+.modal-overlay.active {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e0e0e0;
+}
+`</span><span class="p">;</span>
+
+<span class="c1">// Kullanım</span>
+<span class="kd">const</span> <span class="nx">modal</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Modal</span><span class="p">();</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#openModalBtn</span><span class="dl">'</span><span class="p">).</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">modal</span><span class="p">.</span><span class="nf">open</span><span class="p">({</span>
+        <span class="na">title</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Onay Gerekli</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">content</span><span class="p">:</span> <span class="dl">'</span><span class="s1">&lt;p&gt;Bu işlemi gerçekleştirmek istediğinizden emin misiniz?&lt;/p&gt;</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">buttons</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="na">text</span><span class="p">:</span> <span class="dl">'</span><span class="s1">İptal</span><span class="dl">'</span><span class="p">,</span>
+                <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">secondary</span><span class="dl">'</span><span class="p">,</span>
+                <span class="na">onClick</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">modal</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="na">text</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Onayla</span><span class="dl">'</span><span class="p">,</span>
+                <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">primary</span><span class="dl">'</span><span class="p">,</span>
+                <span class="na">onClick</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Onaylandı!</span><span class="dl">'</span><span class="p">);</span>
+                    <span class="nx">modal</span><span class="p">.</span><span class="nf">close</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></table></code></div></div><h2 id="intersection-observer-ile-lazy-loading"><span class="me-2">Intersection Observer ile Lazy Loading</span><a href="#intersection-observer-ile-lazy-loading" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><div class="language-javascript highlighter-rouge"><div class="code-header"> <span data-label-text="JavaScript"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+</pre><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">LazyLoader</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">(</span><span class="nx">options</span> <span class="o">=</span> <span class="p">{})</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="na">root</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="na">rootMargin</span><span class="p">:</span> <span class="dl">'</span><span class="s1">50px</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">threshold</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="p">...</span><span class="nx">options</span>
+        <span class="p">};</span>
+        
+        <span class="k">this</span><span class="p">.</span><span class="nx">observer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">IntersectionObserver</span><span class="p">(</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">handleIntersection</span><span class="p">.</span><span class="nf">bind</span><span class="p">(</span><span class="k">this</span><span class="p">),</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">options</span>
+        <span class="p">);</span>
+        
+        <span class="k">this</span><span class="p">.</span><span class="nf">observe</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+    <span class="nf">observe</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Lazy load images</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">img[data-src]</span><span class="dl">'</span><span class="p">).</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">img</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">observer</span><span class="p">.</span><span class="nf">observe</span><span class="p">(</span><span class="nx">img</span><span class="p">);</span>
+        <span class="p">});</span>
+        
+        <span class="c1">// Lazy load sections</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-lazy]</span><span class="dl">'</span><span class="p">).</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">section</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">observer</span><span class="p">.</span><span class="nf">observe</span><span class="p">(</span><span class="nx">section</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+    
+    <span class="nf">handleIntersection</span><span class="p">(</span><span class="nx">entries</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">entries</span><span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">entry</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">entry</span><span class="p">.</span><span class="nx">isIntersecting</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">entry</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
+                
+                <span class="k">if </span><span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">IMG</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">src</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nf">loadImage</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if </span><span class="p">(</span><span class="nx">element</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">lazy</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nf">loadSection</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+                <span class="p">}</span>
+                
+                <span class="k">this</span><span class="p">.</span><span class="nx">observer</span><span class="p">.</span><span class="nf">unobserve</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+    
+    <span class="nf">loadImage</span><span class="p">(</span><span class="nx">img</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">src</span> <span class="o">=</span> <span class="nx">img</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">src</span><span class="p">;</span>
+        <span class="kd">const</span> <span class="nx">srcset</span> <span class="o">=</span> <span class="nx">img</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">srcset</span><span class="p">;</span>
+        
+        <span class="c1">// Placeholder'dan gerçek görsele geçiş</span>
+        <span class="kd">const</span> <span class="nx">tempImg</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Image</span><span class="p">();</span>
+        <span class="nx">tempImg</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">src</span><span class="p">;</span>
+            <span class="k">if </span><span class="p">(</span><span class="nx">srcset</span><span class="p">)</span> <span class="nx">img</span><span class="p">.</span><span class="nx">srcset</span> <span class="o">=</span> <span class="nx">srcset</span><span class="p">;</span>
+            <span class="nx">img</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="dl">'</span><span class="s1">loaded</span><span class="dl">'</span><span class="p">);</span>
+        <span class="p">};</span>
+        <span class="nx">tempImg</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">src</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nf">loadSection</span><span class="p">(</span><span class="nx">section</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Section içeriğini lazy load et</span>
+        <span class="kd">const</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">section</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">lazy</span><span class="p">;</span>
+        
+        <span class="nf">fetch</span><span class="p">(</span><span class="nx">content</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nx">response</span> <span class="o">=&gt;</span> <span class="nx">response</span><span class="p">.</span><span class="nf">text</span><span class="p">())</span>
+            <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nx">html</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nx">section</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">html</span><span class="p">;</span>
+                <span class="nx">section</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="dl">'</span><span class="s1">loaded</span><span class="dl">'</span><span class="p">);</span>
+            <span class="p">})</span>
+            <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Section loading error:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+            <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Kullanım</span>
+<span class="kd">const</span> <span class="nx">lazyLoader</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LazyLoader</span><span class="p">();</span>
+
+<span class="c1">// HTML örneği:</span>
+<span class="c1">// &lt;img data-src="image.jpg" data-srcset="image-2x.jpg 2x" alt="Lazy loaded"&gt;</span>
+<span class="c1">// &lt;section data-lazy="/api/content/section1"&gt;&lt;/section&gt;</span>
+</pre></table></code></div></div><h2 id="performans-i̇puçları"><span class="me-2">Performans İpuçları</span><a href="#performans-i̇puçları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="debounce-ve-throttle"><span class="me-2">Debounce ve Throttle</span><a href="#debounce-ve-throttle" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-javascript highlighter-rouge"><div class="code-header"> <span data-label-text="JavaScript"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre><td class="rouge-code"><pre><span class="c1">// Debounce: Son çağrıdan sonra belirli süre bekler</span>
+<span class="kd">function</span> <span class="nf">debounce</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">delay</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">timeoutId</span><span class="p">;</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">clearTimeout</span><span class="p">(</span><span class="nx">timeoutId</span><span class="p">);</span>
+        <span class="nx">timeoutId</span> <span class="o">=</span> <span class="nf">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">func</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">args</span><span class="p">),</span> <span class="nx">delay</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="c1">// Throttle: Belirli aralıklarla çalışır</span>
+<span class="kd">function</span> <span class="nf">throttle</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">limit</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">inThrottle</span><span class="p">;</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">(...</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">inThrottle</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">func</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+            <span class="nx">inThrottle</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="nf">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">inThrottle</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">limit</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="c1">// Kullanım örnekleri</span>
+<span class="kd">const</span> <span class="nx">searchInput</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#search</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// Debounce - arama için ideal</span>
+<span class="nx">searchInput</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">input</span><span class="dl">'</span><span class="p">,</span> <span class="nf">debounce</span><span class="p">((</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Searching for:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+    <span class="c1">// API çağrısı yap</span>
+<span class="p">},</span> <span class="mi">300</span><span class="p">));</span>
+
+<span class="c1">// Throttle - scroll için ideal</span>
+<span class="nb">window</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">scroll</span><span class="dl">'</span><span class="p">,</span> <span class="nf">throttle</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Scroll position:</span><span class="dl">'</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">scrollY</span><span class="p">);</span>
+    <span class="c1">// Scroll animasyonları</span>
+<span class="p">},</span> <span class="mi">100</span><span class="p">));</span>
+</pre></table></code></div></div><h3 id="dom-manipulation-optimizasyonu"><span class="me-2">DOM Manipulation Optimizasyonu</span><a href="#dom-manipulation-optimizasyonu" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="dom-optimization.js" class="language-javascript highlighter-rouge"><div class="code-header"> <span data-label-text="dom-optimization.js"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre><td class="rouge-code"><pre><span class="c1">// ❌ Yavaş: Her iterasyonda DOM'a erişim</span>
+<span class="k">for </span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">li</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">li</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">li</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="s2">`Item </span><span class="p">${</span><span class="nx">i</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">ul</span><span class="dl">'</span><span class="p">).</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">li</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// ✅ Hızlı: DocumentFragment kullanımı</span>
+<span class="kd">const</span> <span class="nx">fragment</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createDocumentFragment</span><span class="p">();</span>
+<span class="k">for </span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">li</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">li</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">li</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="s2">`Item </span><span class="p">${</span><span class="nx">i</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
+    <span class="nx">fragment</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">li</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">ul</span><span class="dl">'</span><span class="p">).</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">fragment</span><span class="p">);</span>
+
+<span class="c1">// ✅ En hızlı: innerHTML ile toplu ekleme</span>
+<span class="kd">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="k">from</span><span class="p">({</span> <span class="na">length</span><span class="p">:</span> <span class="mi">1000</span> <span class="p">},</span> <span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> 
+    <span class="s2">`&lt;li&gt;Item </span><span class="p">${</span><span class="nx">i</span><span class="p">}</span><span class="s2">&lt;/li&gt;`</span>
+<span class="p">).</span><span class="nf">join</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">ul</span><span class="dl">'</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">items</span><span class="p">;</span>
+</pre></table></code></div></div><blockquote class="prompt-tip"><p>Büyük listeler için DocumentFragment veya innerHTML kullanımı, tek tek appendChild() çağrılarından çok daha hızlıdır. Reflow/repaint sayısını minimize edin.</p></blockquote><h2 id="sonuç"><span class="me-2">Sonuç</span><a href="#sonuç" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Modern web arayüzü geliştirme, CSS Grid ve Flexbox ile güçlü layout sistemleri, CSS değişkenleri ile kolay tema yönetimi ve vanilla JavaScript ile performanslı DOM manipülasyonu gerektirir. Bu yazıda ele aldığımız teknikler, framework kullanmadan da modern, responsive ve kullanıcı dostu web uygulamaları geliştirmenize olanak tanır.</p><p><strong>Önemli Noktalar:</strong></p><ul><li>CSS Grid iki boyutlu, Flexbox tek boyutlu layoutlar için idealdir<li>CSS değişkenleri tema yönetimini kolaylaştırır<li>Vanilla JavaScript ile framework bağımlılığı olmadan güçlü uygulamalar yazılabilir<li>Event delegation performans için önemlidir<li>Debounce ve throttle fonksiyonları performans optimizasyonunda kritiktir<li>Intersection Observer lazy loading için modern çözümdür</ul><p>Bu teknikleri projelerinizde uygulayarak, daha hızlı, daha erişilebilir ve daha bakımı kolay web uygulamaları geliştirebilirsiniz.</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw me-1"></i> <a href="/categories/web-development/">Web Development</a>, <a href="/categories/frontend/">Frontend</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw me-1"></i> <a href="/tags/css/" class="post-tag no-text-decoration" >css</a> <a href="/tags/javascript/" class="post-tag no-text-decoration" >javascript</a> <a href="/tags/flexbox/" class="post-tag no-text-decoration" >flexbox</a> <a href="/tags/grid/" class="post-tag no-text-decoration" >grid</a> <a href="/tags/dom-manipulation/" class="post-tag no-text-decoration" >dom-manipulation</a> <a href="/tags/responsive-design/" class="post-tag no-text-decoration" >responsive-design</a> <a href="/tags/web-development/" class="post-tag no-text-decoration" >web-development</a> <a href="/tags/frontend/" class="post-tag no-text-decoration" >frontend</a></div><div class=" post-tail-bottom d-flex justify-content-between align-items-center mt-5 pb-2 " ><div class="license-wrapper"> Bu gönderi <a href="https://creativecommons.org/licenses/by/4.0/deed.tr"> CC BY 4.0 </a> lisansı altındadır.</div><div class="share-wrapper d-flex align-items-center"> <span class="share-label text-muted">Paylaş</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Modern%20Web%20Aray%C3%BCz%C3%BC%20Geli%C5%9Ftirme:%20CSS%20Grid,%20Flexbox%20ve%20Vanilla%20JavaScript%20-%20Furkan%20K%C3%B6yk%C4%B1ran&url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fmodern-web-arayuzu-css-javascript%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter"> <i class="fa-fw fa-brands fa-square-x-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Modern%20Web%20Aray%C3%BCz%C3%BC%20Geli%C5%9Ftirme:%20CSS%20Grid,%20Flexbox%20ve%20Vanilla%20JavaScript%20-%20Furkan%20K%C3%B6yk%C4%B1ran&u=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fmodern-web-arayuzu-css-javascript%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fmodern-web-arayuzu-css-javascript%2F&text=Modern%20Web%20Aray%C3%BCz%C3%BC%20Geli%C5%9Ftirme:%20CSS%20Grid,%20Flexbox%20ve%20Vanilla%20JavaScript%20-%20Furkan%20K%C3%B6yk%C4%B1ran" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <button id="copy-link" aria-label="Copy link" class="btn small" data-bs-toggle="tooltip" data-bs-placement="top" title="Linki kopyala" data-title-succeed="Link kopyalandı." > <i class="fa-fw fas fa-link pe-none fs-6"></i> </button> </span></div></div></div></article></main><aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted"><div class="access"><section id="access-lastmod"><h2 class="panel-heading">Son Güncellenenler</h2><ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2"><li class="text-truncate lh-lg"> <a href="/posts/apache-kafka-event-streaming/">Apache Kafka ile Event Streaming: Gerçek Zamanlı Veri Pipeline'ları</a><li class="text-truncate lh-lg"> <a href="/posts/git-is-akisi-branch-stratejileri/">Git İş Akışı ve Branch Stratejileri: GitFlow, Trunk-Based, GitHub Flow</a><li class="text-truncate lh-lg"> <a href="/posts/python-context-managers-kaynak-yonetimi/">Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</a><li class="text-truncate lh-lg"> <a href="/posts/modern-web-arayuzu-css-javascript/">Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</a><li class="text-truncate lh-lg"> <a href="/posts/python-ile-eposta-otomasyonu/">Python ile E-posta Otomasyonu</a></ul></section><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div class="toc-border-cover z-3"></div><section id="toc-wrapper" class="invisible position-sticky ps-0 pe-4 pb-4"><h2 class="panel-heading ps-3 pb-2 mb-0">İçindekiler</h2><nav id="toc"></nav></section></aside></div><div class="row"><div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4"><aside id="related-posts" aria-labelledby="related-label"><h3 class="mb-4" id="related-label">Benzer Gönderiler</h3><nav class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4"><article class="col"> <a href="/posts/python-fastapi-restful-api-gelistirme/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1714165200" data-df="DD/MM/YYYY" > 27/04/2024 </time><h4 class="pt-0 my-2">Python FastAPI ile RESTful API Geliştirme</h4><div class="text-muted"><p>FastAPI ile modern REST API geliştirme rehberi. Async endpoint'ler, Pydantic validasyon, JWT authentication, SQLAlchemy ORM ve production deployment stratejileri.</p></div></div></a></article><article class="col"> <a href="/posts/web3-wallet-entegrasyonu/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1718708400" data-df="DD/MM/YYYY" > 18/06/2024 </time><h4 class="pt-0 my-2">Web3 Wallet Entegrasyonu: MetaMask ve WalletConnect ile DApp Geliştirme</h4><div class="text-muted"><p>MetaMask ve WalletConnect ile Web3 wallet entegrasyonu rehberi. React, Vue ve vanilla JavaScript örnekleriyle modern DApp geliştirme, güvenlik ve best practices.</p></div></div></a></article><article class="col"> <a href="/posts/websocket-ile-gercek-zamanli-iletisim/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1757916000" data-df="DD/MM/YYYY" > 15/09/2025 </time><h4 class="pt-0 my-2">WebSocket ile Gerçek Zamanlı İletişim</h4><div class="text-muted"><p>FastAPI ile WebSocket kullanarak gerçek zamanlı uygulamalar geliştirme. Bidirectional iletişim, connection management, broadcasting ve production best practices.</p></div></div></a></article></nav></aside><nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation"> <a href="/posts/python-ile-eposta-otomasyonu/" class="btn btn-outline-primary" aria-label="Geri" ><p>Python ile E-posta Otomasyonu</p></a> <a href="/posts/python-context-managers-kaynak-yonetimi/" class="btn btn-outline-primary" aria-label="İleri" ><p>Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</p></a></nav><footer aria-label="Site Info" class=" d-flex flex-column justify-content-center text-muted flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3 " ><p>© <time>2025</time> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a>. <span data-bs-toggle="tooltip" data-bs-placement="top" title="Aksi belirtilmediği sürece, bu sitedeki gönderiler Creative Commons Atıf 4.0 Uluslararası (CC BY 4.0) Lisansı altındadır. Kısaca sayfa linkini vererek değiştirebilir / paylaşabilirsiniz." >Bazı hakları saklıdır.</span></p><p><a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> ve <a data-bs-toggle="tooltip" data-bs-placement="top" title="v7.4.1" href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener" >Chirpy</a> teması</p></footer></div></div><div id="search-result-wrapper" class="d-flex justify-content-center d-none"><div class="col-11 content"><div id="search-hints"><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><aside aria-label="Scroll to Top"> <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow"> <i class="fas fa-angle-up"></i> </button></aside></div><div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div><script> document.addEventListener('DOMContentLoaded', () => { SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<article class="px-1 px-sm-2 px-lg-4 px-xl-0"><header><h2><a href="{url}">{title}</a></h2><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div></header><p>{content}</p></article>', noResultsText: '<p class="mt-5">Hop! Öyle bir şey bulamadım.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); }); </script>

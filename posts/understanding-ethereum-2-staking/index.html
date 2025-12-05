@@ -1,0 +1,1901 @@
+<!doctype html><html lang="tr-TR" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover" ><meta name="generator" content="Jekyll v4.4.1" /><meta property="og:title" content="Understanding Ethereum 2.0 Staking: Complete Validator Guide" /><meta property="og:locale" content="tr_TR" /><meta name="description" content="Complete guide to Ethereum 2.0 staking and validator setup. Proof of Stake consensus, validator requirements, rewards, penalties, and best practices." /><meta property="og:description" content="Complete guide to Ethereum 2.0 staking and validator setup. Proof of Stake consensus, validator requirements, rewards, penalties, and best practices." /><link rel="canonical" href="https://blog.furkankoykiran.com.tr/posts/understanding-ethereum-2-staking/" /><meta property="og:url" content="https://blog.furkankoykiran.com.tr/posts/understanding-ethereum-2-staking/" /><meta property="og:site_name" content="Furkan Köykıran" /><meta property="og:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/ethereum-beacon-chain-validator-lifecycle.png" /><meta property="og:image:alt" content="Ethereum Beacon Chain Validator Lifecycle Diagram" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2024-10-29T14:00:00+03:00" /><meta name="twitter:card" content="summary_large_image" /><meta property="twitter:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/ethereum-beacon-chain-validator-lifecycle.png" /><meta name="twitter:image:alt" content="Ethereum Beacon Chain Validator Lifecycle Diagram" /><meta property="twitter:title" content="Understanding Ethereum 2.0 Staking: Complete Validator Guide" /><meta name="twitter:site" content="@furkankoykiran" /><meta name="google-site-verification" content="LEiVauGuhGdPxwWU7bq-uQaNYrEu9Aqhv8TM3SaoSsM" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-12-05T03:07:03+03:00","datePublished":"2024-10-29T14:00:00+03:00","description":"Complete guide to Ethereum 2.0 staking and validator setup. Proof of Stake consensus, validator requirements, rewards, penalties, and best practices.","headline":"Understanding Ethereum 2.0 Staking: Complete Validator Guide","image":{"alt":"Ethereum Beacon Chain Validator Lifecycle Diagram","url":"https://blog.furkankoykiran.com.tr/assets/img/posts/ethereum-beacon-chain-validator-lifecycle.png","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.furkankoykiran.com.tr/posts/understanding-ethereum-2-staking/"},"url":"https://blog.furkankoykiran.com.tr/posts/understanding-ethereum-2-staking/"}</script><title>Understanding Ethereum 2.0 Staking: Complete Validator Guide | Furkan Köykıran</title><link rel="icon" type="image/png" href="/assets/img/favicons/favicon-96x96.png" sizes="96x96"><link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.36.4/dist/tocbot.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css"> <script src="/assets/js/dist/theme.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/glightbox@3.3.0/dist/js/glightbox.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.18/dayjs.min.js,npm/dayjs@1.11.18/locale/tr.js,npm/dayjs@1.11.18/plugin/relativeTime.js,npm/dayjs@1.11.18/plugin/localizedFormat.js,npm/tocbot@4.36.4/dist/tocbot.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script><body><aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end"><header class="profile-wrapper"> <a href="/" id="avatar" class="rounded-circle"><img src="https://blog.furkankoykiran.com.tr/assets/img/avatar.png" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a> <a class="site-title d-block" href="/">Furkan Köykıran</a><p class="site-subtitle fst-italic mb-0">Kişisel Websitesi</p></header><nav class="flex-column flex-grow-1 w-100 ps-0"><ul class="nav"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home"></i> <span>ANA SAYFA</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream"></i> <span>KATEGORILER</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tags"></i> <span>ETIKETLER</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive"></i> <span>ARŞIV</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle"></i> <span>HAKKINDA</span> </a><li class="nav-item"> <a href="/contact/" class="nav-link"> <i class="fa-fw far fa-address-book"></i> <span>İLETIŞIM</span> </a></ul></nav><div class="sidebar-bottom d-flex flex-wrap align-items-center w-100"> <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/furkankoykiran" aria-label="github" target="_blank" rel="noopener noreferrer" > <i class="fab fa-github"></i> </a> <a href="https://twitter.com/furkankoykiran" aria-label="twitter" target="_blank" rel="noopener noreferrer" > <i class="fa-brands fa-x-twitter"></i> </a> <a href="javascript:location.href = 'mailto:' + ['furkankoykiran','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></aside><div id="main-wrapper" class="d-flex justify-content-center"><div class="container d-flex flex-column px-xxl-5"><header id="topbar-wrapper" class="flex-shrink-0" aria-label="Top Bar"><div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100" ><nav id="breadcrumb" aria-label="Breadcrumb"> <span> <a href="/">Ana sayfa</a> </span> <span>Understanding Ethereum 2.0 Staking: Complete Validator Guide</span></nav><button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Sidebar"> <i class="fas fa-bars fa-fw"></i> </button><div id="topbar-title"> Gönderi</div><button type="button" id="search-trigger" class="btn btn-link" aria-label="Search"> <i class="fas fa-search fa-fw"></i> </button> <search id="search" class="align-items-center ms-3 ms-lg-0"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Ara......" > </search> <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">İptal</button></div></header><div class="row flex-grow-1"><main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4"><article class="px-1" data-toc="true"><header><h1 data-toc-skip>Understanding Ethereum 2.0 Staking: Complete Validator Guide</h1><p class="post-desc fw-light mb-4">Complete guide to Ethereum 2.0 staking and validator setup. Proof of Stake consensus, validator requirements, rewards, penalties, and best practices.</p><div class="post-meta text-muted"> <span> Gönderim <time data-ts="1730199600" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 29/10/2024 </time> </span> <span> Güncelleme <time data-ts="1764893223" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 05/12/2025 </time> </span><div class="mt-3 mb-3"> <a href="/assets/img/posts/ethereum-beacon-chain-validator-lifecycle.png" class="popup img-link preview-img shimmer"><img src="/assets/img/posts/ethereum-beacon-chain-validator-lifecycle.png" alt="Ethereum Beacon Chain Validator Lifecycle Diagram" width="1200" height="630" loading="lazy"></a><figcaption class="text-center pt-2 pb-2">Ethereum Beacon Chain Validator Lifecycle Diagram</figcaption></div><div class="d-flex justify-content-between"> <span> Yazan <em> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a> </em> </span><div> <span class="readtime" data-bs-toggle="tooltip" data-bs-placement="bottom" title="4834 sözcük" > <em>26 dakikada</em> okunabilir</span></div></div></div></header><div id="toc-bar" class="d-flex align-items-center justify-content-between invisible"> <span class="label text-truncate">Understanding Ethereum 2.0 Staking: Complete Validator Guide</span> <button type="button" class="toc-trigger btn me-1"> <i class="fa-solid fa-list-ul fa-fw"></i> </button></div><button id="toc-solo-trigger" type="button" class="toc-trigger btn btn-outline-secondary btn-sm"> <span class="label ps-2 pe-1">İçindekiler</span> <i class="fa-solid fa-angle-right fa-fw"></i> </button> <dialog id="toc-popup" class="p-0"><div class="header d-flex flex-row align-items-center justify-content-between"><div class="label text-truncate py-2 ms-4">Understanding Ethereum 2.0 Staking: Complete Validator Guide</div><button id="toc-popup-close" type="button" class="btn mx-1 my-1 opacity-75"> <i class="fas fa-close"></i> </button></div><div id="toc-popup-content" class="px-4 py-3 pb-4"></div></dialog><div class="content"><h2 id="introduction"><span class="me-2">Introduction</span><a href="#introduction" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Ethereum’s transition from Proof of Work (PoW) to Proof of Stake (PoS) through “The Merge” in September 2022 fundamentally transformed how the network achieves consensus and secures transactions. This shift not only reduced Ethereum’s energy consumption by over 99.95% but also introduced a new economic paradigm where ETH holders can actively participate in network security while earning rewards.</p><p>Ethereum 2.0 staking represents one of the most significant opportunities in the cryptocurrency ecosystem, offering yields typically ranging from 3-7% annually while contributing to the decentralization and security of the world’s leading smart contract platform. However, becoming an Ethereum validator or choosing the right staking method requires understanding complex technical requirements, economic considerations, and various risk factors.</p><p>This comprehensive guide explores everything you need to know about Ethereum staking: from the technical architecture of the Beacon Chain to validator requirements, rewards calculations, different staking methods, risks, and best practices for maximizing your staking returns.</p><h3 id="what-youll-learn"><span class="me-2">What You’ll Learn</span><a href="#what-youll-learn" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ul><li>How Ethereum’s Proof of Stake consensus mechanism works<li>Beacon Chain architecture and validator responsibilities<li>Minimum requirements and setup for running a validator node<li>Staking rewards calculation and yield factors<li>Comparison of staking methods: solo, pooled, and liquid staking<li>Risks, penalties, and slashing conditions<li>Tax implications and best practices</ul><h2 id="ethereums-proof-of-stake-consensus"><span class="me-2">Ethereum’s Proof of Stake Consensus</span><a href="#ethereums-proof-of-stake-consensus" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="from-proof-of-work-to-proof-of-stake"><span class="me-2">From Proof of Work to Proof of Stake</span><a href="#from-proof-of-work-to-proof-of-stake" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Ethereum’s original consensus mechanism, Proof of Work (PoW), required miners to solve complex computational puzzles to validate transactions and create new blocks. This process was:</p><ul><li><strong>Energy-Intensive</strong>: Required massive electricity consumption<li><strong>Hardware-Dependent</strong>: Favored those with access to specialized mining equipment (ASICs, GPUs)<li><strong>Centralization Risk</strong>: Mining pools concentrated power</ul><p>Proof of Stake (PoS) replaces computational work with economic stake:</p><ul><li><strong>Validators</strong> lock up 32 ETH as collateral<li><strong>Random Selection</strong>: Validators are chosen to propose and attest to blocks<li><strong>Economic Security</strong>: Malicious behavior results in stake slashing<li><strong>Energy Efficient</strong>: Requires minimal computational power</ul><p><a href="/assets/img/posts/proof-of-stake-mechanism-infographic.png" class="popup img-link shimmer"><img src="/assets/img/posts/proof-of-stake-mechanism-infographic.png" alt="Proof of Stake Mechanism" loading="lazy"></a> <em>Figure 1: Proof of Stake consensus mechanism - Validators stake ETH to participate in block validation</em></p><h3 id="how-pos-consensus-works"><span class="me-2">How PoS Consensus Works</span><a href="#how-pos-consensus-works" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>The Ethereum PoS consensus operates through a sophisticated system of validators, committees, and attestations:</p><p><strong>1. Validator Registration</strong></p><div file="validator_deposit.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="validator_deposit.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">ValidatorDeposit</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">deposit_amount</span> <span class="o">=</span> <span class="mi">32</span>  <span class="c1"># ETH
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">withdrawal_credentials</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">public_key</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">signature</span> <span class="o">=</span> <span class="bp">None</span>
+    
+    <span class="k">def</span> <span class="nf">generate_deposit_data</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">withdrawal_address</span><span class="p">,</span> <span class="n">validator_key</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Generate deposit data for validator registration
+        </span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">withdrawal_credentials</span> <span class="o">=</span> <span class="n">withdrawal_address</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">public_key</span> <span class="o">=</span> <span class="n">validator_key</span><span class="p">.</span><span class="n">public_key</span>
+        
+        <span class="c1"># Create deposit message
+</span>        <span class="n">deposit_message</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">pubkey</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">public_key</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">withdrawal_credentials</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">withdrawal_credentials</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">amount</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">deposit_amount</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span>  <span class="c1"># Gwei
+</span>        <span class="p">}</span>
+        
+        <span class="c1"># Sign deposit
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">signature</span> <span class="o">=</span> <span class="n">validator_key</span><span class="p">.</span><span class="nf">sign</span><span class="p">(</span><span class="n">deposit_message</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">deposit_message</span>
+</pre></table></code></div></div><p><strong>2. Epoch and Slot System</strong></p><p>Ethereum’s time is divided into:</p><ul><li><strong>Slot</strong>: 12 seconds - opportunity for one block<li><strong>Epoch</strong>: 32 slots (6.4 minutes) - checkpoint for finality</ul><div file="beacon_time.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="beacon_time.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">time</span>
+
+<span class="k">class</span> <span class="nc">BeaconChainTime</span><span class="p">:</span>
+    <span class="n">SECONDS_PER_SLOT</span> <span class="o">=</span> <span class="mi">12</span>
+    <span class="n">SLOTS_PER_EPOCH</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="n">GENESIS_TIME</span> <span class="o">=</span> <span class="mi">1606824023</span>  <span class="c1"># Dec 1, 2020
+</span>    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">current_slot</span><span class="p">():</span>
+        <span class="sh">"""</span><span class="s">Calculate current slot number</span><span class="sh">"""</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">())</span> <span class="o">-</span> <span class="n">BeaconChainTime</span><span class="p">.</span><span class="n">GENESIS_TIME</span>
+        <span class="k">return</span> <span class="n">elapsed</span> <span class="o">//</span> <span class="n">BeaconChainTime</span><span class="p">.</span><span class="n">SECONDS_PER_SLOT</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">current_epoch</span><span class="p">():</span>
+        <span class="sh">"""</span><span class="s">Calculate current epoch number</span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="n">BeaconChainTime</span><span class="p">.</span><span class="nf">current_slot</span><span class="p">()</span> <span class="o">//</span> <span class="n">BeaconChainTime</span><span class="p">.</span><span class="n">SLOTS_PER_EPOCH</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">slot_to_time</span><span class="p">(</span><span class="n">slot</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Convert slot number to timestamp</span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="n">BeaconChainTime</span><span class="p">.</span><span class="n">GENESIS_TIME</span> <span class="o">+</span> <span class="p">(</span><span class="n">slot</span> <span class="o">*</span> <span class="n">BeaconChainTime</span><span class="p">.</span><span class="n">SECONDS_PER_SLOT</span><span class="p">)</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">next_slot_in</span><span class="p">():</span>
+        <span class="sh">"""</span><span class="s">Seconds until next slot</span><span class="sh">"""</span>
+        <span class="n">current_slot</span> <span class="o">=</span> <span class="n">BeaconChainTime</span><span class="p">.</span><span class="nf">current_slot</span><span class="p">()</span>
+        <span class="n">next_slot_time</span> <span class="o">=</span> <span class="n">BeaconChainTime</span><span class="p">.</span><span class="nf">slot_to_time</span><span class="p">(</span><span class="n">current_slot</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">next_slot_time</span> <span class="o">-</span> <span class="nf">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="nf">time</span><span class="p">())</span>
+
+<span class="c1"># Usage
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Current Epoch: </span><span class="si">{</span><span class="n">BeaconChainTime</span><span class="p">.</span><span class="nf">current_epoch</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Current Slot: </span><span class="si">{</span><span class="n">BeaconChainTime</span><span class="p">.</span><span class="nf">current_slot</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Next slot in: </span><span class="si">{</span><span class="n">BeaconChainTime</span><span class="p">.</span><span class="nf">next_slot_in</span><span class="p">()</span><span class="si">}</span><span class="s"> seconds</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><p><strong>3. Validator Duties</strong></p><p>Each epoch, validators are assigned to:</p><p><strong>Block Proposal</strong>: One validator per slot proposes a new block</p><div file="block_proposer.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="block_proposer.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">propose_block</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">slot</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Validator proposes a block for their assigned slot
+    </span><span class="sh">"""</span>
+    <span class="k">if</span> <span class="n">validator</span><span class="p">.</span><span class="nf">is_proposer</span><span class="p">(</span><span class="n">slot</span><span class="p">):</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">validator</span><span class="p">.</span><span class="nf">build_block</span><span class="p">(</span>
+            <span class="n">slot</span><span class="o">=</span><span class="n">slot</span><span class="p">,</span>
+            <span class="n">parent_root</span><span class="o">=</span><span class="n">validator</span><span class="p">.</span><span class="nf">get_head</span><span class="p">(),</span>
+            <span class="n">transactions</span><span class="o">=</span><span class="n">validator</span><span class="p">.</span><span class="n">mempool</span><span class="p">.</span><span class="nf">get_pending</span><span class="p">(),</span>
+            <span class="n">attestations</span><span class="o">=</span><span class="n">validator</span><span class="p">.</span><span class="nf">get_pending_attestations</span><span class="p">()</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Sign and broadcast
+</span>        <span class="n">signed_block</span> <span class="o">=</span> <span class="n">validator</span><span class="p">.</span><span class="nf">sign_block</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+        <span class="n">validator</span><span class="p">.</span><span class="nf">broadcast</span><span class="p">(</span><span class="n">signed_block</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">signed_block</span>
+</pre></table></code></div></div><p><strong>Attestation</strong>: All validators attest to their view of the chain</p><div file="attestation.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="attestation.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">create_attestation</span><span class="p">(</span><span class="n">validator</span><span class="p">,</span> <span class="n">slot</span><span class="p">,</span> <span class="n">committee_index</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Validator creates attestation for current slot
+    </span><span class="sh">"""</span>
+    <span class="n">attestation</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">slot</span><span class="sh">'</span><span class="p">:</span> <span class="n">slot</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">index</span><span class="sh">'</span><span class="p">:</span> <span class="n">committee_index</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">beacon_block_root</span><span class="sh">'</span><span class="p">:</span> <span class="n">validator</span><span class="p">.</span><span class="nf">get_head</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">source</span><span class="sh">'</span><span class="p">:</span> <span class="n">validator</span><span class="p">.</span><span class="n">justified_checkpoint</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">target</span><span class="sh">'</span><span class="p">:</span> <span class="n">validator</span><span class="p">.</span><span class="nf">get_target_checkpoint</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+    <span class="c1"># Sign attestation
+</span>    <span class="n">signature</span> <span class="o">=</span> <span class="n">validator</span><span class="p">.</span><span class="nf">sign_attestation</span><span class="p">(</span><span class="n">attestation</span><span class="p">)</span>
+    <span class="n">attestation</span><span class="p">[</span><span class="sh">'</span><span class="s">signature</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">signature</span>
+    
+    <span class="c1"># Broadcast to network
+</span>    <span class="n">validator</span><span class="p">.</span><span class="nf">broadcast_attestation</span><span class="p">(</span><span class="n">attestation</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">attestation</span>
+</pre></table></code></div></div><p><strong>4. Finality and Checkpoints</strong></p><p>Ethereum achieves finality through the Casper FFG (Friendly Finality Gadget) protocol:</p><ul><li><strong>Justified</strong>: When 2/3 of validators attest to a checkpoint<li><strong>Finalized</strong>: When a justified checkpoint has another justified checkpoint as its child</ul><div file="finality_tracker.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="finality_tracker.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">FinalityTracker</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">justified_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">finalized_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">checkpoints</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">def</span> <span class="nf">update_justification</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">attestations</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Check if epoch is justified (≥2/3 validator support)
+        </span><span class="sh">"""</span>
+        <span class="n">total_stake</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_total_active_stake</span><span class="p">()</span>
+        <span class="n">attesting_stake</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">stake</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">attestations</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">attesting_stake</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">total_stake</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">checkpoints</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">justified</span><span class="sh">'</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">justified_epoch</span> <span class="o">=</span> <span class="nf">max</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">justified_epoch</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
+            
+            <span class="c1"># Check for finality
+</span>            <span class="n">self</span><span class="p">.</span><span class="nf">update_finality</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">update_finality</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Finalize epoch if it has justified child
+        </span><span class="sh">"""</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nf">sorted</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">checkpoints</span><span class="p">.</span><span class="nf">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">epoch</span> <span class="o">&gt;</span> <span class="n">self</span><span class="p">.</span><span class="n">finalized_epoch</span><span class="p">:</span>
+                <span class="c1"># Check if has justified child
+</span>                <span class="nf">if </span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">checkpoints</span> <span class="ow">and</span> 
+                    <span class="n">self</span><span class="p">.</span><span class="n">checkpoints</span><span class="p">[</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sh">'</span><span class="s">justified</span><span class="sh">'</span><span class="p">):</span>
+                    
+                    <span class="n">self</span><span class="p">.</span><span class="n">checkpoints</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="sh">'</span><span class="s">finalized</span><span class="sh">'</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">finalized_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+                    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s"> is now FINALIZED</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h2 id="validator-requirements-and-setup"><span class="me-2">Validator Requirements and Setup</span><a href="#validator-requirements-and-setup" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="hardware-and-software-requirements"><span class="me-2">Hardware and Software Requirements</span><a href="#hardware-and-software-requirements" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Running an Ethereum validator requires:</p><p><strong>Hardware Requirements:</strong></p><div class="table-wrapper"><table><thead><tr><th>Component<th>Minimum<th>Recommended<tbody><tr><td>CPU<td>4 cores<td>8+ cores<tr><td>RAM<td>16 GB<td>32 GB<tr><td>Storage<td>2 TB SSD<td>4 TB NVMe SSD<tr><td>Network<td>10 Mbps<td>25+ Mbps<tr><td>Uptime<td>99%+<td>99.9%+</table></div><p><strong>Software Stack:</strong></p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="c"># Ethereum Validator Stack Components</span>
+
+<span class="c"># 1. Execution Client (choose one):</span>
+<span class="c">#    - Geth (Go Ethereum)</span>
+<span class="c">#    - Nethermind (.NET)</span>
+<span class="c">#    - Besu (Java)</span>
+<span class="c">#    - Erigon (Go)</span>
+
+<span class="c"># 2. Consensus Client (choose one):</span>
+<span class="c">#    - Prysm (Go)</span>
+<span class="c">#    - Lighthouse (Rust)</span>
+<span class="c">#    - Teku (Java)</span>
+<span class="c">#    - Nimbus (Nim)</span>
+<span class="c">#    - Lodestar (TypeScript)</span>
+
+<span class="c"># 3. Validator Client (included with consensus client)</span>
+
+<span class="c"># Example: Geth + Lighthouse setup</span>
+</pre></table></code></div></div><h3 id="setting-up-a-validator-node"><span class="me-2">Setting Up a Validator Node</span><a href="#setting-up-a-validator-node" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Step 1: Install Execution Client (Geth)</strong></p><div file="setup-geth.sh" class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="setup-geth.sh"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+</pre><td class="rouge-code"><pre><span class="c"># Install Geth</span>
+<span class="nb">sudo </span>add-apt-repository <span class="nt">-y</span> ppa:ethereum/ethereum
+<span class="nb">sudo </span>apt-get update
+<span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> ethereum
+
+<span class="c"># Create service file</span>
+<span class="nb">sudo tee</span> /etc/systemd/system/geth.service <span class="o">&gt;</span> /dev/null <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+[Unit]
+Description=Ethereum Geth Execution Client
+After=network.target
+
+[Service]
+Type=simple
+User=ethereum
+ExecStart=/usr/bin/geth </span><span class="se">\\</span><span class="sh">
+  --http </span><span class="se">\\</span><span class="sh">
+  --http.api eth,net,engine,admin </span><span class="se">\\</span><span class="sh">
+  --authrpc.jwtsecret /var/lib/ethereum/jwt.hex </span><span class="se">\\</span><span class="sh">
+  --datadir /var/lib/ethereum </span><span class="se">\\</span><span class="sh">
+  --metrics </span><span class="se">\\</span><span class="sh">
+  --metrics.addr 0.0.0.0
+  
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+</span><span class="no">EOF
+
+</span><span class="c"># Generate JWT secret</span>
+openssl rand <span class="nt">-hex</span> 32 <span class="o">&gt;</span> /var/lib/ethereum/jwt.hex
+
+<span class="c"># Start Geth</span>
+<span class="nb">sudo </span>systemctl daemon-reload
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>geth
+<span class="nb">sudo </span>systemctl start geth
+
+<span class="c"># Check status</span>
+<span class="nb">sudo </span>systemctl status geth
+</pre></table></code></div></div><p><strong>Step 2: Install Consensus Client (Lighthouse)</strong></p><div file="setup-lighthouse-beacon.sh" class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="setup-lighthouse-beacon.sh"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+</pre><td class="rouge-code"><pre><span class="c"># Download Lighthouse</span>
+<span class="nb">cd</span> /tmp
+wget https://github.com/sigp/lighthouse/releases/download/v4.5.0/lighthouse-v4.5.0-x86_64-unknown-linux-gnu.tar.gz
+<span class="nb">tar</span> <span class="nt">-xzf</span> lighthouse-<span class="k">*</span>.tar.gz
+<span class="nb">sudo mv </span>lighthouse /usr/local/bin/
+
+<span class="c"># Create beacon node service</span>
+<span class="nb">sudo tee</span> /etc/systemd/system/lighthouse-beacon.service <span class="o">&gt;</span> /dev/null <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+[Unit]
+Description=Lighthouse Beacon Node
+After=network.target geth.service
+
+[Service]
+Type=simple
+User=ethereum
+ExecStart=/usr/local/bin/lighthouse bn </span><span class="se">\\</span><span class="sh">
+  --network mainnet </span><span class="se">\\</span><span class="sh">
+  --datadir /var/lib/lighthouse </span><span class="se">\\</span><span class="sh">
+  --http </span><span class="se">\\</span><span class="sh">
+  --execution-endpoint http://localhost:8551 </span><span class="se">\\</span><span class="sh">
+  --execution-jwt /var/lib/ethereum/jwt.hex </span><span class="se">\\</span><span class="sh">
+  --checkpoint-sync-url https://mainnet.checkpoint.sigp.io </span><span class="se">\\</span><span class="sh">
+  --metrics </span><span class="se">\\</span><span class="sh">
+  --metrics-address 0.0.0.0
+  
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+</span><span class="no">EOF
+
+</span><span class="c"># Start beacon node</span>
+<span class="nb">sudo </span>systemctl daemon-reload
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>lighthouse-beacon
+<span class="nb">sudo </span>systemctl start lighthouse-beacon
+
+<span class="c"># Monitor sync progress</span>
+<span class="nb">sudo </span>journalctl <span class="nt">-u</span> lighthouse-beacon <span class="nt">-f</span>
+</pre></table></code></div></div><p><strong>Step 3: Generate Validator Keys</strong></p><div file="generate-validator-keys.sh" class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="generate-validator-keys.sh"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre><span class="c"># Install staking-deposit-cli</span>
+<span class="nb">cd</span> /tmp
+wget https://github.com/ethereum/staking-deposit-cli/releases/download/v2.7.0/staking_deposit-cli-fdab65d-linux-amd64.tar.gz
+<span class="nb">tar</span> <span class="nt">-xzf</span> staking_deposit-cli-<span class="k">*</span>.tar.gz
+<span class="nb">cd </span>staking_deposit-cli-<span class="k">*</span>
+
+<span class="c"># Generate validator keys (interactive)</span>
+./deposit new-mnemonic <span class="se">\</span>
+  <span class="nt">--num_validators</span> 1 <span class="se">\</span>
+  <span class="nt">--chain</span> mainnet <span class="se">\</span>
+  <span class="nt">--eth1_withdrawal_address</span> 0xYourWithdrawalAddress
+
+<span class="c"># This creates:</span>
+<span class="c"># - validator_keys/deposit_data-*.json (for deposit)</span>
+<span class="c"># - validator_keys/keystore-*.json (for validator)</span>
+
+<span class="c"># Backup your mnemonic (24 words) SECURELY!</span>
+</pre></table></code></div></div><p><strong>Step 4: Import Keys and Start Validator</strong></p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+</pre><td class="rouge-code"><pre><span class="c"># Import validator keys into Lighthouse</span>
+lighthouse account validator import <span class="se">\</span>
+  <span class="nt">--directory</span> /tmp/staking_deposit-cli/validator_keys <span class="se">\</span>
+  <span class="nt">--datadir</span> /var/lib/lighthouse
+
+<span class="c"># Create validator service</span>
+<span class="nb">sudo tee</span> /etc/systemd/system/lighthouse-validator.service <span class="o">&gt;</span> /dev/null <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+[Unit]
+Description=Lighthouse Validator Client
+After=network.target lighthouse-beacon.service
+
+[Service]
+Type=simple
+User=ethereum
+ExecStart=/usr/local/bin/lighthouse vc </span><span class="se">\\</span><span class="sh">
+  --network mainnet </span><span class="se">\\</span><span class="sh">
+  --datadir /var/lib/lighthouse </span><span class="se">\\</span><span class="sh">
+  --beacon-nodes http://localhost:5052 </span><span class="se">\\</span><span class="sh">
+  --suggested-fee-recipient 0xYourFeeRecipientAddress </span><span class="se">\\</span><span class="sh">
+  --metrics </span><span class="se">\\</span><span class="sh">
+  --metrics-address 0.0.0.0
+  
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+</span><span class="no">EOF
+
+</span><span class="c"># Start validator</span>
+<span class="nb">sudo </span>systemctl daemon-reload
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>lighthouse-validator
+<span class="nb">sudo </span>systemctl start lighthouse-validator
+
+<span class="c"># Check validator status</span>
+<span class="nb">sudo </span>journalctl <span class="nt">-u</span> lighthouse-validator <span class="nt">-f</span>
+</pre></table></code></div></div><p><strong>Step 5: Make Deposit on Ethereum Mainnet</strong></p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+</pre><td class="rouge-code"><pre><span class="c1"># Using web3.py to deposit
+</span><span class="kn">from</span> <span class="n">web3</span> <span class="kn">import</span> <span class="n">Web3</span>
+<span class="kn">import</span> <span class="n">json</span>
+
+<span class="c1"># Connect to Ethereum
+</span><span class="n">w3</span> <span class="o">=</span> <span class="nc">Web3</span><span class="p">(</span><span class="n">Web3</span><span class="p">.</span><span class="nc">HTTPProvider</span><span class="p">(</span><span class="sh">'</span><span class="s">https://mainnet.infura.io/v3/YOUR-PROJECT-ID</span><span class="sh">'</span><span class="p">))</span>
+
+<span class="c1"># Deposit contract
+</span><span class="n">DEPOSIT_CONTRACT</span> <span class="o">=</span> <span class="sh">'</span><span class="s">0x00000000219ab540356cBB839Cbe05303d7705Fa</span><span class="sh">'</span>
+<span class="n">DEPOSIT_ABI</span> <span class="o">=</span> <span class="p">[...]</span>  <span class="c1"># ABI from etherscan
+</span>
+<span class="c1"># Load deposit data
+</span><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">'</span><span class="s">validator_keys/deposit_data-1234567.json</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">deposit_data</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Create deposit transaction
+</span><span class="n">deposit_contract</span> <span class="o">=</span> <span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="nf">contract</span><span class="p">(</span>
+    <span class="n">address</span><span class="o">=</span><span class="n">DEPOSIT_CONTRACT</span><span class="p">,</span>
+    <span class="n">abi</span><span class="o">=</span><span class="n">DEPOSIT_ABI</span>
+<span class="p">)</span>
+
+<span class="n">tx</span> <span class="o">=</span> <span class="n">deposit_contract</span><span class="p">.</span><span class="n">functions</span><span class="p">.</span><span class="nf">deposit</span><span class="p">(</span>
+    <span class="n">pubkey</span><span class="o">=</span><span class="nb">bytes</span><span class="p">.</span><span class="nf">fromhex</span><span class="p">(</span><span class="n">deposit_data</span><span class="p">[</span><span class="sh">'</span><span class="s">pubkey</span><span class="sh">'</span><span class="p">]),</span>
+    <span class="n">withdrawal_credentials</span><span class="o">=</span><span class="nb">bytes</span><span class="p">.</span><span class="nf">fromhex</span><span class="p">(</span><span class="n">deposit_data</span><span class="p">[</span><span class="sh">'</span><span class="s">withdrawal_credentials</span><span class="sh">'</span><span class="p">]),</span>
+    <span class="n">signature</span><span class="o">=</span><span class="nb">bytes</span><span class="p">.</span><span class="nf">fromhex</span><span class="p">(</span><span class="n">deposit_data</span><span class="p">[</span><span class="sh">'</span><span class="s">signature</span><span class="sh">'</span><span class="p">]),</span>
+    <span class="n">deposit_data_root</span><span class="o">=</span><span class="nb">bytes</span><span class="p">.</span><span class="nf">fromhex</span><span class="p">(</span><span class="n">deposit_data</span><span class="p">[</span><span class="sh">'</span><span class="s">deposit_data_root</span><span class="sh">'</span><span class="p">])</span>
+<span class="p">).</span><span class="nf">build_transaction</span><span class="p">({</span>
+    <span class="sh">'</span><span class="s">from</span><span class="sh">'</span><span class="p">:</span> <span class="n">YOUR_ADDRESS</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="n">w3</span><span class="p">.</span><span class="nf">to_wei</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="sh">'</span><span class="s">ether</span><span class="sh">'</span><span class="p">),</span>
+    <span class="sh">'</span><span class="s">gas</span><span class="sh">'</span><span class="p">:</span> <span class="mi">200000</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">gasPrice</span><span class="sh">'</span><span class="p">:</span> <span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="n">gas_price</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">nonce</span><span class="sh">'</span><span class="p">:</span> <span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="nf">get_transaction_count</span><span class="p">(</span><span class="n">YOUR_ADDRESS</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="c1"># Sign and send (use hardware wallet in production!)
+</span><span class="n">signed_tx</span> <span class="o">=</span> <span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="n">account</span><span class="p">.</span><span class="nf">sign_transaction</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="n">YOUR_PRIVATE_KEY</span><span class="p">)</span>
+<span class="n">tx_hash</span> <span class="o">=</span> <span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="nf">send_raw_transaction</span><span class="p">(</span><span class="n">signed_tx</span><span class="p">.</span><span class="n">rawTransaction</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Deposit transaction: </span><span class="si">{</span><span class="n">tx_hash</span><span class="p">.</span><span class="nf">hex</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Validator will be active after ~12-24 hours</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><p><a href="/assets/img/posts/ethereum-staking-apr-timeline-chart.png" class="popup img-link shimmer"><img src="/assets/img/posts/ethereum-staking-apr-timeline-chart.png" alt="Ethereum Staking APR Timeline" loading="lazy"></a> <em>Figure 2: Historical and projected Ethereum staking APR vs total ETH staked</em></p><h2 id="staking-rewards-and-economics"><span class="me-2">Staking Rewards and Economics</span><a href="#staking-rewards-and-economics" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="reward-calculation"><span class="me-2">Reward Calculation</span><a href="#reward-calculation" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Ethereum staking rewards come from three sources:</p><p><strong>1. Base Rewards (Issuance)</strong></p><p>New ETH issued to validators for performing duties:</p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">math</span>
+
+<span class="k">def</span> <span class="nf">calculate_base_reward_per_epoch</span><span class="p">(</span><span class="n">total_active_stake</span><span class="p">,</span> <span class="n">base_reward_factor</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Calculate base reward per validator per epoch
+    
+    Formula: (effective_balance * base_reward_factor) / sqrt(total_active_stake)
+    
+    Args:
+        total_active_stake: Total ETH staked (in Gwei)
+        base_reward_factor: Protocol constant (64)
+    
+    Returns:
+        Base reward in Gwei
+    </span><span class="sh">"""</span>
+    <span class="n">effective_balance</span> <span class="o">=</span> <span class="mi">32</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span>  <span class="c1"># 32 ETH in Gwei
+</span>    
+    <span class="n">base_reward</span> <span class="o">=</span> <span class="p">(</span><span class="n">effective_balance</span> <span class="o">*</span> <span class="n">base_reward_factor</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="p">.</span><span class="nf">sqrt</span><span class="p">(</span><span class="n">total_active_stake</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="nf">int</span><span class="p">(</span><span class="n">base_reward</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">calculate_annual_issuance_rate</span><span class="p">(</span><span class="n">total_validators</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Calculate annual ETH issuance rate
+    </span><span class="sh">"""</span>
+    <span class="n">total_active_stake</span> <span class="o">=</span> <span class="n">total_validators</span> <span class="o">*</span> <span class="mi">32</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span>  <span class="c1"># Gwei
+</span>    
+    <span class="c1"># Base reward per epoch
+</span>    <span class="n">base_reward</span> <span class="o">=</span> <span class="nf">calculate_base_reward_per_epoch</span><span class="p">(</span><span class="n">total_active_stake</span><span class="p">)</span>
+    
+    <span class="c1"># Epochs per year
+</span>    <span class="n">epochs_per_year</span> <span class="o">=</span> <span class="mf">365.25</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">/</span> <span class="p">(</span><span class="mi">32</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>  <span class="c1"># ~82,125
+</span>    
+    <span class="c1"># Annual issuance per validator
+</span>    <span class="n">annual_issuance</span> <span class="o">=</span> <span class="p">(</span><span class="n">base_reward</span> <span class="o">*</span> <span class="n">epochs_per_year</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span>  <span class="c1"># ETH
+</span>    
+    <span class="c1"># APR
+</span>    <span class="n">apr</span> <span class="o">=</span> <span class="p">(</span><span class="n">annual_issuance</span> <span class="o">/</span> <span class="mi">32</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    
+    <span class="k">return</span> <span class="n">apr</span><span class="p">,</span> <span class="n">annual_issuance</span>
+
+<span class="c1"># Calculate for different network sizes
+</span><span class="k">for</span> <span class="n">total_validators</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">500_000</span><span class="p">,</span> <span class="mi">750_000</span><span class="p">,</span> <span class="mi">1_000_000</span><span class="p">]:</span>
+    <span class="n">total_eth_staked</span> <span class="o">=</span> <span class="n">total_validators</span> <span class="o">*</span> <span class="mi">32</span>
+    <span class="n">apr</span><span class="p">,</span> <span class="n">annual_eth</span> <span class="o">=</span> <span class="nf">calculate_annual_issuance_rate</span><span class="p">(</span><span class="n">total_validators</span><span class="p">)</span>
+    
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">Total Validators: </span><span class="si">{</span><span class="n">total_validators</span><span class="si">:</span><span class="p">,</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Total ETH Staked: </span><span class="si">{</span><span class="n">total_eth_staked</span><span class="si">:</span><span class="p">,</span><span class="si">}</span><span class="s"> (</span><span class="si">{</span><span class="n">total_eth_staked</span><span class="o">/</span><span class="mi">120_000_000</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="p">.</span><span class="mi">1</span><span class="n">f</span><span class="si">}</span><span class="s">% of supply)</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Base APR: </span><span class="si">{</span><span class="n">apr</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Annual Issuance per Validator: </span><span class="si">{</span><span class="n">annual_eth</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><p><strong>Output:</strong></p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre>Total Validators: 500,000
+Total ETH Staked: 16,000,000 (13.3% of supply)
+Base APR: 5.63%
+Annual Issuance per Validator: 1.8016 ETH
+
+Total Validators: 750,000
+Total ETH Staked: 24,000,000 (20.0% of supply)
+Base APR: 4.60%
+Annual Issuance per Validator: 1.4720 ETH
+
+Total Validators: 1,000,000
+Total ETH Staked: 32,000,000 (26.7% of supply)
+Base APR: 3.98%
+Annual Issuance per Validator: 1.2745 ETH
+</pre></table></code></div></div><p><strong>2. Transaction Tips (Priority Fees)</strong></p><p>Validators receive tips from users wanting faster inclusion:</p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">calculate_priority_fees</span><span class="p">(</span><span class="n">blocks_proposed_per_year</span><span class="o">=</span><span class="mi">54</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Calculate expected priority fee earnings
+    
+    On average, each validator proposes ~54 blocks per year
+    </span><span class="sh">"""</span>
+    <span class="c1"># Average priority fee per block (varies widely)
+</span>    <span class="n">avg_priority_fee_per_block</span> <span class="o">=</span> <span class="mf">0.05</span>  <span class="c1"># ETH (conservative estimate)
+</span>    
+    <span class="n">annual_priority_fees</span> <span class="o">=</span> <span class="n">blocks_proposed_per_year</span> <span class="o">*</span> <span class="n">avg_priority_fee_per_block</span>
+    
+    <span class="c1"># APR from priority fees
+</span>    <span class="n">apr_from_fees</span> <span class="o">=</span> <span class="p">(</span><span class="n">annual_priority_fees</span> <span class="o">/</span> <span class="mi">32</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    
+    <span class="k">return</span> <span class="n">annual_priority_fees</span><span class="p">,</span> <span class="n">apr_from_fees</span>
+
+<span class="n">priority_eth</span><span class="p">,</span> <span class="n">priority_apr</span> <span class="o">=</span> <span class="nf">calculate_priority_fees</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Annual Priority Fees: </span><span class="si">{</span><span class="n">priority_eth</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">APR from Priority Fees: </span><span class="si">{</span><span class="n">priority_apr</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><p><strong>3. MEV (Maximal Extractable Value)</strong></p><p>Advanced validators can earn MEV through transaction ordering:</p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">calculate_mev_boost_earnings</span><span class="p">(</span><span class="n">blocks_per_year</span><span class="o">=</span><span class="mi">54</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Calculate MEV-Boost earnings
+    
+    MEV-Boost connects validators to MEV relay network
+    </span><span class="sh">"""</span>
+    <span class="c1"># Average MEV per block (highly variable)
+</span>    <span class="n">avg_mev_per_block</span> <span class="o">=</span> <span class="mf">0.08</span>  <span class="c1"># ETH
+</span>    
+    <span class="c1"># Not all blocks have MEV opportunities (~70%)
+</span>    <span class="n">mev_probability</span> <span class="o">=</span> <span class="mf">0.70</span>
+    
+    <span class="n">annual_mev</span> <span class="o">=</span> <span class="n">blocks_per_year</span> <span class="o">*</span> <span class="n">avg_mev_per_block</span> <span class="o">*</span> <span class="n">mev_probability</span>
+    
+    <span class="c1"># APR from MEV
+</span>    <span class="n">apr_from_mev</span> <span class="o">=</span> <span class="p">(</span><span class="n">annual_mev</span> <span class="o">/</span> <span class="mi">32</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    
+    <span class="k">return</span> <span class="n">annual_mev</span><span class="p">,</span> <span class="n">apr_from_mev</span>
+
+<span class="n">mev_eth</span><span class="p">,</span> <span class="n">mev_apr</span> <span class="o">=</span> <span class="nf">calculate_mev_boost_earnings</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Annual MEV Earnings: </span><span class="si">{</span><span class="n">mev_eth</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">APR from MEV: </span><span class="si">{</span><span class="n">mev_apr</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="total-staking-yield"><span class="me-2">Total Staking Yield</span><a href="#total-staking-yield" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">StakingRewardsCalculator</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Comprehensive staking rewards calculator
+    </span><span class="sh">"""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">stake</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">total_validators</span><span class="o">=</span><span class="mi">900_000</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">stake</span> <span class="o">=</span> <span class="n">stake</span>  <span class="c1"># ETH
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">total_validators</span> <span class="o">=</span> <span class="n">total_validators</span>
+        
+    <span class="k">def</span> <span class="nf">calculate_total_apr</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Calculate total APR from all sources</span><span class="sh">"""</span>
+        
+        <span class="c1"># 1. Base rewards (issuance)
+</span>        <span class="n">base_apr</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nf">calculate_annual_issuance_rate</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">total_validators</span><span class="p">)</span>
+        
+        <span class="c1"># 2. Priority fees
+</span>        <span class="n">_</span><span class="p">,</span> <span class="n">priority_apr</span> <span class="o">=</span> <span class="nf">calculate_priority_fees</span><span class="p">()</span>
+        
+        <span class="c1"># 3. MEV
+</span>        <span class="n">_</span><span class="p">,</span> <span class="n">mev_apr</span> <span class="o">=</span> <span class="nf">calculate_mev_boost_earnings</span><span class="p">()</span>
+        
+        <span class="c1"># Total APR
+</span>        <span class="n">total_apr</span> <span class="o">=</span> <span class="n">base_apr</span> <span class="o">+</span> <span class="n">priority_apr</span> <span class="o">+</span> <span class="n">mev_apr</span>
+        
+        <span class="c1"># Annual earnings
+</span>        <span class="n">annual_earnings</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_apr</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="n">self</span><span class="p">.</span><span class="n">stake</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">base_apr</span><span class="sh">'</span><span class="p">:</span> <span class="n">base_apr</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">priority_apr</span><span class="sh">'</span><span class="p">:</span> <span class="n">priority_apr</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">mev_apr</span><span class="sh">'</span><span class="p">:</span> <span class="n">mev_apr</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">total_apr</span><span class="sh">'</span><span class="p">:</span> <span class="n">total_apr</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">annual_eth</span><span class="sh">'</span><span class="p">:</span> <span class="n">annual_earnings</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">monthly_eth</span><span class="sh">'</span><span class="p">:</span> <span class="n">annual_earnings</span> <span class="o">/</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">daily_eth</span><span class="sh">'</span><span class="p">:</span> <span class="n">annual_earnings</span> <span class="o">/</span> <span class="mf">365.25</span>
+        <span class="p">}</span>
+    
+    <span class="k">def</span> <span class="nf">compound_growth</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">compound_frequency</span><span class="o">=</span><span class="sh">'</span><span class="s">daily</span><span class="sh">'</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Calculate compound growth with restaking
+        </span><span class="sh">"""</span>
+        <span class="n">rewards</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">calculate_total_apr</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">compound_frequency</span> <span class="o">==</span> <span class="sh">'</span><span class="s">daily</span><span class="sh">'</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mf">365.25</span>
+        <span class="k">elif</span> <span class="n">compound_frequency</span> <span class="o">==</span> <span class="sh">'</span><span class="s">monthly</span><span class="sh">'</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="k">elif</span> <span class="n">compound_frequency</span> <span class="o">==</span> <span class="sh">'</span><span class="s">yearly</span><span class="sh">'</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+        
+        <span class="c1"># Compound interest formula: A = P(1 + r/n)^(nt)
+</span>        <span class="n">r</span> <span class="o">=</span> <span class="n">rewards</span><span class="p">[</span><span class="sh">'</span><span class="s">total_apr</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span>
+        <span class="n">final_balance</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">stake</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">years</span><span class="p">)</span>
+        
+        <span class="n">total_earned</span> <span class="o">=</span> <span class="n">final_balance</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">stake</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">initial_stake</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">stake</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">final_balance</span><span class="sh">'</span><span class="p">:</span> <span class="n">final_balance</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">total_earned</span><span class="sh">'</span><span class="p">:</span> <span class="n">total_earned</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">effective_apr</span><span class="sh">'</span><span class="p">:</span> <span class="p">((</span><span class="n">final_balance</span> <span class="o">/</span> <span class="n">self</span><span class="p">.</span><span class="n">stake</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">years</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="p">}</span>
+
+<span class="c1"># Example calculations
+</span><span class="n">calculator</span> <span class="o">=</span> <span class="nc">StakingRewardsCalculator</span><span class="p">(</span><span class="n">stake</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">total_validators</span><span class="o">=</span><span class="mi">900_000</span><span class="p">)</span>
+
+<span class="c1"># Current rewards
+</span><span class="n">rewards</span> <span class="o">=</span> <span class="n">calculator</span><span class="p">.</span><span class="nf">calculate_total_apr</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">📊 STAKING REWARDS BREAKDOWN</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">=</span><span class="sh">"</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Base Issuance APR:    </span><span class="si">{</span><span class="n">rewards</span><span class="p">[</span><span class="sh">'</span><span class="s">base_apr</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Priority Fees APR:    </span><span class="si">{</span><span class="n">rewards</span><span class="p">[</span><span class="sh">'</span><span class="s">priority_apr</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">MEV Earnings APR:     </span><span class="si">{</span><span class="n">rewards</span><span class="p">[</span><span class="sh">'</span><span class="s">mev_apr</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="sh">'</span><span class="s">─</span><span class="sh">'</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Total APR:            </span><span class="si">{</span><span class="n">rewards</span><span class="p">[</span><span class="sh">'</span><span class="s">total_apr</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">💰 EARNINGS PROJECTIONS</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="sh">'</span><span class="s">─</span><span class="sh">'</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Daily:   </span><span class="si">{</span><span class="n">rewards</span><span class="p">[</span><span class="sh">'</span><span class="s">daily_eth</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Monthly: </span><span class="si">{</span><span class="n">rewards</span><span class="p">[</span><span class="sh">'</span><span class="s">monthly_eth</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Annual:  </span><span class="si">{</span><span class="n">rewards</span><span class="p">[</span><span class="sh">'</span><span class="s">annual_eth</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 5-year projection with compounding
+</span><span class="n">growth</span> <span class="o">=</span> <span class="n">calculator</span><span class="p">.</span><span class="nf">compound_growth</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">compound_frequency</span><span class="o">=</span><span class="sh">'</span><span class="s">daily</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">📈 5-YEAR PROJECTION (Daily Compounding)</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="sh">'</span><span class="s">─</span><span class="sh">'</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Initial Stake:   </span><span class="si">{</span><span class="n">growth</span><span class="p">[</span><span class="sh">'</span><span class="s">initial_stake</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Final Balance:   </span><span class="si">{</span><span class="n">growth</span><span class="p">[</span><span class="sh">'</span><span class="s">final_balance</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Total Earned:    </span><span class="si">{</span><span class="n">growth</span><span class="p">[</span><span class="sh">'</span><span class="s">total_earned</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Effective APR:   </span><span class="si">{</span><span class="n">growth</span><span class="p">[</span><span class="sh">'</span><span class="s">effective_apr</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="s">%</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="factors-affecting-yields"><span class="me-2">Factors Affecting Yields</span><a href="#factors-affecting-yields" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>1. Network Participation Rate</strong></p><p>More validators = lower individual APR (rewards distributed among more participants)</p><p><strong>2. Network Activity</strong></p><p>Higher transaction volume = more priority fees and MEV opportunities</p><p><strong>3. Validator Performance</strong></p><ul><li><strong>Uptime</strong>: Offline validators miss rewards and incur penalties<li><strong>Attestation Inclusion</strong>: Faster attestations earn more<li><strong>Block Proposals</strong>: Accurate and timely proposals maximize tips</ul><p><strong>4. MEV Infrastructure</strong></p><p>Using MEV-Boost vs. vanilla block proposals significantly affects earnings</p><p><a href="/assets/img/posts/ethereum-staking-pool-distribution.png" class="popup img-link shimmer"><img src="/assets/img/posts/ethereum-staking-pool-distribution.png" alt="Ethereum Staking Pool Distribution" loading="lazy"></a> <em>Figure 3: Distribution of staked ETH across different staking pools and entities</em></p><h2 id="staking-methods-comparison"><span class="me-2">Staking Methods Comparison</span><a href="#staking-methods-comparison" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="solo-staking-running-your-own-validator"><span class="me-2">Solo Staking (Running Your Own Validator)</span><a href="#solo-staking-running-your-own-validator" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Requirements:</strong></p><ul><li>32 ETH minimum<li>Technical knowledge<li>Hardware and maintenance<li>24/7 uptime</ul><p><strong>Advantages:</strong> ✅ Full control over setup ✅ Maximum rewards (no pool fees) ✅ Contributes to decentralization ✅ Direct withdrawal control</p><p><strong>Disadvantages:</strong> ❌ High capital requirement (32 ETH) ❌ Technical complexity ❌ Slashing risk if misconfigured ❌ Hardware and maintenance costs</p><p><strong>Best For:</strong> Technical users with 32+ ETH wanting maximum control</p><h3 id="pooled-staking-rocket-pool-stakewise"><span class="me-2">Pooled Staking (Rocket Pool, Stakewise)</span><a href="#pooled-staking-rocket-pool-stakewise" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Requirements:</strong></p><ul><li>As little as 0.01 ETH<li>No technical knowledge<li>Trust in pool operator</ul><p><strong>Advantages:</strong> ✅ Low minimum stake ✅ No technical setup ✅ Professional operation ✅ Some decentralization</p><p><strong>Disadvantages:</strong> ❌ Pool fees (5-15%) ❌ Trust in third party ❌ Less control ❌ Potential smart contract risks</p><p><strong>Best For:</strong> Users with less than 32 ETH or non-technical users</p><p><strong>Example: Rocket Pool</strong></p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">web3</span> <span class="kn">import</span> <span class="n">Web3</span>
+
+<span class="k">class</span> <span class="nc">RocketPoolStaker</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Interact with Rocket Pool liquid staking protocol
+    </span><span class="sh">"""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">w3</span><span class="p">,</span> <span class="n">deposit_pool_address</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">w3</span> <span class="o">=</span> <span class="n">w3</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">deposit_pool</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="nf">contract</span><span class="p">(</span>
+            <span class="n">address</span><span class="o">=</span><span class="n">deposit_pool_address</span><span class="p">,</span>
+            <span class="n">abi</span><span class="o">=</span><span class="n">ROCKET_POOL_ABI</span>
+        <span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">stake_eth</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">amount_eth</span><span class="p">,</span> <span class="n">from_address</span><span class="p">,</span> <span class="n">private_key</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Stake ETH and receive rETH (Rocket Pool ETH)
+        </span><span class="sh">"""</span>
+        <span class="n">amount_wei</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="nf">to_wei</span><span class="p">(</span><span class="n">amount_eth</span><span class="p">,</span> <span class="sh">'</span><span class="s">ether</span><span class="sh">'</span><span class="p">)</span>
+        
+        <span class="c1"># Get current rETH exchange rate
+</span>        <span class="n">rate</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">deposit_pool</span><span class="p">.</span><span class="n">functions</span><span class="p">.</span><span class="nf">getExchangeRate</span><span class="p">().</span><span class="nf">call</span><span class="p">()</span>
+        <span class="n">expected_reth</span> <span class="o">=</span> <span class="n">amount_wei</span> <span class="o">*</span> <span class="n">rate</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">18</span>
+        
+        <span class="c1"># Create deposit transaction
+</span>        <span class="n">tx</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">deposit_pool</span><span class="p">.</span><span class="n">functions</span><span class="p">.</span><span class="nf">deposit</span><span class="p">().</span><span class="nf">build_transaction</span><span class="p">({</span>
+            <span class="sh">'</span><span class="s">from</span><span class="sh">'</span><span class="p">:</span> <span class="n">from_address</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="n">amount_wei</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">gas</span><span class="sh">'</span><span class="p">:</span> <span class="mi">200000</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">gasPrice</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="n">gas_price</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">nonce</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="nf">get_transaction_count</span><span class="p">(</span><span class="n">from_address</span><span class="p">)</span>
+        <span class="p">})</span>
+        
+        <span class="c1"># Sign and send
+</span>        <span class="n">signed</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="n">account</span><span class="p">.</span><span class="nf">sign_transaction</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">private_key</span><span class="p">)</span>
+        <span class="n">tx_hash</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="nf">send_raw_transaction</span><span class="p">(</span><span class="n">signed</span><span class="p">.</span><span class="n">rawTransaction</span><span class="p">)</span>
+        
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Staked </span><span class="si">{</span><span class="n">amount_eth</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Expected rETH: </span><span class="si">{</span><span class="n">expected_reth</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">18</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Transaction: </span><span class="si">{</span><span class="n">tx_hash</span><span class="p">.</span><span class="nf">hex</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">tx_hash</span>
+    
+    <span class="k">def</span> <span class="nf">get_reth_value</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">reth_amount</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Calculate current ETH value of rETH tokens
+        </span><span class="sh">"""</span>
+        <span class="n">rate</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">deposit_pool</span><span class="p">.</span><span class="n">functions</span><span class="p">.</span><span class="nf">getExchangeRate</span><span class="p">().</span><span class="nf">call</span><span class="p">()</span>
+        <span class="n">eth_value</span> <span class="o">=</span> <span class="p">(</span><span class="n">reth_amount</span> <span class="o">*</span> <span class="n">rate</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">18</span>
+        <span class="k">return</span> <span class="n">eth_value</span>
+</pre></table></code></div></div><h3 id="liquid-staking-lido-frax"><span class="me-2">Liquid Staking (Lido, Frax)</span><a href="#liquid-staking-lido-frax" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Requirements:</strong></p><ul><li>Any amount of ETH<li>No technical knowledge<li>Receive liquid staking token</ul><p><strong>Advantages:</strong> ✅ Stake any amount ✅ Receive tradeable token (stETH, frxETH) ✅ Use staked ETH in DeFi ✅ Instant liquidity</p><p><strong>Disadvantages:</strong> ❌ Centralization risk (Lido has ~30% of staked ETH) ❌ Smart contract risk ❌ Depeg risk (token value diverge from ETH) ❌ Fee (typically 10%)</p><p><strong>Best For:</strong> Users wanting liquidity and DeFi composability</p><p><strong>Example: Lido stETH</strong></p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">LidoStaker</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Stake ETH with Lido and receive stETH
+    </span><span class="sh">"""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">w3</span><span class="p">,</span> <span class="n">lido_address</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">w3</span> <span class="o">=</span> <span class="n">w3</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">lido</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="nf">contract</span><span class="p">(</span>
+            <span class="n">address</span><span class="o">=</span><span class="n">lido_address</span><span class="p">,</span>
+            <span class="n">abi</span><span class="o">=</span><span class="n">LIDO_ABI</span>
+        <span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">stake_eth</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">amount_eth</span><span class="p">,</span> <span class="n">from_address</span><span class="p">,</span> <span class="n">private_key</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Stake ETH and receive stETH (1:1 initially)
+        stETH balance grows via daily rebases
+        </span><span class="sh">"""</span>
+        <span class="n">amount_wei</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="nf">to_wei</span><span class="p">(</span><span class="n">amount_eth</span><span class="p">,</span> <span class="sh">'</span><span class="s">ether</span><span class="sh">'</span><span class="p">)</span>
+        
+        <span class="c1"># Submit ETH to Lido
+</span>        <span class="n">tx</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">lido</span><span class="p">.</span><span class="n">functions</span><span class="p">.</span><span class="nf">submit</span><span class="p">(</span>
+            <span class="sh">'</span><span class="s">0x0000000000000000000000000000000000000000</span><span class="sh">'</span>  <span class="c1"># Referral address
+</span>        <span class="p">).</span><span class="nf">build_transaction</span><span class="p">({</span>
+            <span class="sh">'</span><span class="s">from</span><span class="sh">'</span><span class="p">:</span> <span class="n">from_address</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="n">amount_wei</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">gas</span><span class="sh">'</span><span class="p">:</span> <span class="mi">150000</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">gasPrice</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="n">gas_price</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">nonce</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="nf">get_transaction_count</span><span class="p">(</span><span class="n">from_address</span><span class="p">)</span>
+        <span class="p">})</span>
+        
+        <span class="n">signed</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="n">account</span><span class="p">.</span><span class="nf">sign_transaction</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">private_key</span><span class="p">)</span>
+        <span class="n">tx_hash</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="n">eth</span><span class="p">.</span><span class="nf">send_raw_transaction</span><span class="p">(</span><span class="n">signed</span><span class="p">.</span><span class="n">rawTransaction</span><span class="p">)</span>
+        
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Staked </span><span class="si">{</span><span class="n">amount_eth</span><span class="si">}</span><span class="s"> ETH with Lido</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Received ~</span><span class="si">{</span><span class="n">amount_eth</span><span class="si">}</span><span class="s"> stETH</span><span class="sh">"</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Transaction: </span><span class="si">{</span><span class="n">tx_hash</span><span class="p">.</span><span class="nf">hex</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">tx_hash</span>
+    
+    <span class="k">def</span> <span class="nf">get_steth_balance</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Get stETH balance (increases via rebases)</span><span class="sh">"""</span>
+        <span class="n">balance_wei</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">lido</span><span class="p">.</span><span class="n">functions</span><span class="p">.</span><span class="nf">balanceOf</span><span class="p">(</span><span class="n">address</span><span class="p">).</span><span class="nf">call</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">w3</span><span class="p">.</span><span class="nf">from_wei</span><span class="p">(</span><span class="n">balance_wei</span><span class="p">,</span> <span class="sh">'</span><span class="s">ether</span><span class="sh">'</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">calculate_rewards</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">initial_steth</span><span class="p">,</span> <span class="n">current_steth</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Calculate accumulated staking rewards</span><span class="sh">"""</span>
+        <span class="n">rewards</span> <span class="o">=</span> <span class="n">current_steth</span> <span class="o">-</span> <span class="n">initial_steth</span>
+        <span class="n">apr</span> <span class="o">=</span> <span class="p">(</span><span class="n">rewards</span> <span class="o">/</span> <span class="n">initial_steth</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># Annualized if 1 year
+</span>        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">rewards_eth</span><span class="sh">'</span><span class="p">:</span> <span class="n">rewards</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">apr</span><span class="sh">'</span><span class="p">:</span> <span class="n">apr</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">total_value</span><span class="sh">'</span><span class="p">:</span> <span class="n">current_steth</span>
+        <span class="p">}</span>
+</pre></table></code></div></div><h3 id="exchange-staking-coinbase-kraken-binance"><span class="me-2">Exchange Staking (Coinbase, Kraken, Binance)</span><a href="#exchange-staking-coinbase-kraken-binance" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Requirements:</strong></p><ul><li>Account on exchange<li>Minimal technical knowledge<li>Any amount of ETH</ul><p><strong>Advantages:</strong> ✅ Easiest option ✅ No setup required ✅ Customer support ✅ Insured (some exchanges)</p><p><strong>Disadvantages:</strong> ❌ Not your keys, not your coins ❌ Highest fees (15-25%) ❌ Centralization ❌ Withdrawal limits ❌ Regulatory risk</p><p><strong>Best For:</strong> Complete beginners, small amounts</p><h3 id="staking-comparison-table"><span class="me-2">Staking Comparison Table</span><a href="#staking-comparison-table" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="table-wrapper"><table><thead><tr><th>Method<th>Min. Stake<th>APR<th>Technical Level<th>Liquidity<th>Decentralization<tbody><tr><td><strong>Solo</strong><td>32 ETH<td>4-7%<td>High<td>Locked<td>Highest<tr><td><strong>Pooled</strong><td>0.01 ETH<td>3-6%<td>Low<td>Locked<td>Medium<tr><td><strong>Liquid</strong><td>Any<td>3-5%<td>None<td>Instant<td>Low<tr><td><strong>Exchange</strong><td>Any<td>2-4%<td>None<td>Limited<td>Lowest</table></div><h2 id="risks-and-penalties"><span class="me-2">Risks and Penalties</span><a href="#risks-and-penalties" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="slashing-conditions"><span class="me-2">Slashing Conditions</span><a href="#slashing-conditions" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Slashing is an automatic penalty for malicious behavior:</p><p><strong>1. Double Attestation</strong></p><ul><li>Signing two different attestations for same slot<li>Penalty: Minimum 1 ETH, up to entire stake</ul><p><strong>2. Surround Vote</strong></p><ul><li>Creating contradiction in attestation history<li>Penalty: Proportional to violation severity</ul><p><strong>3. Double Block Proposal</strong></p><ul><li>Proposing two blocks for same slot<li>Penalty: Severe, potential full stake loss</ul><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+</pre><td class="rouge-code"><pre><span class="k">class</span> <span class="nc">SlashingMonitor</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Monitor for potential slashing events
+    </span><span class="sh">"""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">validator_index</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">validator_index</span> <span class="o">=</span> <span class="n">validator_index</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">attestations_cache</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">proposed_blocks</span> <span class="o">=</span> <span class="nf">set</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">check_double_attestation</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">attestation</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Check if attestation conflicts with previous
+        </span><span class="sh">"""</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">attestation</span><span class="p">[</span><span class="sh">'</span><span class="s">slot</span><span class="sh">'</span><span class="p">],</span> <span class="n">attestation</span><span class="p">[</span><span class="sh">'</span><span class="s">committee_index</span><span class="sh">'</span><span class="p">])</span>
+        
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">attestations_cache</span><span class="p">:</span>
+            <span class="n">previous</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">attestations_cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            
+            <span class="nf">if </span><span class="p">(</span><span class="n">previous</span><span class="p">[</span><span class="sh">'</span><span class="s">beacon_block_root</span><span class="sh">'</span><span class="p">]</span> <span class="o">!=</span> <span class="n">attestation</span><span class="p">[</span><span class="sh">'</span><span class="s">beacon_block_root</span><span class="sh">'</span><span class="p">]</span> <span class="ow">or</span>
+                <span class="n">previous</span><span class="p">[</span><span class="sh">'</span><span class="s">target</span><span class="sh">'</span><span class="p">]</span> <span class="o">!=</span> <span class="n">attestation</span><span class="p">[</span><span class="sh">'</span><span class="s">target</span><span class="sh">'</span><span class="p">]):</span>
+                
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="sh">'</span><span class="s">slashable</span><span class="sh">'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                    <span class="sh">'</span><span class="s">type</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">double_attestation</span><span class="sh">'</span><span class="p">,</span>
+                    <span class="sh">'</span><span class="s">severity</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">high</span><span class="sh">'</span><span class="p">,</span>
+                    <span class="sh">'</span><span class="s">penalty_eth</span><span class="sh">'</span><span class="p">:</span> <span class="mf">1.0</span>  <span class="c1"># Minimum penalty
+</span>                <span class="p">}</span>
+        
+        <span class="n">self</span><span class="p">.</span><span class="n">attestations_cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">attestation</span>
+        <span class="k">return</span> <span class="p">{</span><span class="sh">'</span><span class="s">slashable</span><span class="sh">'</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+    
+    <span class="k">def</span> <span class="nf">check_double_proposal</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Check if block conflicts with previous proposal
+        </span><span class="sh">"""</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">block</span><span class="p">[</span><span class="sh">'</span><span class="s">slot</span><span class="sh">'</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">proposed_blocks</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="sh">'</span><span class="s">slashable</span><span class="sh">'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                <span class="sh">'</span><span class="s">type</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">double_proposal</span><span class="sh">'</span><span class="p">,</span>
+                <span class="sh">'</span><span class="s">severity</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">critical</span><span class="sh">'</span><span class="p">,</span>
+                <span class="sh">'</span><span class="s">penalty_eth</span><span class="sh">'</span><span class="p">:</span> <span class="mf">32.0</span>  <span class="c1"># Potential full stake loss
+</span>            <span class="p">}</span>
+        
+        <span class="n">self</span><span class="p">.</span><span class="n">proposed_blocks</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="sh">'</span><span class="s">slashable</span><span class="sh">'</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+    
+    <span class="k">def</span> <span class="nf">estimate_slashing_penalty</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">validator_effective_balance</span><span class="p">,</span> <span class="n">total_slashed_balance</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Calculate proportional slashing penalty
+        
+        Penalty increases with more validators slashed simultaneously
+        </span><span class="sh">"""</span>
+        <span class="c1"># Base penalty
+</span>        <span class="n">penalty</span> <span class="o">=</span> <span class="n">validator_effective_balance</span> <span class="o">/</span> <span class="mi">32</span>
+        
+        <span class="c1"># Proportional penalty (correlates with attack severity)
+</span>        <span class="n">proportional_penalty</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">validator_effective_balance</span> <span class="o">*</span> 
+            <span class="nf">min</span><span class="p">(</span><span class="n">total_slashed_balance</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">validator_effective_balance</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="n">validator_effective_balance</span>
+        
+        <span class="n">total_penalty</span> <span class="o">=</span> <span class="n">penalty</span> <span class="o">+</span> <span class="n">proportional_penalty</span>
+        
+        <span class="k">return</span> <span class="nf">min</span><span class="p">(</span><span class="n">total_penalty</span><span class="p">,</span> <span class="n">validator_effective_balance</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="inactivity-penalties"><span class="me-2">Inactivity Penalties</span><a href="#inactivity-penalties" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Validators that are offline lose rewards and incur penalties:</p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre><td class="rouge-code"><pre><span class="k">def</span> <span class="nf">calculate_inactivity_penalty</span><span class="p">(</span><span class="n">offline_epochs</span><span class="p">,</span> <span class="n">effective_balance</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Calculate penalty for being offline
+    
+    Penalties increase quadratically during inactivity leak
+    </span><span class="sh">"""</span>
+    <span class="c1"># During normal operation
+</span>    <span class="k">if</span> <span class="n">offline_epochs</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>  <span class="c1"># &lt; ~25 minutes
+</span>        <span class="c1"># Miss rewards only, no penalty
+</span>        <span class="n">missed_rewards</span> <span class="o">=</span> <span class="n">effective_balance</span> <span class="o">*</span> <span class="mf">0.0001</span> <span class="o">*</span> <span class="n">offline_epochs</span>
+        <span class="k">return</span> <span class="n">missed_rewards</span><span class="p">,</span> <span class="sh">'</span><span class="s">rewards_only</span><span class="sh">'</span>
+    
+    <span class="c1"># During inactivity leak (network not finalizing)
+</span>    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Quadratic penalty
+</span>        <span class="n">base_penalty_rate</span> <span class="o">=</span> <span class="mf">0.0001</span>
+        <span class="n">inactivity_penalty_rate</span> <span class="o">=</span> <span class="n">base_penalty_rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">offline_epochs</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">total_penalty</span> <span class="o">=</span> <span class="n">effective_balance</span> <span class="o">*</span> <span class="n">inactivity_penalty_rate</span>
+        
+        <span class="k">return</span> <span class="n">total_penalty</span><span class="p">,</span> <span class="sh">'</span><span class="s">inactivity_leak</span><span class="sh">'</span>
+
+<span class="c1"># Examples
+</span><span class="k">for</span> <span class="n">days_offline</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">30</span><span class="p">]:</span>
+    <span class="n">epochs</span> <span class="o">=</span> <span class="n">days_offline</span> <span class="o">*</span> <span class="mi">225</span>  <span class="c1"># ~225 epochs per day
+</span>    <span class="n">penalty</span><span class="p">,</span> <span class="n">leak_type</span> <span class="o">=</span> <span class="nf">calculate_inactivity_penalty</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span>
+    
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="se">\n</span><span class="s">⚠️ Offline for </span><span class="si">{</span><span class="n">days_offline</span><span class="si">}</span><span class="s"> days:</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">   Epochs missed: </span><span class="si">{</span><span class="nf">int</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">   Penalty: </span><span class="si">{</span><span class="n">penalty</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">   Type: </span><span class="si">{</span><span class="n">leak_type</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</pre></table></code></div></div><h3 id="best-practices-to-avoid-penalties"><span class="me-2">Best Practices to Avoid Penalties</span><a href="#best-practices-to-avoid-penalties" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>1. Redundancy</strong></p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre><span class="c"># Use failover setup with secondary beacon node</span>
+<span class="c"># Primary node monitoring</span>
+<span class="k">while </span><span class="nb">true</span><span class="p">;</span> <span class="k">do
+    if</span> <span class="o">!</span> systemctl is-active <span class="nt">--quiet</span> lighthouse-beacon<span class="p">;</span> <span class="k">then</span>
+        <span class="c"># Switch to backup node</span>
+        lighthouse vc <span class="nt">--beacon-nodes</span> <span class="se">\</span>
+            http://backup-node-1:5052,http://backup-node-2:5052
+    <span class="k">fi
+    </span><span class="nb">sleep </span>30
+<span class="k">done</span>
+</pre></table></code></div></div><p><strong>2. Slashing Protection</strong></p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+</pre><td class="rouge-code"><pre><span class="c1"># Enable slashing protection database
+</span><span class="k">class</span> <span class="nc">SlashingProtection</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Database to prevent double signing
+    </span><span class="sh">"""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">db_path</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">db_path</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">init_db</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">init_db</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="sh">'''</span><span class="s">
+            CREATE TABLE IF NOT EXISTS signed_attestations (
+                validator_index INTEGER,
+                source_epoch INTEGER,
+                target_epoch INTEGER,
+                signing_root TEXT,
+                UNIQUE(validator_index, target_epoch)
+            )
+        </span><span class="sh">'''</span><span class="p">)</span>
+        
+        <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="sh">'''</span><span class="s">
+            CREATE TABLE IF NOT EXISTS signed_blocks (
+                validator_index INTEGER,
+                slot INTEGER,
+                signing_root TEXT,
+                UNIQUE(validator_index, slot)
+            )
+        </span><span class="sh">'''</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">check_and_record_attestation</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">validator_index</span><span class="p">,</span> <span class="n">attestation</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Prevent double attestation</span><span class="sh">"""</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="sh">'''</span><span class="s">
+            SELECT * FROM signed_attestations 
+            WHERE validator_index = ? AND target_epoch = ?
+        </span><span class="sh">'''</span><span class="p">,</span> <span class="p">(</span><span class="n">validator_index</span><span class="p">,</span> <span class="n">attestation</span><span class="p">[</span><span class="sh">'</span><span class="s">target_epoch</span><span class="sh">'</span><span class="p">]))</span>
+        
+        <span class="k">if</span> <span class="n">cursor</span><span class="p">.</span><span class="nf">fetchone</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="nc">Exception</span><span class="p">(</span><span class="sh">"</span><span class="s">⛔ SLASHING RISK: Already signed attestation for this epoch!</span><span class="sh">"</span><span class="p">)</span>
+        
+        <span class="c1"># Record this attestation
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="sh">'''</span><span class="s">
+            INSERT INTO signed_attestations VALUES (?, ?, ?, ?)
+        </span><span class="sh">'''</span><span class="p">,</span> <span class="p">(</span><span class="n">validator_index</span><span class="p">,</span> <span class="n">attestation</span><span class="p">[</span><span class="sh">'</span><span class="s">source_epoch</span><span class="sh">'</span><span class="p">],</span> 
+              <span class="n">attestation</span><span class="p">[</span><span class="sh">'</span><span class="s">target_epoch</span><span class="sh">'</span><span class="p">],</span> <span class="n">attestation</span><span class="p">[</span><span class="sh">'</span><span class="s">signing_root</span><span class="sh">'</span><span class="p">]))</span>
+        
+        <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">commit</span><span class="p">()</span>
+</pre></table></code></div></div><p><strong>3. Monitoring and Alerts</strong></p><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+</pre><td class="rouge-code"><pre><span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="k">class</span> <span class="nc">ValidatorMonitor</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Monitor validator performance and send alerts
+    </span><span class="sh">"""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">validator_index</span><span class="p">,</span> <span class="n">beacon_node_url</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">validator_index</span> <span class="o">=</span> <span class="n">validator_index</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">beacon_url</span> <span class="o">=</span> <span class="n">beacon_node_url</span>
+        
+    <span class="k">def</span> <span class="nf">check_validator_status</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Get current validator status</span><span class="sh">"""</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span>
+            <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">beacon_url</span><span class="si">}</span><span class="s">/eth/v1/beacon/states/head/validators/</span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">validator_index</span><span class="si">}</span><span class="sh">"</span>
+        <span class="p">)</span>
+        
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="nf">json</span><span class="p">()[</span><span class="sh">'</span><span class="s">data</span><span class="sh">'</span><span class="p">]</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">balance</span><span class="sh">'</span><span class="p">:</span> <span class="nf">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">balance</span><span class="sh">'</span><span class="p">])</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>  <span class="c1"># Gwei to ETH
+</span>            <span class="sh">'</span><span class="s">effective_balance</span><span class="sh">'</span><span class="p">:</span> <span class="nf">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">validator</span><span class="sh">'</span><span class="p">][</span><span class="sh">'</span><span class="s">effective_balance</span><span class="sh">'</span><span class="p">])</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">slashed</span><span class="sh">'</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">validator</span><span class="sh">'</span><span class="p">][</span><span class="sh">'</span><span class="s">slashed</span><span class="sh">'</span><span class="p">],</span>
+            <span class="sh">'</span><span class="s">activation_epoch</span><span class="sh">'</span><span class="p">:</span> <span class="nf">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">validator</span><span class="sh">'</span><span class="p">][</span><span class="sh">'</span><span class="s">activation_epoch</span><span class="sh">'</span><span class="p">]),</span>
+            <span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">]</span>
+        <span class="p">}</span>
+    
+    <span class="k">def</span> <span class="nf">check_recent_performance</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Check attestation performance</span><span class="sh">"""</span>
+        <span class="n">head_epoch</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_current_epoch</span><span class="p">()</span>
+        
+        <span class="n">total_duties</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">completed_duties</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">head_epoch</span> <span class="o">-</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">head_epoch</span><span class="p">):</span>
+            <span class="n">duties</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_epoch_duties</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="n">total_duties</span> <span class="o">+=</span> <span class="nf">len</span><span class="p">(</span><span class="n">duties</span><span class="p">)</span>
+            
+            <span class="k">for</span> <span class="n">duty</span> <span class="ow">in</span> <span class="n">duties</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="nf">check_duty_completed</span><span class="p">(</span><span class="n">duty</span><span class="p">):</span>
+                    <span class="n">completed_duties</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="n">performance</span> <span class="o">=</span> <span class="p">(</span><span class="n">completed_duties</span> <span class="o">/</span> <span class="n">total_duties</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="k">if</span> <span class="n">total_duties</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">total_duties</span><span class="sh">'</span><span class="p">:</span> <span class="n">total_duties</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">completed</span><span class="sh">'</span><span class="p">:</span> <span class="n">completed_duties</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">performance</span><span class="sh">'</span><span class="p">:</span> <span class="n">performance</span>
+        <span class="p">}</span>
+    
+    <span class="k">def</span> <span class="nf">send_alert</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="sh">'</span><span class="s">info</span><span class="sh">'</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Send alert (email, Telegram, Discord, etc.)</span><span class="sh">"""</span>
+        <span class="c1"># Example: Telegram bot
+</span>        <span class="n">telegram_bot_token</span> <span class="o">=</span> <span class="sh">'</span><span class="s">YOUR_BOT_TOKEN</span><span class="sh">'</span>
+        <span class="n">telegram_chat_id</span> <span class="o">=</span> <span class="sh">'</span><span class="s">YOUR_CHAT_ID</span><span class="sh">'</span>
+        
+        <span class="n">emoji</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">info</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">ℹ️</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">warning</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">⚠️</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">critical</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">🚨</span><span class="sh">'</span><span class="p">}</span>
+        
+        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">emoji</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">severity</span><span class="p">,</span> <span class="sh">'</span><span class="s">ℹ️</span><span class="sh">'</span><span class="p">)</span><span class="si">}</span><span class="s"> **Validator Alert**</span><span class="se">\n\n</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="sh">"</span>
+        
+        <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span>
+            <span class="sa">f</span><span class="sh">'</span><span class="s">https://api.telegram.org/bot</span><span class="si">{</span><span class="n">telegram_bot_token</span><span class="si">}</span><span class="s">/sendMessage</span><span class="sh">'</span><span class="p">,</span>
+            <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="sh">'</span><span class="s">chat_id</span><span class="sh">'</span><span class="p">:</span> <span class="n">telegram_chat_id</span><span class="p">,</span> <span class="sh">'</span><span class="s">text</span><span class="sh">'</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="sh">'</span><span class="s">parse_mode</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Markdown</span><span class="sh">'</span><span class="p">}</span>
+        <span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">monitor_loop</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Continuous monitoring</span><span class="sh">"""</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Check status
+</span>                <span class="n">status</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">check_validator_status</span><span class="p">()</span>
+                
+                <span class="c1"># Alert if slashed
+</span>                <span class="k">if</span> <span class="n">status</span><span class="p">[</span><span class="sh">'</span><span class="s">slashed</span><span class="sh">'</span><span class="p">]:</span>
+                    <span class="n">self</span><span class="p">.</span><span class="nf">send_alert</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="sh">"</span><span class="s">Validator </span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">validator_index</span><span class="si">}</span><span class="s"> has been SLASHED!</span><span class="sh">"</span><span class="p">,</span>
+                        <span class="n">severity</span><span class="o">=</span><span class="sh">'</span><span class="s">critical</span><span class="sh">'</span>
+                    <span class="p">)</span>
+                
+                <span class="c1"># Check performance
+</span>                <span class="n">performance</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">check_recent_performance</span><span class="p">()</span>
+                
+                <span class="k">if</span> <span class="n">performance</span><span class="p">[</span><span class="sh">'</span><span class="s">performance</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">95</span><span class="p">:</span>
+                    <span class="n">self</span><span class="p">.</span><span class="nf">send_alert</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="sh">"</span><span class="s">Low performance: </span><span class="si">{</span><span class="n">performance</span><span class="p">[</span><span class="sh">'</span><span class="s">performance</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">1</span><span class="n">f</span><span class="si">}</span><span class="s">% </span><span class="sh">"</span>
+                        <span class="sa">f</span><span class="sh">"</span><span class="s">(</span><span class="si">{</span><span class="n">performance</span><span class="p">[</span><span class="sh">'</span><span class="s">completed</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s">/</span><span class="si">{</span><span class="n">performance</span><span class="p">[</span><span class="sh">'</span><span class="s">total_duties</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="s"> duties)</span><span class="sh">"</span><span class="p">,</span>
+                        <span class="n">severity</span><span class="o">=</span><span class="sh">'</span><span class="s">warning</span><span class="sh">'</span>
+                    <span class="p">)</span>
+                
+                <span class="c1"># Check balance decrease
+</span>                <span class="k">if</span> <span class="n">status</span><span class="p">[</span><span class="sh">'</span><span class="s">balance</span><span class="sh">'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">status</span><span class="p">[</span><span class="sh">'</span><span class="s">effective_balance</span><span class="sh">'</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.95</span><span class="p">:</span>
+                    <span class="n">self</span><span class="p">.</span><span class="nf">send_alert</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="sh">"</span><span class="s">Balance decreased significantly: </span><span class="si">{</span><span class="n">status</span><span class="p">[</span><span class="sh">'</span><span class="s">balance</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">.</span><span class="mi">4</span><span class="n">f</span><span class="si">}</span><span class="s"> ETH</span><span class="sh">"</span><span class="p">,</span>
+                        <span class="n">severity</span><span class="o">=</span><span class="sh">'</span><span class="s">warning</span><span class="sh">'</span>
+                    <span class="p">)</span>
+                
+                <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># Check every 5 minutes
+</span>                
+            <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">self</span><span class="p">.</span><span class="nf">send_alert</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Monitoring error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="sh">'</span><span class="s">warning</span><span class="sh">'</span><span class="p">)</span>
+                <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="c1"># Run monitor
+</span><span class="n">monitor</span> <span class="o">=</span> <span class="nc">ValidatorMonitor</span><span class="p">(</span><span class="n">validator_index</span><span class="o">=</span><span class="mi">123456</span><span class="p">,</span> <span class="n">beacon_node_url</span><span class="o">=</span><span class="sh">'</span><span class="s">http://localhost:5052</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">monitor</span><span class="p">.</span><span class="nf">monitor_loop</span><span class="p">()</span>
+</pre></table></code></div></div><h2 id="tax-implications"><span class="me-2">Tax Implications</span><a href="#tax-implications" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Staking rewards have tax implications in most jurisdictions:</p><p><strong>General Principles:</strong></p><ul><li>Rewards are typically taxable as income when received<li>Cost basis for rewards is fair market value at receipt<li>Selling/trading staked ETH triggers capital gains tax<li>Penalties and slashing may be deductible losses</ul><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">class</span> <span class="nc">StakingTaxTracker</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Track staking rewards for tax reporting
+    </span><span class="sh">"""</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">tax_year</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">tax_year</span> <span class="o">=</span> <span class="n">tax_year</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+        
+    <span class="k">def</span> <span class="nf">record_reward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">amount_eth</span><span class="p">,</span> <span class="n">price_usd</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Record staking reward receipt
+        </span><span class="sh">"""</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">amount_eth</span><span class="sh">'</span><span class="p">:</span> <span class="n">amount_eth</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">price_usd</span><span class="sh">'</span><span class="p">:</span> <span class="n">price_usd</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">value_usd</span><span class="sh">'</span><span class="p">:</span> <span class="n">amount_eth</span> <span class="o">*</span> <span class="n">price_usd</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">cost_basis</span><span class="sh">'</span><span class="p">:</span> <span class="n">amount_eth</span> <span class="o">*</span> <span class="n">price_usd</span>  <span class="c1"># For future capital gains
+</span>        <span class="p">}</span>
+        
+        <span class="n">self</span><span class="p">.</span><span class="n">rewards</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">reward</span>
+    
+    <span class="k">def</span> <span class="nf">generate_tax_report</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        Generate annual tax report
+        </span><span class="sh">"""</span>
+        <span class="n">total_eth</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="sh">'</span><span class="s">amount_eth</span><span class="sh">'</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">rewards</span><span class="p">)</span>
+        <span class="n">total_value</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="sh">'</span><span class="s">value_usd</span><span class="sh">'</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">rewards</span><span class="p">)</span>
+        
+        <span class="c1"># Group by month
+</span>        <span class="n">monthly</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">reward</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">rewards</span><span class="p">:</span>
+            <span class="n">month</span> <span class="o">=</span> <span class="n">reward</span><span class="p">[</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">].</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y-%m</span><span class="sh">'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">month</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">monthly</span><span class="p">:</span>
+                <span class="n">monthly</span><span class="p">[</span><span class="n">month</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">eth</span><span class="sh">'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="sh">'</span><span class="s">usd</span><span class="sh">'</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+            
+            <span class="n">monthly</span><span class="p">[</span><span class="n">month</span><span class="p">][</span><span class="sh">'</span><span class="s">eth</span><span class="sh">'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">reward</span><span class="p">[</span><span class="sh">'</span><span class="s">amount_eth</span><span class="sh">'</span><span class="p">]</span>
+            <span class="n">monthly</span><span class="p">[</span><span class="n">month</span><span class="p">][</span><span class="sh">'</span><span class="s">usd</span><span class="sh">'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">reward</span><span class="p">[</span><span class="sh">'</span><span class="s">value_usd</span><span class="sh">'</span><span class="p">]</span>
+        
+        <span class="n">report</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">tax_year</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">tax_year</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">total_rewards_eth</span><span class="sh">'</span><span class="p">:</span> <span class="n">total_eth</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">total_income_usd</span><span class="sh">'</span><span class="p">:</span> <span class="n">total_value</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">number_of_rewards</span><span class="sh">'</span><span class="p">:</span> <span class="nf">len</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">rewards</span><span class="p">),</span>
+            <span class="sh">'</span><span class="s">monthly_breakdown</span><span class="sh">'</span><span class="p">:</span> <span class="n">monthly</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">rewards_detail</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">rewards</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">report</span>
+    
+    <span class="k">def</span> <span class="nf">export_csv</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Export to CSV for tax software</span><span class="sh">"""</span>
+        <span class="kn">import</span> <span class="n">csv</span>
+        
+        <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="sh">''</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="p">.</span><span class="nc">DictWriter</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">amount_eth</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">price_usd</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">value_usd</span><span class="sh">'</span><span class="p">])</span>
+            <span class="n">writer</span><span class="p">.</span><span class="nf">writeheader</span><span class="p">()</span>
+            <span class="n">writer</span><span class="p">.</span><span class="nf">writerows</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">rewards</span><span class="p">)</span>
+
+<span class="c1"># Example usage
+</span><span class="n">tracker</span> <span class="o">=</span> <span class="nc">StakingTaxTracker</span><span class="p">(</span><span class="n">tax_year</span><span class="o">=</span><span class="mi">2024</span><span class="p">)</span>
+
+<span class="c1"># Record daily rewards
+</span><span class="n">tracker</span><span class="p">.</span><span class="nf">record_reward</span><span class="p">(</span>
+    <span class="n">date</span><span class="o">=</span><span class="nf">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+    <span class="n">amount_eth</span><span class="o">=</span><span class="mf">0.0045</span><span class="p">,</span>
+    <span class="n">price_usd</span><span class="o">=</span><span class="mf">2350.00</span>
+<span class="p">)</span>
+
+<span class="c1"># Generate annual report
+</span><span class="n">report</span> <span class="o">=</span> <span class="n">tracker</span><span class="p">.</span><span class="nf">generate_tax_report</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Total Income: $</span><span class="si">{</span><span class="n">report</span><span class="p">[</span><span class="sh">'</span><span class="s">total_income_usd</span><span class="sh">'</span><span class="p">]</span><span class="si">:</span><span class="p">,.</span><span class="mi">2</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Export for CPA
+</span><span class="n">tracker</span><span class="p">.</span><span class="nf">export_csv</span><span class="p">(</span><span class="sh">'</span><span class="s">staking_rewards_2024.csv</span><span class="sh">'</span><span class="p">)</span>
+</pre></table></code></div></div><h2 id="conclusion"><span class="me-2">Conclusion</span><a href="#conclusion" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Ethereum staking represents a fundamental shift in how the network achieves consensus and distributes rewards. Whether you’re running your own validator with 32 ETH or participating through liquid staking protocols with any amount, understanding the technical requirements, economic incentives, and risk factors is crucial for success.</p><h3 id="key-takeaways"><span class="me-2">Key Takeaways</span><a href="#key-takeaways" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ol><li><strong>Multiple Paths</strong>: Choose the staking method that matches your technical ability and capital<li><strong>Rewards</strong>: Expect 3-7% APR from combined issuance, tips, and MEV<li><strong>Risks</strong>: Slashing and inactivity penalties are real but avoidable with proper setup<li><strong>Decentralization Matters</strong>: Solo staking contributes most to network security<li><strong>Tax Implications</strong>: Track rewards carefully for tax reporting</ol><h3 id="getting-started"><span class="me-2">Getting Started</span><a href="#getting-started" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>If you have 32+ ETH and technical skills:</strong></p><ul><li>Solo staking provides maximum rewards and contributes to decentralization<li>Budget for hardware (~$2000) and consider redundancy</ul><p><strong>If you have less than 32 ETH:</strong></p><ul><li>Rocket Pool or Stakewise for pooled staking<li>Lido or Frax if you need liquidity</ul><p><strong>If you’re non-technical:</strong></p><ul><li>Start with liquid staking (Lido) or exchange staking<li>Learn and potentially migrate to more decentralized options</ul><h3 id="resources"><span class="me-2">Resources</span><a href="#resources" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ul><li><a href="https://launchpad.ethereum.org/">Ethereum Staking Launchpad</a> - Official staking guide<li><a href="https://beaconcha.in/">Beaconcha.in</a> - Beacon chain explorer<li><a href="https://www.rated.network/">Rated.Network</a> - Validator performance analytics<li><a href="https://www.reddit.com/r/ethstaker/">EthStaker Community</a> - Active community support</ul><p>The future of Ethereum is secured by its stakers. Whether you’re earning passive income or contributing to network decentralization, staking plays a vital role in the Ethereum ecosystem. Start your staking journey with proper research, robust infrastructure, and a long-term perspective.</p><p>Happy staking! 🚀🔒</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw me-1"></i> <a href="/categories/ethereum-staking/">Ethereum Staking</a>, <a href="/categories/blockchain-technology/">Blockchain Technology</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw me-1"></i> <a href="/tags/ethereum/" class="post-tag no-text-decoration" >ethereum</a> <a href="/tags/staking/" class="post-tag no-text-decoration" >staking</a> <a href="/tags/eth2/" class="post-tag no-text-decoration" >eth2</a> <a href="/tags/validator/" class="post-tag no-text-decoration" >validator</a> <a href="/tags/proof-of-stake/" class="post-tag no-text-decoration" >proof-of-stake</a> <a href="/tags/blockchain/" class="post-tag no-text-decoration" >blockchain</a> <a href="/tags/passive-income/" class="post-tag no-text-decoration" >passive-income</a></div><div class=" post-tail-bottom d-flex justify-content-between align-items-center mt-5 pb-2 " ><div class="license-wrapper"> Bu gönderi <a href="https://creativecommons.org/licenses/by/4.0/deed.tr"> CC BY 4.0 </a> lisansı altındadır.</div><div class="share-wrapper d-flex align-items-center"> <span class="share-label text-muted">Paylaş</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Understanding%20Ethereum%202.0%20Staking:%20Complete%20Validator%20Guide%20-%20Furkan%20K%C3%B6yk%C4%B1ran&url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Funderstanding-ethereum-2-staking%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter"> <i class="fa-fw fa-brands fa-square-x-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Understanding%20Ethereum%202.0%20Staking:%20Complete%20Validator%20Guide%20-%20Furkan%20K%C3%B6yk%C4%B1ran&u=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Funderstanding-ethereum-2-staking%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Funderstanding-ethereum-2-staking%2F&text=Understanding%20Ethereum%202.0%20Staking:%20Complete%20Validator%20Guide%20-%20Furkan%20K%C3%B6yk%C4%B1ran" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <button id="copy-link" aria-label="Copy link" class="btn small" data-bs-toggle="tooltip" data-bs-placement="top" title="Linki kopyala" data-title-succeed="Link kopyalandı." > <i class="fa-fw fas fa-link pe-none fs-6"></i> </button> </span></div></div></div></article></main><aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted"><div class="access"><section id="access-lastmod"><h2 class="panel-heading">Son Güncellenenler</h2><ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2"><li class="text-truncate lh-lg"> <a href="/posts/apache-kafka-event-streaming/">Apache Kafka ile Event Streaming: Gerçek Zamanlı Veri Pipeline'ları</a><li class="text-truncate lh-lg"> <a href="/posts/git-is-akisi-branch-stratejileri/">Git İş Akışı ve Branch Stratejileri: GitFlow, Trunk-Based, GitHub Flow</a><li class="text-truncate lh-lg"> <a href="/posts/python-context-managers-kaynak-yonetimi/">Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</a><li class="text-truncate lh-lg"> <a href="/posts/modern-web-arayuzu-css-javascript/">Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</a><li class="text-truncate lh-lg"> <a href="/posts/python-ile-eposta-otomasyonu/">Python ile E-posta Otomasyonu</a></ul></section><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div class="toc-border-cover z-3"></div><section id="toc-wrapper" class="invisible position-sticky ps-0 pe-4 pb-4"><h2 class="panel-heading ps-3 pb-2 mb-0">İçindekiler</h2><nav id="toc"></nav></section></aside></div><div class="row"><div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4"><aside id="related-posts" aria-labelledby="related-label"><h3 class="mb-4" id="related-label">Benzer Gönderiler</h3><nav class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4"><article class="col"> <a href="/posts/blockchain-layer2-scaling-solutions/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1718658000" data-df="DD/MM/YYYY" > 18/06/2024 </time><h4 class="pt-0 my-2">Blockchain Layer 2 Scaling Solutions: A Comprehensive Guide</h4><div class="text-muted"><p>Deep dive into Layer 2 scaling solutions for blockchain networks. Learn about Optimistic Rollups, ZK-Rollups, State Channels, and how they solve Ethereum's scalability challenges.</p></div></div></a></article><article class="col"> <a href="/posts/web3py-ethereum-blockchain-etkilesimi/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1717016400" data-df="DD/MM/YYYY" > 30/05/2024 </time><h4 class="pt-0 my-2">Web3.py ile Ethereum Blockchain Etkileşimi</h4><div class="text-muted"><p>Python Web3.py kütüphanesi ile Ethereum blockchain geliştirme rehberi. Wallet bağlantısı, transaction gönderme, smart contract etkileşimi ve DApp development.</p></div></div></a></article><article class="col"> <a href="/posts/ethereum-smart-contract-security-best-practices/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1710450000" data-df="DD/MM/YYYY" > 15/03/2024 </time><h4 class="pt-0 my-2">Ethereum Smart Contract Security Best Practices</h4><div class="text-muted"><p>Complete guide to Ethereum smart contract security. Learn reentrancy prevention, access control, integer overflow protection, and professional audit techniques.</p></div></div></a></article></nav></aside><nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation"> <a href="/posts/docker-ile-python-uygulamasi-containerization/" class="btn btn-outline-primary" aria-label="Geri" ><p>Docker ile Python Uygulaması Containerization</p></a> <a href="/posts/understanding-solana-proof-of-history/" class="btn btn-outline-primary" aria-label="İleri" ><p>Understanding Solana's Proof of History: A Revolutionary Consensus Mechanism</p></a></nav><footer aria-label="Site Info" class=" d-flex flex-column justify-content-center text-muted flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3 " ><p>© <time>2025</time> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a>. <span data-bs-toggle="tooltip" data-bs-placement="top" title="Aksi belirtilmediği sürece, bu sitedeki gönderiler Creative Commons Atıf 4.0 Uluslararası (CC BY 4.0) Lisansı altındadır. Kısaca sayfa linkini vererek değiştirebilir / paylaşabilirsiniz." >Bazı hakları saklıdır.</span></p><p><a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> ve <a data-bs-toggle="tooltip" data-bs-placement="top" title="v7.4.1" href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener" >Chirpy</a> teması</p></footer></div></div><div id="search-result-wrapper" class="d-flex justify-content-center d-none"><div class="col-11 content"><div id="search-hints"><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><aside aria-label="Scroll to Top"> <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow"> <i class="fas fa-angle-up"></i> </button></aside></div><div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div><script> document.addEventListener('DOMContentLoaded', () => { SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<article class="px-1 px-sm-2 px-lg-4 px-xl-0"><header><h2><a href="{url}">{title}</a></h2><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div></header><p>{content}</p></article>', noResultsText: '<p class="mt-5">Hop! Öyle bir şey bulamadım.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); }); </script>

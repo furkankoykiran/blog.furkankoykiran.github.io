@@ -1,0 +1,1683 @@
+<!doctype html><html lang="tr-TR" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover" ><meta name="generator" content="Jekyll v4.4.1" /><meta property="og:title" content="Poetry ile Python Proje Yönetimi" /><meta property="og:locale" content="tr_TR" /><meta name="description" content="Poetry ile modern Python proje yönetimi. Bağımlılık yönetimi, virtual environment, paketleme ve PyPI’ye yayınlama." /><meta property="og:description" content="Poetry ile modern Python proje yönetimi. Bağımlılık yönetimi, virtual environment, paketleme ve PyPI’ye yayınlama." /><link rel="canonical" href="https://blog.furkankoykiran.com.tr/posts/poetry-python-proje-yonetimi/" /><meta property="og:url" content="https://blog.furkankoykiran.com.tr/posts/poetry-python-proje-yonetimi/" /><meta property="og:site_name" content="Furkan Köykıran" /><meta property="og:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/poetry-dependency-management-workflow.png" /><meta property="og:image:alt" content="Poetry Dependency Management Workflow" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2024-12-28T09:00:00+03:00" /><meta name="twitter:card" content="summary_large_image" /><meta property="twitter:image" content="https://blog.furkankoykiran.com.tr/assets/img/posts/poetry-dependency-management-workflow.png" /><meta name="twitter:image:alt" content="Poetry Dependency Management Workflow" /><meta property="twitter:title" content="Poetry ile Python Proje Yönetimi" /><meta name="twitter:site" content="@furkankoykiran" /><meta name="google-site-verification" content="LEiVauGuhGdPxwWU7bq-uQaNYrEu9Aqhv8TM3SaoSsM" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-12-05T03:28:10+03:00","datePublished":"2024-12-28T09:00:00+03:00","description":"Poetry ile modern Python proje yönetimi. Bağımlılık yönetimi, virtual environment, paketleme ve PyPI’ye yayınlama.","headline":"Poetry ile Python Proje Yönetimi","image":{"alt":"Poetry Dependency Management Workflow","url":"https://blog.furkankoykiran.com.tr/assets/img/posts/poetry-dependency-management-workflow.png","@type":"imageObject"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.furkankoykiran.com.tr/posts/poetry-python-proje-yonetimi/"},"url":"https://blog.furkankoykiran.com.tr/posts/poetry-python-proje-yonetimi/"}</script><title>Poetry ile Python Proje Yönetimi | Furkan Köykıran</title><link rel="icon" type="image/png" href="/assets/img/favicons/favicon-96x96.png" sizes="96x96"><link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.36.4/dist/tocbot.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css"> <script src="/assets/js/dist/theme.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/glightbox@3.3.0/dist/js/glightbox.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.18/dayjs.min.js,npm/dayjs@1.11.18/locale/tr.js,npm/dayjs@1.11.18/plugin/relativeTime.js,npm/dayjs@1.11.18/plugin/localizedFormat.js,npm/tocbot@4.36.4/dist/tocbot.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script><body><aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end"><header class="profile-wrapper"> <a href="/" id="avatar" class="rounded-circle"><img src="https://blog.furkankoykiran.com.tr/assets/img/avatar.png" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a> <a class="site-title d-block" href="/">Furkan Köykıran</a><p class="site-subtitle fst-italic mb-0">Kişisel Websitesi</p></header><nav class="flex-column flex-grow-1 w-100 ps-0"><ul class="nav"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home"></i> <span>ANA SAYFA</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream"></i> <span>KATEGORILER</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tags"></i> <span>ETIKETLER</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive"></i> <span>ARŞIV</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle"></i> <span>HAKKINDA</span> </a><li class="nav-item"> <a href="/contact/" class="nav-link"> <i class="fa-fw far fa-address-book"></i> <span>İLETIŞIM</span> </a></ul></nav><div class="sidebar-bottom d-flex flex-wrap align-items-center w-100"> <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/furkankoykiran" aria-label="github" target="_blank" rel="noopener noreferrer" > <i class="fab fa-github"></i> </a> <a href="https://twitter.com/furkankoykiran" aria-label="twitter" target="_blank" rel="noopener noreferrer" > <i class="fa-brands fa-x-twitter"></i> </a> <a href="javascript:location.href = 'mailto:' + ['furkankoykiran','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></aside><div id="main-wrapper" class="d-flex justify-content-center"><div class="container d-flex flex-column px-xxl-5"><header id="topbar-wrapper" class="flex-shrink-0" aria-label="Top Bar"><div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100" ><nav id="breadcrumb" aria-label="Breadcrumb"> <span> <a href="/">Ana sayfa</a> </span> <span>Poetry ile Python Proje Yönetimi</span></nav><button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Sidebar"> <i class="fas fa-bars fa-fw"></i> </button><div id="topbar-title"> Gönderi</div><button type="button" id="search-trigger" class="btn btn-link" aria-label="Search"> <i class="fas fa-search fa-fw"></i> </button> <search id="search" class="align-items-center ms-3 ms-lg-0"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Ara......" > </search> <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">İptal</button></div></header><div class="row flex-grow-1"><main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4"><article class="px-1" data-toc="true"><header><h1 data-toc-skip>Poetry ile Python Proje Yönetimi</h1><p class="post-desc fw-light mb-4">Poetry ile modern Python proje yönetimi. Bağımlılık yönetimi, virtual environment, paketleme ve PyPI'ye yayınlama.</p><div class="post-meta text-muted"> <span> Gönderim <time data-ts="1735365600" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 28/12/2024 </time> </span> <span> Güncelleme <time data-ts="1764894490" data-df="DD/MM/YYYY" data-bs-toggle="tooltip" data-bs-placement="bottom" > 05/12/2025 </time> </span><div class="mt-3 mb-3"> <a href="/assets/img/posts/poetry-dependency-management-workflow.png" class="popup img-link preview-img shimmer"><img src="/assets/img/posts/poetry-dependency-management-workflow.png" alt="Poetry Dependency Management Workflow" width="1200" height="630" loading="lazy"></a><figcaption class="text-center pt-2 pb-2">Poetry Dependency Management Workflow</figcaption></div><div class="d-flex justify-content-between"> <span> Yazan <em> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a> </em> </span><div> <span class="readtime" data-bs-toggle="tooltip" data-bs-placement="bottom" title="3518 sözcük" > <em>19 dakikada</em> okunabilir</span></div></div></div></header><div id="toc-bar" class="d-flex align-items-center justify-content-between invisible"> <span class="label text-truncate">Poetry ile Python Proje Yönetimi</span> <button type="button" class="toc-trigger btn me-1"> <i class="fa-solid fa-list-ul fa-fw"></i> </button></div><button id="toc-solo-trigger" type="button" class="toc-trigger btn btn-outline-secondary btn-sm"> <span class="label ps-2 pe-1">İçindekiler</span> <i class="fa-solid fa-angle-right fa-fw"></i> </button> <dialog id="toc-popup" class="p-0"><div class="header d-flex flex-row align-items-center justify-content-between"><div class="label text-truncate py-2 ms-4">Poetry ile Python Proje Yönetimi</div><button id="toc-popup-close" type="button" class="btn mx-1 my-1 opacity-75"> <i class="fas fa-close"></i> </button></div><div id="toc-popup-content" class="px-4 py-3 pb-4"></div></dialog><div class="content"><p>Python ekosisteminde bağımlılık yönetimi ve proje konfigürasyonu uzun yıllardır karmaşık bir konu olmuştur. Poetry, bu sorunu çözmek için geliştirilmiş modern bir araçtır ve Python projelerinde tek bir araçla dependency management, packaging ve virtual environment yönetimini sağlar.</p><h2 id="poetry-neden-önemli"><span class="me-2">Poetry Neden Önemli?</span><a href="#poetry-neden-önemli" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p><a href="/assets/img/posts/python-virtual-environment-xkcd.png" class="popup img-link shimmer"><img src="/assets/img/posts/python-virtual-environment-xkcd.png" alt="Python Environment Problem" loading="lazy"></a> <em>Python ortam yönetiminin karmaşıklığı (xkcd #1987)</em></p><p>Geleneksel Python projelerinde karşılaşılan sorunlar:</p><ul><li><strong>setup.py, requirements.txt, setup.cfg, MANIFEST.in</strong> gibi birden fazla konfigürasyon dosyası<li><strong>pip</strong> ile bağımlılık sürümlerinin tam olarak kilitlenememesi<li><strong>Virtual environment</strong> yönetiminin ayrı araçlarla yapılması<li><strong>Dependency resolution</strong> problemleri<li><strong>Paket yayınlama</strong> işleminin karmaşıklığı</ul><h3 id="poetrynin-sunduğu-çözümler"><span class="me-2">Poetry’nin Sunduğu Çözümler</span><a href="#poetrynin-sunduğu-çözümler" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="c"># Geleneksel yaklaşım</span>
+python <span class="nt">-m</span> venv venv
+<span class="nb">source </span>venv/bin/activate
+pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+pip freeze <span class="o">&gt;</span> requirements.txt
+
+<span class="c"># Poetry yaklaşımı</span>
+poetry <span class="nb">install</span>
+</pre></table></code></div></div><p><strong>Poetry’nin avantajları:</strong></p><ul><li><strong>Tek dosya</strong>: Tüm konfigürasyon <code class="language-plaintext highlighter-rouge">pyproject.toml</code> dosyasında<li><strong>Dependency resolution</strong>: Otomatik ve güvenilir bağımlılık çözümleme<li><strong>Lock file</strong>: <code class="language-plaintext highlighter-rouge">poetry.lock</code> ile deterministik kurulumlar<li><strong>Virtual environment</strong>: Otomatik venv yönetimi<li><strong>Publishing</strong>: PyPI’a tek komutla paket yayınlama</ul><h2 id="poetry-kurulumu"><span class="me-2">Poetry Kurulumu</span><a href="#poetry-kurulumu" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="resmi-installer-önerilen"><span class="me-2">Resmi Installer (Önerilen)</span><a href="#resmi-installer-önerilen" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="c"># Linux, macOS, Windows (WSL)</span>
+curl <span class="nt">-sSL</span> https://install.python-poetry.org | python3 -
+
+<span class="c"># Alternatif: wget ile</span>
+wget <span class="nt">-qO-</span> https://install.python-poetry.org | python3 -
+
+<span class="c"># Windows (PowerShell)</span>
+<span class="o">(</span>Invoke-WebRequest <span class="nt">-Uri</span> https://install.python-poetry.org <span class="nt">-UseBasicParsing</span><span class="o">)</span>.Content | py -
+</pre></table></code></div></div><h3 id="path-konfigürasyonu"><span class="me-2">PATH Konfigürasyonu</span><a href="#path-konfigürasyonu" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre><span class="c"># Poetry binary'sini PATH'e ekleme</span>
+<span class="c"># Linux/macOS - ~/.bashrc veya ~/.zshrc</span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.local/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+
+<span class="c"># Konfigürasyonu yenileme</span>
+<span class="nb">source</span> ~/.bashrc
+
+<span class="c"># Poetry sürümünü kontrol etme</span>
+poetry <span class="nt">--version</span>
+<span class="c"># Output: Poetry (version 1.7.1)</span>
+</pre></table></code></div></div><h3 id="poetry-konfigürasyonu"><span class="me-2">Poetry Konfigürasyonu</span><a href="#poetry-konfigürasyonu" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre><span class="c"># Virtual environment'ı proje dizininde oluşturma (önerilen)</span>
+poetry config virtualenvs.in-project <span class="nb">true</span>
+
+<span class="c"># Mevcut konfigürasyonu görme</span>
+poetry config <span class="nt">--list</span>
+
+<span class="c"># Output:</span>
+<span class="c"># cache-dir = "/home/user/.cache/pypoetry"</span>
+<span class="c"># virtualenvs.create = true</span>
+<span class="c"># virtualenvs.in-project = true</span>
+<span class="c"># virtualenvs.path = "{cache-dir}/virtualenvs"</span>
+</pre></table></code></div></div><h2 id="yeni-proje-oluşturma"><span class="me-2">Yeni Proje Oluşturma</span><a href="#yeni-proje-oluşturma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="sıfırdan-proje-başlatma"><span class="me-2">Sıfırdan Proje Başlatma</span><a href="#sıfırdan-proje-başlatma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre><span class="c"># Yeni proje oluşturma</span>
+poetry new myproject
+
+<span class="c"># Proje yapısı</span>
+myproject/
+├── myproject/
+│   └── __init__.py
+├── tests/
+│   └── __init__.py
+├── pyproject.toml
+└── README.md
+</pre></table></code></div></div><h3 id="mevcut-projeye-poetry-ekleme"><span class="me-2">Mevcut Projeye Poetry Ekleme</span><a href="#mevcut-projeye-poetry-ekleme" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre><span class="c"># Mevcut dizinde Poetry başlatma</span>
+<span class="nb">cd </span>existing-project
+poetry init
+
+<span class="c"># İnteraktif olarak proje bilgilerini girme</span>
+<span class="c"># - Package name</span>
+<span class="c"># - Version</span>
+<span class="c"># - Description</span>
+<span class="c"># - Author</span>
+<span class="c"># - License</span>
+<span class="c"># - Dependencies</span>
+</pre></table></code></div></div><h2 id="pyprojecttoml-dosyası"><span class="me-2">pyproject.toml Dosyası</span><a href="#pyprojecttoml-dosyası" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="temel-yapı"><span class="me-2">Temel Yapı</span><a href="#temel-yapı" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="pyproject.toml" class="language-toml highlighter-rouge"><div class="code-header"> <span data-label-text="pyproject.toml"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+</pre><td class="rouge-code"><pre><span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">]</span>
+<span class="n">name</span> <span class="o">=</span><span class="w"> </span><span class="s">"myproject"</span>
+<span class="n">version</span> <span class="o">=</span><span class="w"> </span><span class="s">"0.1.0"</span>
+<span class="n">description</span> <span class="o">=</span><span class="w"> </span><span class="s">"A fantastic Python project"</span>
+<span class="n">authors</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"Your Name &lt;you@example.com&gt;"</span><span class="p">]</span>
+<span class="n">readme</span> <span class="o">=</span><span class="w"> </span><span class="s">"README.md"</span>
+<span class="n">license</span> <span class="o">=</span><span class="w"> </span><span class="s">"MIT"</span>
+<span class="n">homepage</span> <span class="o">=</span><span class="w"> </span><span class="s">"https://github.com/username/myproject"</span>
+<span class="n">repository</span> <span class="o">=</span><span class="w"> </span><span class="s">"https://github.com/username/myproject"</span>
+<span class="n">documentation</span> <span class="o">=</span><span class="w"> </span><span class="s">"https://myproject.readthedocs.io"</span>
+<span class="n">keywords</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"api"</span><span class="p">,</span> <span class="s">"web"</span><span class="p">,</span> <span class="s">"framework"</span><span class="p">]</span>
+<span class="n">classifiers</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span>
+    <span class="s">"Development Status :: 3 - Alpha"</span><span class="p">,</span>
+    <span class="s">"Intended Audience :: Developers"</span><span class="p">,</span>
+    <span class="s">"License :: OSI Approved :: MIT License"</span><span class="p">,</span>
+    <span class="s">"Programming Language :: Python :: 3"</span><span class="p">,</span>
+    <span class="s">"Programming Language :: Python :: 3.9"</span><span class="p">,</span>
+    <span class="s">"Programming Language :: Python :: 3.10"</span><span class="p">,</span>
+    <span class="s">"Programming Language :: Python :: 3.11"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c"># Python version constraint</span>
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">python</span> <span class="o">=</span><span class="w"> </span><span class="s">"^3.9"</span>
+<span class="n">requests</span> <span class="o">=</span><span class="w"> </span><span class="s">"^2.31.0"</span>
+<span class="n">fastapi</span> <span class="o">=</span><span class="w"> </span><span class="s">"^0.104.1"</span>
+<span class="n">pydantic</span> <span class="o">=</span><span class="w"> </span><span class="s">"^2.5.0"</span>
+
+<span class="c"># Development dependencies</span>
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">dev</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">pytest</span> <span class="o">=</span><span class="w"> </span><span class="s">"^7.4.3"</span>
+<span class="n">black</span> <span class="o">=</span><span class="w"> </span><span class="s">"^23.11.0"</span>
+<span class="n">flake8</span> <span class="o">=</span><span class="w"> </span><span class="s">"^6.1.0"</span>
+<span class="n">mypy</span> <span class="o">=</span><span class="w"> </span><span class="s">"^1.7.1"</span>
+
+<span class="k">[</span><span class="n">build-system</span><span class="k">]</span>
+<span class="n">requires</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"poetry-core"</span><span class="p">]</span>
+<span class="n">build-backend</span> <span class="o">=</span><span class="w"> </span><span class="s">"poetry.core.masonry.api"</span>
+</pre></table></code></div></div><h3 id="dependency-version-constraints"><span class="me-2">Dependency Version Constraints</span><a href="#dependency-version-constraints" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="pyproject.toml" class="language-toml highlighter-rouge"><div class="code-header"> <span data-label-text="pyproject.toml"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+</pre><td class="rouge-code"><pre><span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="c"># Caret requirement (önerilen)</span>
+<span class="c"># ^1.2.3 := &gt;=1.2.3 &lt;2.0.0</span>
+<span class="n">requests</span> <span class="o">=</span><span class="w"> </span><span class="s">"^2.31.0"</span>
+
+<span class="c"># Tilde requirement</span>
+<span class="c"># ~1.2.3 := &gt;=1.2.3 &lt;1.3.0</span>
+<span class="n">flask</span> <span class="o">=</span><span class="w"> </span><span class="s">"~1.1.0"</span>
+
+<span class="c"># Wildcard requirement</span>
+<span class="c"># * := &gt;=0.0.0</span>
+<span class="n">pytest</span> <span class="o">=</span><span class="w"> </span><span class="s">"*"</span>
+
+<span class="c"># Inequality requirement</span>
+<span class="n">django</span> <span class="o">=</span><span class="w"> </span><span class="s">"&gt;=3.2,&lt;5.0"</span>
+
+<span class="c"># Exact requirement</span>
+<span class="n">pillow</span> <span class="o">=</span><span class="w"> </span><span class="s">"==9.5.0"</span>
+
+<span class="c"># Multiple requirements</span>
+<span class="n">celery</span> <span class="o">=</span><span class="w"> </span><span class="s">"&gt;=5.0,&lt;6.0,!=5.1.0"</span>
+
+<span class="c"># Git dependencies</span>
+<span class="n">mypackage</span> <span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"https://github.com/user/repo.git"</span><span class="p">,</span><span class="w"> </span><span class="n">branch</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"main"</span><span class="w"> </span><span class="p">}</span>
+
+<span class="c"># Local path dependencies</span>
+<span class="n">mylocalpackage</span> <span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"../mylocalpackage"</span><span class="p">,</span><span class="w"> </span><span class="n">develop</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+
+<span class="c"># Extras (optional dependencies)</span>
+<span class="n">sqlalchemy</span> <span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"^2.0"</span><span class="p">,</span><span class="w"> </span><span class="n">extras</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">"asyncio"</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+
+<span class="c"># Python version specific</span>
+<span class="n">importlib-metadata</span> <span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"^6.0"</span><span class="p">,</span><span class="w"> </span><span class="n">python</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"&lt;3.10"</span><span class="w"> </span><span class="p">}</span>
+
+<span class="c"># Platform specific</span>
+<span class="n">pywin32</span> <span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"^306"</span><span class="p">,</span><span class="w"> </span><span class="n">platform</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"win32"</span><span class="w"> </span><span class="p">}</span>
+</pre></table></code></div></div><h2 id="dependency-management"><span class="me-2">Dependency Management</span><a href="#dependency-management" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="paket-ekleme-ve-kaldırma"><span class="me-2">Paket Ekleme ve Kaldırma</span><a href="#paket-ekleme-ve-kaldırma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre><td class="rouge-code"><pre><span class="c"># Production dependency ekleme</span>
+poetry add requests
+poetry add fastapi uvicorn
+
+<span class="c"># Development dependency ekleme</span>
+poetry add <span class="nt">--group</span> dev pytest black flake8
+
+<span class="c"># Belirli versiyon ekleme</span>
+poetry add <span class="s2">"django==4.2.0"</span>
+poetry add <span class="s2">"pandas&gt;=1.5,&lt;2.0"</span>
+
+<span class="c"># Git repository'den ekleme</span>
+poetry add git+https://github.com/user/repo.git
+
+<span class="c"># Local package ekleme</span>
+poetry add ../my-local-package
+
+<span class="c"># Optional dependency group oluşturma</span>
+poetry add <span class="nt">--group</span> docs sphinx sphinx-rtd-theme
+
+<span class="c"># Paket kaldırma</span>
+poetry remove requests
+poetry remove <span class="nt">--group</span> dev pytest
+</pre></table></code></div></div><h3 id="bağımlılıkları-güncelleme"><span class="me-2">Bağımlılıkları Güncelleme</span><a href="#bağımlılıkları-güncelleme" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre><span class="c"># Tüm bağımlılıkları güncelleme</span>
+poetry update
+
+<span class="c"># Belirli paketi güncelleme</span>
+poetry update requests
+
+<span class="c"># Dry-run (sadece ne yapılacağını göster)</span>
+poetry update <span class="nt">--dry-run</span>
+
+<span class="c"># Lock dosyasını güncelleme (kurulum yapmadan)</span>
+poetry lock
+
+<span class="c"># Lock dosyasını kontrol etme</span>
+poetry check
+</pre></table></code></div></div><h3 id="poetrylock-dosyası"><span class="me-2">poetry.lock Dosyası</span><a href="#poetrylock-dosyası" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><code class="language-plaintext highlighter-rouge">poetry.lock</code> dosyası, tüm bağımlılıkların tam sürümlerini ve hash’lerini içerir:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre><span class="c"># Lock dosyasından kurulum yapma (production'da)</span>
+poetry <span class="nb">install</span> <span class="nt">--no-root</span>
+
+<span class="c"># Lock dosyasını yenileme</span>
+poetry lock <span class="nt">--no-update</span>
+
+<span class="c"># Lock dosyasını silip yeniden oluşturma</span>
+<span class="nb">rm </span>poetry.lock
+poetry lock
+</pre></table></code></div></div><h2 id="virtual-environment-yönetimi"><span class="me-2">Virtual Environment Yönetimi</span><a href="#virtual-environment-yönetimi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p><a href="/assets/img/posts/poetry-workflow-diagram.png" class="popup img-link shimmer"><img src="/assets/img/posts/poetry-workflow-diagram.png" alt="Poetry Workflow" loading="lazy"></a> <em>Poetry ile proje workflow’u</em></p><h3 id="virtual-environment-oluşturma-ve-kullanma"><span class="me-2">Virtual Environment Oluşturma ve Kullanma</span><a href="#virtual-environment-oluşturma-ve-kullanma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre><span class="c"># Virtual environment oluşturma ve dependencies kurma</span>
+poetry <span class="nb">install</span>
+
+<span class="c"># Virtual environment'ı aktif etme</span>
+poetry shell
+
+<span class="c"># Shell'den çıkış</span>
+<span class="nb">exit</span>
+
+<span class="c"># Tek bir komut çalıştırma (venv'e girmeden)</span>
+poetry run python script.py
+poetry run pytest
+poetry run uvicorn app:app <span class="nt">--reload</span>
+</pre></table></code></div></div><h3 id="environment-bilgileri"><span class="me-2">Environment Bilgileri</span><a href="#environment-bilgileri" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre><td class="rouge-code"><pre><span class="c"># Virtual environment yolunu görme</span>
+poetry <span class="nb">env </span>info
+poetry <span class="nb">env </span>info <span class="nt">--path</span>
+
+<span class="c"># Output:</span>
+<span class="c"># Virtualenv</span>
+<span class="c"># Python:         3.11.6</span>
+<span class="c"># Implementation: CPython</span>
+<span class="c"># Path:           /home/user/myproject/.venv</span>
+<span class="c"># Executable:     /home/user/myproject/.venv/bin/python</span>
+<span class="c"># Valid:          True</span>
+
+<span class="c"># Kurulu paketleri listeleme</span>
+poetry show
+poetry show <span class="nt">--tree</span>  <span class="c"># Dependency tree</span>
+poetry show <span class="nt">--latest</span>  <span class="c"># Güncel versiyonlarla karşılaştırma</span>
+poetry show <span class="nt">--outdated</span>  <span class="c"># Sadece eski paketleri göster</span>
+
+<span class="c"># Belirli bir paketin detaylarını görme</span>
+poetry show requests
+</pre></table></code></div></div><h3 id="multiple-environment-yönetimi"><span class="me-2">Multiple Environment Yönetimi</span><a href="#multiple-environment-yönetimi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre><span class="c"># Python versiyonu belirtme</span>
+poetry <span class="nb">env </span>use python3.9
+poetry <span class="nb">env </span>use python3.11
+poetry <span class="nb">env </span>use /usr/local/bin/python3.11
+
+<span class="c"># Mevcut environment'ları listeleme</span>
+poetry <span class="nb">env </span>list
+poetry <span class="nb">env </span>list <span class="nt">--full-path</span>
+
+<span class="c"># Environment silme</span>
+poetry <span class="nb">env </span>remove python3.9
+poetry <span class="nb">env </span>remove 3.11
+poetry <span class="nb">env </span>remove <span class="nt">--all</span>
+</pre></table></code></div></div><h2 id="dependency-groups"><span class="me-2">Dependency Groups</span><a href="#dependency-groups" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="group-tanımlama"><span class="me-2">Group Tanımlama</span><a href="#group-tanımlama" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-toml highlighter-rouge"><div class="code-header"> <span data-label-text="TOML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre><td class="rouge-code"><pre><span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">dev</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">pytest</span> <span class="o">=</span><span class="w"> </span><span class="s">"^7.4.3"</span>
+<span class="n">black</span> <span class="o">=</span><span class="w"> </span><span class="s">"^23.11.0"</span>
+<span class="n">mypy</span> <span class="o">=</span><span class="w"> </span><span class="s">"^1.7.1"</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">docs</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">sphinx</span> <span class="o">=</span><span class="w"> </span><span class="s">"^7.2.6"</span>
+<span class="n">sphinx-rtd-theme</span> <span class="o">=</span><span class="w"> </span><span class="s">"^2.0.0"</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">test</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">pytest-cov</span> <span class="o">=</span><span class="w"> </span><span class="s">"^4.1.0"</span>
+<span class="n">pytest-asyncio</span> <span class="o">=</span><span class="w"> </span><span class="s">"^0.21.1"</span>
+<span class="n">faker</span> <span class="o">=</span><span class="w"> </span><span class="s">"^20.1.0"</span>
+
+<span class="c"># Optional group (varsayılan olarak kurulmaz)</span>
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">ml</span><span class="k">]</span>
+<span class="n">optional</span> <span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">ml</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">tensorflow</span> <span class="o">=</span><span class="w"> </span><span class="s">"^2.15.0"</span>
+<span class="n">numpy</span> <span class="o">=</span><span class="w"> </span><span class="s">"^1.26.2"</span>
+</pre></table></code></div></div><h3 id="groupları-kurma"><span class="me-2">Group’ları Kurma</span><a href="#groupları-kurma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre><span class="c"># Sadece production dependencies</span>
+poetry <span class="nb">install</span> <span class="nt">--only</span> main
+
+<span class="c"># Specific groups</span>
+poetry <span class="nb">install</span> <span class="nt">--with</span> docs
+poetry <span class="nb">install</span> <span class="nt">--with</span> docs,test
+
+<span class="c"># Belirli group'ları hariç tutma</span>
+poetry <span class="nb">install</span> <span class="nt">--without</span> dev,docs
+
+<span class="c"># Tüm optional groups</span>
+poetry <span class="nb">install</span> <span class="nt">--all-extras</span>
+
+<span class="c"># Group ekleme/kaldırma</span>
+poetry add <span class="nt">--group</span> <span class="nb">test </span>pytest-mock
+poetry remove <span class="nt">--group</span> docs sphinx
+</pre></table></code></div></div><h2 id="scripts-ve-commands"><span class="me-2">Scripts ve Commands</span><a href="#scripts-ve-commands" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="pyprojecttomlde-script-tanımlama"><span class="me-2">pyproject.toml’de Script Tanımlama</span><a href="#pyprojecttomlde-script-tanımlama" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-toml highlighter-rouge"><div class="code-header"> <span data-label-text="TOML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre><span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">scripts</span><span class="k">]</span>
+<span class="c"># Basit command</span>
+<span class="n">myapp</span> <span class="o">=</span><span class="w"> </span><span class="s">"myproject.cli:main"</span>
+
+<span class="c"># Development scripts</span>
+<span class="n">dev</span> <span class="o">=</span><span class="w"> </span><span class="s">"myproject.server:run_dev"</span>
+<span class="n">test</span> <span class="o">=</span><span class="w"> </span><span class="s">"pytest"</span>
+<span class="n">lint</span> <span class="o">=</span><span class="w"> </span><span class="s">"flake8 myproject tests"</span>
+<span class="n">format</span> <span class="o">=</span><span class="w"> </span><span class="s">"black myproject tests"</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">dev-dependencies</span><span class="k">]</span>
+<span class="c"># Script dependencies</span>
+</pre></table></code></div></div><h3 id="custom-scripts-oluşturma"><span class="me-2">Custom Scripts Oluşturma</span><a href="#custom-scripts-oluşturma" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="Python"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre><span class="c1"># myproject/cli.py
+</span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Ana CLI fonksiyonu</span><span class="sh">"""</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello from myproject!</span><span class="sh">"</span><span class="p">)</span>
+    
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
+    <span class="nf">main</span><span class="p">()</span>
+</pre></table></code></div></div><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre><span class="c"># Script'i çalıştırma</span>
+poetry run myapp
+
+<span class="c"># Birden fazla script</span>
+poetry run dev
+poetry run <span class="nb">test
+</span>poetry run lint
+</pre></table></code></div></div><h3 id="makefile-ile-entegrasyon"><span class="me-2">Makefile ile Entegrasyon</span><a href="#makefile-ile-entegrasyon" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-makefile highlighter-rouge"><div class="code-header"> <span data-label-text="Makefile"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre><td class="rouge-code"><pre><span class="c"># Makefile
+</span><span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">install test lint format clean</span>
+
+<span class="nl">install</span><span class="o">:</span>
+	poetry <span class="nb">install</span>
+
+<span class="nl">test</span><span class="o">:</span>
+	poetry run pytest tests/ <span class="nt">-v</span> <span class="nt">--cov</span><span class="o">=</span>myproject
+
+<span class="nl">lint</span><span class="o">:</span>
+	poetry run flake8 myproject tests
+	poetry run mypy myproject
+
+<span class="nl">format</span><span class="o">:</span>
+	poetry run black myproject tests
+	poetry run isort myproject tests
+
+<span class="nl">clean</span><span class="o">:</span>
+	find <span class="nb">.</span> <span class="nt">-type</span> d <span class="nt">-name</span> <span class="s2">"__pycache__"</span> <span class="nt">-exec</span> <span class="nb">rm</span> <span class="nt">-rf</span> <span class="o">{}</span> +
+	find <span class="nb">.</span> <span class="nt">-type</span> f <span class="nt">-name</span> <span class="s2">"*.pyc"</span> <span class="nt">-delete</span>
+	<span class="nb">rm</span> <span class="nt">-rf</span> .pytest_cache .mypy_cache .coverage htmlcov dist
+
+<span class="nl">dev</span><span class="o">:</span>
+	poetry run uvicorn myproject.main:app <span class="nt">--reload</span> <span class="nt">--port</span> 8000
+</pre></table></code></div></div><h2 id="paket-oluşturma-ve-yayınlama"><span class="me-2">Paket Oluşturma ve Yayınlama</span><a href="#paket-oluşturma-ve-yayınlama" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="paket-build-etme"><span class="me-2">Paket Build Etme</span><a href="#paket-build-etme" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre><span class="c"># Wheel ve source distribution oluşturma</span>
+poetry build
+
+<span class="c"># Output:</span>
+<span class="c"># Building myproject (0.1.0)</span>
+<span class="c">#   - Building sdist</span>
+<span class="c">#   - Built myproject-0.1.0.tar.gz</span>
+<span class="c">#   - Building wheel</span>
+<span class="c">#   - Built myproject-0.1.0-py3-none-any.whl</span>
+
+<span class="c"># dist/ dizini</span>
+dist/
+├── myproject-0.1.0.tar.gz
+└── myproject-0.1.0-py3-none-any.whl
+</pre></table></code></div></div><h3 id="pypia-yayınlama"><span class="me-2">PyPI’a Yayınlama</span><a href="#pypia-yayınlama" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre><span class="c"># PyPI credentials konfigürasyonu</span>
+poetry config pypi-token.pypi your-token-here
+
+<span class="c"># Test PyPI'a yayınlama</span>
+poetry config repositories.testpypi https://test.pypi.org/legacy/
+poetry publish <span class="nt">-r</span> testpypi <span class="nt">--build</span>
+
+<span class="c"># Production PyPI'a yayınlama</span>
+poetry publish <span class="nt">--build</span>
+
+<span class="c"># Username/password ile (alternatif)</span>
+poetry publish <span class="nt">--username</span><span class="o">=</span>your-username <span class="nt">--password</span><span class="o">=</span>your-password
+</pre></table></code></div></div><h3 id="paket-metadata"><span class="me-2">Paket Metadata</span><a href="#paket-metadata" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="pyproject.toml" class="language-toml highlighter-rouge"><div class="code-header"> <span data-label-text="pyproject.toml"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre><td class="rouge-code"><pre><span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">]</span>
+<span class="n">name</span> <span class="o">=</span><span class="w"> </span><span class="s">"awesome-package"</span>
+<span class="n">version</span> <span class="o">=</span><span class="w"> </span><span class="s">"1.0.0"</span>
+<span class="n">description</span> <span class="o">=</span><span class="w"> </span><span class="s">"An awesome Python package"</span>
+<span class="n">authors</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"Your Name &lt;you@example.com&gt;"</span><span class="p">]</span>
+<span class="n">license</span> <span class="o">=</span><span class="w"> </span><span class="s">"MIT"</span>
+<span class="n">readme</span> <span class="o">=</span><span class="w"> </span><span class="s">"README.md"</span>
+<span class="n">homepage</span> <span class="o">=</span><span class="w"> </span><span class="s">"https://github.com/user/awesome-package"</span>
+<span class="n">repository</span> <span class="o">=</span><span class="w"> </span><span class="s">"https://github.com/user/awesome-package"</span>
+<span class="n">documentation</span> <span class="o">=</span><span class="w"> </span><span class="s">"https://awesome-package.readthedocs.io"</span>
+<span class="n">keywords</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"awesome"</span><span class="p">,</span> <span class="s">"package"</span><span class="p">,</span> <span class="s">"python"</span><span class="p">]</span>
+
+<span class="c"># PyPI classifiers</span>
+<span class="n">classifiers</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span>
+    <span class="s">"Development Status :: 5 - Production/Stable"</span><span class="p">,</span>
+    <span class="s">"Intended Audience :: Developers"</span><span class="p">,</span>
+    <span class="s">"License :: OSI Approved :: MIT License"</span><span class="p">,</span>
+    <span class="s">"Operating System :: OS Independent"</span><span class="p">,</span>
+    <span class="s">"Programming Language :: Python :: 3"</span><span class="p">,</span>
+    <span class="s">"Programming Language :: Python :: 3.9"</span><span class="p">,</span>
+    <span class="s">"Programming Language :: Python :: 3.10"</span><span class="p">,</span>
+    <span class="s">"Programming Language :: Python :: 3.11"</span><span class="p">,</span>
+    <span class="s">"Programming Language :: Python :: 3.12"</span><span class="p">,</span>
+    <span class="s">"Topic :: Software Development :: Libraries :: Python Modules"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c"># Include/exclude files</span>
+<span class="n">include</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"CHANGELOG.md"</span><span class="p">,</span> <span class="s">"LICENSE"</span><span class="p">]</span>
+<span class="n">exclude</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"tests/*"</span><span class="p">,</span> <span class="s">"docs/*"</span><span class="p">]</span>
+
+<span class="c"># Package data</span>
+<span class="n">packages</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span>
+    <span class="p">{</span><span class="w"> </span><span class="n">include</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"mypackage"</span><span class="w"> </span><span class="p">},</span>
+    <span class="p">{</span><span class="w"> </span><span class="n">include</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"mypackage/data"</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"sdist"</span><span class="w"> </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></table></code></div></div><h2 id="gerçek-dünya-örneği-fastapi-projesi"><span class="me-2">Gerçek Dünya Örneği: FastAPI Projesi</span><a href="#gerçek-dünya-örneği-fastapi-projesi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="proje-yapısı"><span class="me-2">Proje Yapısı</span><a href="#proje-yapısı" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre><td class="rouge-code"><pre>myapi/
+├── myapi/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── config.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   └── user.py
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   └── users.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   └── user_service.py
+│   └── utils/
+│       ├── __init__.py
+│       └── helpers.py
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py
+│   └── test_users.py
+├── alembic/
+│   ├── versions/
+│   └── env.py
+├── .env.example
+├── .gitignore
+├── Dockerfile
+├── docker-compose.yml
+├── Makefile
+├── pyproject.toml
+├── poetry.lock
+└── README.md
+</pre></table></code></div></div><h3 id="pyprojecttoml-konfigürasyonu"><span class="me-2">pyproject.toml Konfigürasyonu</span><a href="#pyprojecttoml-konfigürasyonu" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="pyproject.toml" class="language-toml highlighter-rouge"><div class="code-header"> <span data-label-text="pyproject.toml"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+</pre><td class="rouge-code"><pre><span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">]</span>
+<span class="n">name</span> <span class="o">=</span><span class="w"> </span><span class="s">"myapi"</span>
+<span class="n">version</span> <span class="o">=</span><span class="w"> </span><span class="s">"0.1.0"</span>
+<span class="n">description</span> <span class="o">=</span><span class="w"> </span><span class="s">"Modern FastAPI application"</span>
+<span class="n">authors</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"Developer &lt;dev@example.com&gt;"</span><span class="p">]</span>
+<span class="n">readme</span> <span class="o">=</span><span class="w"> </span><span class="s">"README.md"</span>
+<span class="n">license</span> <span class="o">=</span><span class="w"> </span><span class="s">"MIT"</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">python</span> <span class="o">=</span><span class="w"> </span><span class="s">"^3.11"</span>
+<span class="n">fastapi</span> <span class="o">=</span><span class="w"> </span><span class="s">"^0.104.1"</span>
+<span class="n">uvicorn</span> <span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">extras</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">"standard"</span><span class="p">],</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"^0.24.0"</span><span class="p">}</span>
+<span class="n">pydantic</span> <span class="o">=</span><span class="w"> </span><span class="s">"^2.5.0"</span>
+<span class="n">pydantic-settings</span> <span class="o">=</span><span class="w"> </span><span class="s">"^2.1.0"</span>
+<span class="n">sqlalchemy</span> <span class="o">=</span><span class="w"> </span><span class="s">"^2.0.23"</span>
+<span class="n">alembic</span> <span class="o">=</span><span class="w"> </span><span class="s">"^1.13.0"</span>
+<span class="n">psycopg2-binary</span> <span class="o">=</span><span class="w"> </span><span class="s">"^2.9.9"</span>
+<span class="n">python-jose</span> <span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">extras</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">"cryptography"</span><span class="p">],</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"^3.3.0"</span><span class="p">}</span>
+<span class="n">passlib</span> <span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">extras</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">"bcrypt"</span><span class="p">],</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"^1.7.4"</span><span class="p">}</span>
+<span class="n">python-multipart</span> <span class="o">=</span><span class="w"> </span><span class="s">"^0.0.6"</span>
+<span class="n">redis</span> <span class="o">=</span><span class="w"> </span><span class="s">"^5.0.1"</span>
+<span class="n">celery</span> <span class="o">=</span><span class="w"> </span><span class="s">"^5.3.4"</span>
+<span class="n">httpx</span> <span class="o">=</span><span class="w"> </span><span class="s">"^0.25.2"</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">dev</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">pytest</span> <span class="o">=</span><span class="w"> </span><span class="s">"^7.4.3"</span>
+<span class="n">pytest-asyncio</span> <span class="o">=</span><span class="w"> </span><span class="s">"^0.21.1"</span>
+<span class="n">pytest-cov</span> <span class="o">=</span><span class="w"> </span><span class="s">"^4.1.0"</span>
+<span class="n">black</span> <span class="o">=</span><span class="w"> </span><span class="s">"^23.11.0"</span>
+<span class="n">isort</span> <span class="o">=</span><span class="w"> </span><span class="s">"^5.12.0"</span>
+<span class="n">flake8</span> <span class="o">=</span><span class="w"> </span><span class="s">"^6.1.0"</span>
+<span class="n">mypy</span> <span class="o">=</span><span class="w"> </span><span class="s">"^1.7.1"</span>
+<span class="n">pre-commit</span> <span class="o">=</span><span class="w"> </span><span class="s">"^3.5.0"</span>
+<span class="n">faker</span> <span class="o">=</span><span class="w"> </span><span class="s">"^20.1.0"</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">docs</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">mkdocs</span> <span class="o">=</span><span class="w"> </span><span class="s">"^1.5.3"</span>
+<span class="n">mkdocs-material</span> <span class="o">=</span><span class="w"> </span><span class="s">"^9.5.1"</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">scripts</span><span class="k">]</span>
+<span class="n">dev</span> <span class="o">=</span><span class="w"> </span><span class="s">"myapi.main:run_dev"</span>
+<span class="n">migrate</span> <span class="o">=</span><span class="w"> </span><span class="s">"alembic:upgrade"</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">black</span><span class="k">]</span>
+<span class="n">line-length</span> <span class="o">=</span><span class="w"> </span><span class="mi">100</span>
+<span class="n">target-version</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">'py311'</span><span class="p">]</span>
+<span class="n">include</span> <span class="o">=</span><span class="w"> </span><span class="s">'\.pyi?$'</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">isort</span><span class="k">]</span>
+<span class="n">profile</span> <span class="o">=</span><span class="w"> </span><span class="s">"black"</span>
+<span class="n">line_length</span> <span class="o">=</span><span class="w"> </span><span class="mi">100</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">pytest</span><span class="k">.</span><span class="n">ini_options</span><span class="k">]</span>
+<span class="n">testpaths</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"tests"</span><span class="p">]</span>
+<span class="n">python_files</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"test_*.py"</span><span class="p">]</span>
+<span class="n">python_functions</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"test_*"</span><span class="p">]</span>
+<span class="n">asyncio_mode</span> <span class="o">=</span><span class="w"> </span><span class="s">"auto"</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">mypy</span><span class="k">]</span>
+<span class="n">python_version</span> <span class="o">=</span><span class="w"> </span><span class="s">"3.11"</span>
+<span class="n">warn_return_any</span> <span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">warn_unused_configs</span> <span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="n">disallow_untyped_defs</span> <span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="k">[</span><span class="n">build-system</span><span class="k">]</span>
+<span class="n">requires</span> <span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">"poetry-core"</span><span class="p">]</span>
+<span class="n">build-backend</span> <span class="o">=</span><span class="w"> </span><span class="s">"poetry.core.masonry.api"</span>
+</pre></table></code></div></div><h3 id="ana-uygulama-dosyası"><span class="me-2">Ana Uygulama Dosyası</span><a href="#ana-uygulama-dosyası" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="myapi/main.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="myapi/main.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+</pre><td class="rouge-code"><pre><span class="c1"># myapi/main.py
+</span><span class="kn">from</span> <span class="n">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span>
+<span class="kn">from</span> <span class="n">myapi.config</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="n">myapi.routes</span> <span class="kn">import</span> <span class="n">users</span>
+
+<span class="nd">@asynccontextmanager</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Startup and shutdown events</span><span class="sh">"""</span>
+    <span class="c1"># Startup
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Starting up...</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">yield</span>
+    <span class="c1"># Shutdown
+</span>    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Shutting down...</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="nc">FastAPI</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="n">settings</span><span class="p">.</span><span class="n">PROJECT_NAME</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="n">settings</span><span class="p">.</span><span class="n">VERSION</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="sh">"</span><span class="s">Modern FastAPI application with Poetry</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span>
+<span class="p">)</span>
+
+<span class="c1"># Include routers
+</span><span class="n">app</span><span class="p">.</span><span class="nf">include_router</span><span class="p">(</span><span class="n">users</span><span class="p">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sh">"</span><span class="s">/api/v1/users</span><span class="sh">"</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="sh">"</span><span class="s">users</span><span class="sh">"</span><span class="p">])</span>
+
+<span class="nd">@app.get</span><span class="p">(</span><span class="sh">"</span><span class="s">/</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">root</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="sh">"</span><span class="s">message</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Welcome to MyAPI</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">version</span><span class="sh">"</span><span class="p">:</span> <span class="n">settings</span><span class="p">.</span><span class="n">VERSION</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">docs</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">/docs</span><span class="sh">"</span>
+    <span class="p">}</span>
+
+<span class="nd">@app.get</span><span class="p">(</span><span class="sh">"</span><span class="s">/health</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">health_check</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="sh">"</span><span class="s">status</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">healthy</span><span class="sh">"</span><span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">run_dev</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Development server runner</span><span class="sh">"""</span>
+    <span class="kn">import</span> <span class="n">uvicorn</span>
+    <span class="n">uvicorn</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span>
+        <span class="sh">"</span><span class="s">myapi.main:app</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">host</span><span class="o">=</span><span class="sh">"</span><span class="s">0.0.0.0</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span>
+        <span class="nb">reload</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">log_level</span><span class="o">=</span><span class="sh">"</span><span class="s">info</span><span class="sh">"</span>
+    <span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
+    <span class="nf">run_dev</span><span class="p">()</span>
+</pre></table></code></div></div><h3 id="konfigürasyon-yönetimi"><span class="me-2">Konfigürasyon Yönetimi</span><a href="#konfigürasyon-yönetimi" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="myapi/config.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="myapi/config.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre><td class="rouge-code"><pre><span class="c1"># myapi/config.py
+</span><span class="kn">from</span> <span class="n">pydantic_settings</span> <span class="kn">import</span> <span class="n">BaseSettings</span>
+<span class="kn">from</span> <span class="n">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+
+<span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Application settings</span><span class="sh">"""</span>
+    <span class="n">PROJECT_NAME</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">MyAPI</span><span class="sh">"</span>
+    <span class="n">VERSION</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">0.1.0</span><span class="sh">"</span>
+    
+    <span class="c1"># Database
+</span>    <span class="n">DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">postgresql://user:pass@localhost/myapi</span><span class="sh">"</span>
+    
+    <span class="c1"># Redis
+</span>    <span class="n">REDIS_URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">redis://localhost:6379/0</span><span class="sh">"</span>
+    
+    <span class="c1"># Security
+</span>    <span class="n">SECRET_KEY</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">ALGORITHM</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">HS256</span><span class="sh">"</span>
+    <span class="n">ACCESS_TOKEN_EXPIRE_MINUTES</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span>
+    
+    <span class="c1"># CORS
+</span>    <span class="n">BACKEND_CORS_ORIGINS</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sh">"</span><span class="s">http://localhost:3000</span><span class="sh">"</span><span class="p">]</span>
+    
+    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="n">env_file</span> <span class="o">=</span> <span class="sh">"</span><span class="s">.env</span><span class="sh">"</span>
+        <span class="n">case_sensitive</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="nd">@lru_cache</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">get_settings</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Settings</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nc">Settings</span><span class="p">()</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="nf">get_settings</span><span class="p">()</span>
+</pre></table></code></div></div><h3 id="testing-setup"><span class="me-2">Testing Setup</span><a href="#testing-setup" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="tests/test_users.py" class="language-python highlighter-rouge"><div class="code-header"> <span data-label-text="tests/test_users.py"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+</pre><td class="rouge-code"><pre><span class="c1"># tests/conftest.py
+</span><span class="kn">import</span> <span class="n">pytest</span>
+<span class="kn">from</span> <span class="n">fastapi.testclient</span> <span class="kn">import</span> <span class="n">TestClient</span>
+<span class="kn">from</span> <span class="n">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">from</span> <span class="n">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">sessionmaker</span>
+<span class="kn">from</span> <span class="n">myapi.main</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="kn">from</span> <span class="n">myapi.models.base</span> <span class="kn">import</span> <span class="n">Base</span>
+
+<span class="n">SQLALCHEMY_DATABASE_URL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">sqlite:///./test.db</span><span class="sh">"</span>
+
+<span class="nd">@pytest.fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="sh">"</span><span class="s">session</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">db_engine</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">Create test database engine</span><span class="sh">"""</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="nf">create_engine</span><span class="p">(</span>
+        <span class="n">SQLALCHEMY_DATABASE_URL</span><span class="p">,</span>
+        <span class="n">connect_args</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">check_same_thread</span><span class="sh">"</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">Base</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="nf">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">engine</span>
+    <span class="n">Base</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="nf">drop_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="nd">@pytest.fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="sh">"</span><span class="s">function</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">db_session</span><span class="p">(</span><span class="n">db_engine</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Create test database session</span><span class="sh">"""</span>
+    <span class="n">TestingSessionLocal</span> <span class="o">=</span> <span class="nf">sessionmaker</span><span class="p">(</span>
+        <span class="n">autocommit</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">autoflush</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">bind</span><span class="o">=</span><span class="n">db_engine</span>
+    <span class="p">)</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="nc">TestingSessionLocal</span><span class="p">()</span>
+    <span class="k">yield</span> <span class="n">session</span>
+    <span class="n">session</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+
+<span class="nd">@pytest.fixture</span>
+<span class="k">def</span> <span class="nf">client</span><span class="p">(</span><span class="n">db_session</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Create test client</span><span class="sh">"""</span>
+    <span class="k">def</span> <span class="nf">override_get_db</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">db_session</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">pass</span>
+    
+    <span class="n">app</span><span class="p">.</span><span class="n">dependency_overrides</span><span class="p">[</span><span class="n">get_db</span><span class="p">]</span> <span class="o">=</span> <span class="n">override_get_db</span>
+    <span class="k">with</span> <span class="nc">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span> <span class="k">as</span> <span class="n">test_client</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">test_client</span>
+
+<span class="c1"># tests/test_users.py
+</span><span class="kn">import</span> <span class="n">pytest</span>
+<span class="kn">from</span> <span class="n">fastapi</span> <span class="kn">import</span> <span class="n">status</span>
+
+<span class="k">def</span> <span class="nf">test_read_users</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Test users list endpoint</span><span class="sh">"""</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">/api/v1/users/</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">status</span><span class="p">.</span><span class="n">HTTP_200_OK</span>
+    <span class="k">assert</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">json</span><span class="p">(),</span> <span class="nb">list</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_create_user</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Test user creation</span><span class="sh">"""</span>
+    <span class="n">user_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">"</span><span class="s">email</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">test@example.com</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">username</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">testuser</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">password</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">TestPass123!</span><span class="sh">"</span>
+    <span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="sh">"</span><span class="s">/api/v1/users/</span><span class="sh">"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">user_data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">status</span><span class="p">.</span><span class="n">HTTP_201_CREATED</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="nf">json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="sh">"</span><span class="s">email</span><span class="sh">"</span><span class="p">]</span> <span class="o">==</span> <span class="n">user_data</span><span class="p">[</span><span class="sh">"</span><span class="s">email</span><span class="sh">"</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="sh">"</span><span class="s">id</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">data</span>
+</pre></table></code></div></div><h2 id="docker-ile-entegrasyon"><span class="me-2">Docker ile Entegrasyon</span><a href="#docker-ile-entegrasyon" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="dockerfile"><span class="me-2">Dockerfile</span><a href="#dockerfile" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="Dockerfile" class="language-dockerfile highlighter-rouge"><div class="code-header"> <span data-label-text="Dockerfile"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre><td class="rouge-code"><pre><span class="c"># Dockerfile</span>
+<span class="k">FROM</span><span class="s"> python:3.11-slim</span>
+
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="c"># Poetry kurulumu</span>
+<span class="k">RUN </span>pip <span class="nb">install </span><span class="nv">poetry</span><span class="o">==</span>1.7.1
+
+<span class="c"># Konfigürasyon</span>
+<span class="k">ENV</span><span class="s"> POETRY_NO_INTERACTION=1 \</span>
+    POETRY_VIRTUALENVS_IN_PROJECT=1 \
+    POETRY_VIRTUALENVS_CREATE=1 \
+    POETRY_CACHE_DIR=/tmp/poetry_cache
+
+<span class="c"># Dependencies kurulumu</span>
+<span class="k">COPY</span><span class="s"> pyproject.toml poetry.lock ./</span>
+<span class="k">RUN </span>poetry <span class="nb">install</span> <span class="nt">--without</span> dev <span class="nt">--no-root</span> <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> <span class="nv">$POETRY_CACHE_DIR</span>
+
+<span class="c"># Uygulama kodunu kopyalama</span>
+<span class="k">COPY</span><span class="s"> myapi ./myapi</span>
+
+<span class="c"># Root paketi kurma</span>
+<span class="k">RUN </span>poetry <span class="nb">install</span> <span class="nt">--without</span> dev
+
+<span class="k">EXPOSE</span><span class="s"> 8000</span>
+
+<span class="c"># Uygulamayı çalıştırma</span>
+<span class="k">CMD</span><span class="s"> ["poetry", "run", "uvicorn", "myapi.main:app", "--host", "0.0.0.0", "--port", "8000"]</span>
+</pre></table></code></div></div><h3 id="docker-composeyml"><span class="me-2">docker-compose.yml</span><a href="#docker-composeyml" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file="docker-compose.yml" class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="docker-compose.yml"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre><td class="rouge-code"><pre><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.8'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">api</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">.</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8000"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">DATABASE_URL=postgresql://user:pass@db:5432/myapi</span>
+      <span class="pi">-</span> <span class="s">REDIS_URL=redis://redis:6379/0</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db</span>
+      <span class="pi">-</span> <span class="s">redis</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./myapi:/app/myapi</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="s">poetry run uvicorn myapi.main:app --host 0.0.0.0 --port 8000 --reload</span>
+
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:16</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">POSTGRES_USER</span><span class="pi">:</span> <span class="s">user</span>
+      <span class="na">POSTGRES_PASSWORD</span><span class="pi">:</span> <span class="s">pass</span>
+      <span class="na">POSTGRES_DB</span><span class="pi">:</span> <span class="s">myapi</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">postgres_data:/var/lib/postgresql/data</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5432:5432"</span>
+
+  <span class="na">redis</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:7-alpine</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">6379:6379"</span>
+
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">postgres_data</span><span class="pi">:</span>
+</pre></table></code></div></div><h2 id="poetry-vs-diğer-araçlar"><span class="me-2">Poetry vs Diğer Araçlar</span><a href="#poetry-vs-diğer-araçlar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p><a href="/assets/img/posts/python-packaging-tools-comparison.png" class="popup img-link shimmer"><img src="/assets/img/posts/python-packaging-tools-comparison.png" alt="Python Packaging Tools Comparison" loading="lazy"></a> <em>Python paketleme araçları karşılaştırması</em></p><h3 id="poetry-vs-pip--venv"><span class="me-2">Poetry vs pip + venv</span><a href="#poetry-vs-pip--venv" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="c"># pip + venv</span>
+python <span class="nt">-m</span> venv venv
+<span class="nb">source </span>venv/bin/activate
+pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+pip freeze <span class="o">&gt;</span> requirements.txt
+
+<span class="c"># Poetry</span>
+poetry <span class="nb">install</span>
+</pre></table></code></div></div><p><strong>Poetry avantajları:</strong></p><ul><li>Dependency resolution (pip’te yok)<li>Lock file ile deterministik builds<li>Virtual environment otomatik yönetimi<li>Tek komutla paket yayınlama</ul><h3 id="poetry-vs-pipenv"><span class="me-2">Poetry vs Pipenv</span><a href="#poetry-vs-pipenv" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="table-wrapper"><table><thead><tr><th>Özellik<th>Poetry<th>Pipenv<tbody><tr><td>Dependency Resolution<td>✅ Hızlı ve güvenilir<td>✅ Yavaş<tr><td>Lock File<td>✅ poetry.lock<td>✅ Pipfile.lock<tr><td>Build/Publish<td>✅ Built-in<td>❌ Yok<tr><td>Performance<td>✅ Hızlı<td>⚠️ Yavaş<tr><td>pyproject.toml<td>✅ Native<td>❌ Pipfile<tr><td>Aktif Geliştirme<td>✅ Çok aktif<td>⚠️ Az aktif</table></div><h3 id="poetry-vs-pip-tools"><span class="me-2">Poetry vs pip-tools</span><a href="#poetry-vs-pip-tools" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre><span class="c"># pip-tools</span>
+pip-compile requirements.in
+pip-sync requirements.txt
+
+<span class="c"># Poetry</span>
+poetry lock
+poetry <span class="nb">install</span>
+</pre></table></code></div></div><p><strong>Poetry avantajları:</strong></p><ul><li>Virtual environment yönetimi<li>Daha iyi dependency resolution<li>Paket yayınlama desteği<li>Script management</ul><h2 id="best-practices"><span class="me-2">Best Practices</span><a href="#best-practices" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="1-poetrylock-dosyasını-commit-edin"><span class="me-2">1. poetry.lock Dosyasını Commit Edin</span><a href="#1-poetrylock-dosyasını-commit-edin" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="c"># .gitignore</span>
+__pycache__/
+<span class="k">*</span>.py[cod]
+.venv/
+dist/
+<span class="k">*</span>.egg-info/
+
+<span class="c"># poetry.lock'u COMMIT EDİN (ignore ETMEYİN!)</span>
+</pre></table></code></div></div><h3 id="2-dependency-groups-kullanın"><span class="me-2">2. Dependency Groups Kullanın</span><a href="#2-dependency-groups-kullanın" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-toml highlighter-rouge"><div class="code-header"> <span data-label-text="TOML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre><span class="c"># Production dependencies</span>
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">python</span> <span class="o">=</span><span class="w"> </span><span class="s">"^3.11"</span>
+<span class="n">fastapi</span> <span class="o">=</span><span class="w"> </span><span class="s">"^0.104.1"</span>
+
+<span class="c"># Development dependencies</span>
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">dev</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">pytest</span> <span class="o">=</span><span class="w"> </span><span class="s">"^7.4.3"</span>
+<span class="n">black</span> <span class="o">=</span><span class="w"> </span><span class="s">"^23.11.0"</span>
+
+<span class="c"># Optional dependencies</span>
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">ml</span><span class="k">]</span>
+<span class="n">optional</span> <span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="k">[</span><span class="n">tool</span><span class="k">.</span><span class="n">poetry</span><span class="k">.</span><span class="n">group</span><span class="k">.</span><span class="n">ml</span><span class="k">.</span><span class="n">dependencies</span><span class="k">]</span>
+<span class="n">tensorflow</span> <span class="o">=</span><span class="w"> </span><span class="s">"^2.15.0"</span>
+</pre></table></code></div></div><h3 id="3-version-constraints-dikkatli-kullanın"><span class="me-2">3. Version Constraints Dikkatli Kullanın</span><a href="#3-version-constraints-dikkatli-kullanın" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-toml highlighter-rouge"><div class="code-header"> <span data-label-text="TOML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre><span class="c"># ✅ İyi - Caret (^) kullanımı</span>
+<span class="n">fastapi</span> <span class="o">=</span><span class="w"> </span><span class="s">"^0.104.1"</span>  <span class="c"># &gt;=0.104.1 &lt;0.105.0</span>
+
+<span class="c"># ⚠️ Dikkatli - Wildcard</span>
+<span class="n">requests</span> <span class="o">=</span><span class="w"> </span><span class="s">"*"</span>  <span class="c"># Her zaman latest (riskli)</span>
+
+<span class="c"># ✅ İyi - Inequality constraints</span>
+<span class="n">django</span> <span class="o">=</span><span class="w"> </span><span class="s">"&gt;=4.2,&lt;5.0"</span>
+
+<span class="c"># ❌ Kötü - Exact version (gereksiz kısıtlama)</span>
+<span class="n">numpy</span> <span class="o">=</span><span class="w"> </span><span class="s">"==1.26.2"</span>
+</pre></table></code></div></div><h3 id="4-pre-commit-hooks-kullanın"><span class="me-2">4. Pre-commit Hooks Kullanın</span><a href="#4-pre-commit-hooks-kullanın" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file=".pre-commit-config.yaml" class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text=".pre-commit-config.yaml"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre><td class="rouge-code"><pre><span class="c1"># .pre-commit-config.yaml</span>
+<span class="na">repos</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">repo</span><span class="pi">:</span> <span class="s">https://github.com/pre-commit/pre-commit-hooks</span>
+    <span class="na">rev</span><span class="pi">:</span> <span class="s">v4.5.0</span>
+    <span class="na">hooks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">trailing-whitespace</span>
+      <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">end-of-file-fixer</span>
+      <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">check-yaml</span>
+      <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">check-added-large-files</span>
+
+  <span class="pi">-</span> <span class="na">repo</span><span class="pi">:</span> <span class="s">https://github.com/psf/black</span>
+    <span class="na">rev</span><span class="pi">:</span> <span class="s">23.11.0</span>
+    <span class="na">hooks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">black</span>
+
+  <span class="pi">-</span> <span class="na">repo</span><span class="pi">:</span> <span class="s">https://github.com/pycqa/isort</span>
+    <span class="na">rev</span><span class="pi">:</span> <span class="s">5.12.0</span>
+    <span class="na">hooks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">isort</span>
+
+  <span class="pi">-</span> <span class="na">repo</span><span class="pi">:</span> <span class="s">https://github.com/pycqa/flake8</span>
+    <span class="na">rev</span><span class="pi">:</span> <span class="s">6.1.0</span>
+    <span class="na">hooks</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">id</span><span class="pi">:</span> <span class="s">flake8</span>
+</pre></table></code></div></div><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre><span class="c"># Pre-commit kurulumu</span>
+poetry add <span class="nt">--group</span> dev pre-commit
+poetry run pre-commit <span class="nb">install</span>
+
+<span class="c"># Manuel çalıştırma</span>
+poetry run pre-commit run <span class="nt">--all-files</span>
+</pre></table></code></div></div><h3 id="5-cicd-pipelineında-poetry"><span class="me-2">5. CI/CD Pipeline’ında Poetry</span><a href="#5-cicd-pipelineında-poetry" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div file=".github/workflows/test.yml" class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text=".github/workflows/test.yml"><i class="far fa-file-code fa-fw"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+</pre><td class="rouge-code"><pre><span class="c1"># .github/workflows/test.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">Tests</span>
+
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">,</span> <span class="nv">pull_request</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">strategy</span><span class="pi">:</span>
+      <span class="na">matrix</span><span class="pi">:</span>
+        <span class="na">python-version</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">3.9"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">3.10"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">3.11"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">3.12"</span><span class="pi">]</span>
+
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Python</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-python@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">python-version</span><span class="pi">:</span> <span class="s">$</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install Poetry</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">snok/install-poetry@v1</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">version</span><span class="pi">:</span> <span class="s">1.7.1</span>
+          <span class="na">virtualenvs-create</span><span class="pi">:</span> <span class="kc">true</span>
+          <span class="na">virtualenvs-in-project</span><span class="pi">:</span> <span class="kc">true</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Load cached venv</span>
+        <span class="na">id</span><span class="pi">:</span> <span class="s">cached-poetry-dependencies</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/cache@v3</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">.venv</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">venv-$-$-$</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install dependencies</span>
+        <span class="na">if</span><span class="pi">:</span> <span class="s">steps.cached-poetry-dependencies.outputs.cache-hit != 'true'</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">poetry install --no-interaction --no-root</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install project</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">poetry install --no-interaction</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">poetry run pytest tests/ -v --cov=myproject --cov-report=xml</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload coverage</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">codecov/codecov-action@v3</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">file</span><span class="pi">:</span> <span class="s">./coverage.xml</span>
+</pre></table></code></div></div><h2 id="sorun-giderme"><span class="me-2">Sorun Giderme</span><a href="#sorun-giderme" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="lock-file-çakışmaları"><span class="me-2">Lock File Çakışmaları</span><a href="#lock-file-çakışmaları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre><span class="c"># Lock file çakışması varsa</span>
+git checkout <span class="nt">--theirs</span> poetry.lock
+poetry lock <span class="nt">--no-update</span>
+
+<span class="c"># Veya</span>
+<span class="nb">rm </span>poetry.lock
+poetry <span class="nb">install</span>
+</pre></table></code></div></div><h3 id="dependency-resolution-hataları"><span class="me-2">Dependency Resolution Hataları</span><a href="#dependency-resolution-hataları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre><span class="c"># Verbose mode ile çalıştırma</span>
+poetry add package-name <span class="nt">-vvv</span>
+
+<span class="c"># Cache temizleme</span>
+poetry cache clear pypi <span class="nt">--all</span>
+
+<span class="c"># Lock dosyasını yeniden oluşturma</span>
+<span class="nb">rm </span>poetry.lock
+poetry lock
+</pre></table></code></div></div><h3 id="virtual-environment-sorunları"><span class="me-2">Virtual Environment Sorunları</span><a href="#virtual-environment-sorunları" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Kopyalandı."><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre><span class="c"># Environment'ı yeniden oluşturma</span>
+poetry <span class="nb">env </span>remove python3.11
+poetry <span class="nb">install</span>
+
+<span class="c"># Environment bilgilerini kontrol etme</span>
+poetry <span class="nb">env </span>info
+poetry <span class="nb">env </span>list
+
+<span class="c"># Manuel environment silme</span>
+<span class="nb">rm</span> <span class="nt">-rf</span> .venv
+poetry <span class="nb">install</span>
+</pre></table></code></div></div><h2 id="sonuç"><span class="me-2">Sonuç</span><a href="#sonuç" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Poetry, modern Python projelerinde dependency management ve packaging için vazgeçilmez bir araçtır. Bu yazıda öğrendiklerimiz:</p><ul><li><strong>Kurulum ve Konfigürasyon</strong>: Poetry’nin sistem kurulumu ve temel ayarları<li><strong>pyproject.toml</strong>: Tek dosyada tüm proje konfigürasyonu<li><strong>Dependency Management</strong>: Paket ekleme, güncelleme ve version constraints<li><strong>Virtual Environments</strong>: Otomatik venv yönetimi ve multiple environments<li><strong>Packaging</strong>: Paket build etme ve PyPI’a yayınlama<li><strong>Real-World</strong>: FastAPI projesi ile gerçek dünya örneği<li><strong>Best Practices</strong>: Pre-commit hooks, CI/CD entegrasyonu</ul><h3 id="önemli-noktalar"><span class="me-2">Önemli Noktalar</span><a href="#önemli-noktalar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ol><li><strong>poetry.lock</strong> dosyasını mutlaka commit edin<li><strong>Dependency groups</strong> kullanarak farklı ortamlar için bağımlılıkları ayırın<li><strong>Caret constraints</strong> (^) kullanarak esnek version yönetimi yapın<li><strong>Pre-commit hooks</strong> ile kod kalitesini otomatikleştirin<li><strong>CI/CD pipeline</strong>‘da Poetry cache’ini kullanın</ol><h3 id="kaynaklar"><span class="me-2">Kaynaklar</span><a href="#kaynaklar" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><ul><li><a href="https://python-poetry.org/docs/">Poetry Documentation</a><li><a href="https://peps.python.org/pep-0518/">pyproject.toml Specification</a><li><a href="https://packaging.python.org/">Python Packaging Guide</a></ul><p>Bir sonraki yazımızda <strong>MongoDB ile NoSQL Veri Yönetimi</strong> konusunu işleyeceğiz!</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw me-1"></i> <a href="/categories/development-tools/">Development Tools</a>, <a href="/categories/python/">Python</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw me-1"></i> <a href="/tags/python/" class="post-tag no-text-decoration" >python</a> <a href="/tags/poetry/" class="post-tag no-text-decoration" >poetry</a> <a href="/tags/dependency-management/" class="post-tag no-text-decoration" >dependency-management</a> <a href="/tags/packaging/" class="post-tag no-text-decoration" >packaging</a> <a href="/tags/virtual-environment/" class="post-tag no-text-decoration" >virtual-environment</a> <a href="/tags/pyproject-toml/" class="post-tag no-text-decoration" >pyproject-toml</a></div><div class=" post-tail-bottom d-flex justify-content-between align-items-center mt-5 pb-2 " ><div class="license-wrapper"> Bu gönderi <a href="https://creativecommons.org/licenses/by/4.0/deed.tr"> CC BY 4.0 </a> lisansı altındadır.</div><div class="share-wrapper d-flex align-items-center"> <span class="share-label text-muted">Paylaş</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Poetry%20ile%20Python%20Proje%20Y%C3%B6netimi%20-%20Furkan%20K%C3%B6yk%C4%B1ran&url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fpoetry-python-proje-yonetimi%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter"> <i class="fa-fw fa-brands fa-square-x-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Poetry%20ile%20Python%20Proje%20Y%C3%B6netimi%20-%20Furkan%20K%C3%B6yk%C4%B1ran&u=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fpoetry-python-proje-yonetimi%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https%3A%2F%2Fblog.furkankoykiran.com.tr%2Fposts%2Fpoetry-python-proje-yonetimi%2F&text=Poetry%20ile%20Python%20Proje%20Y%C3%B6netimi%20-%20Furkan%20K%C3%B6yk%C4%B1ran" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <button id="copy-link" aria-label="Copy link" class="btn small" data-bs-toggle="tooltip" data-bs-placement="top" title="Linki kopyala" data-title-succeed="Link kopyalandı." > <i class="fa-fw fas fa-link pe-none fs-6"></i> </button> </span></div></div></div></article></main><aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted"><div class="access"><section id="access-lastmod"><h2 class="panel-heading">Son Güncellenenler</h2><ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2"><li class="text-truncate lh-lg"> <a href="/posts/apache-kafka-event-streaming/">Apache Kafka ile Event Streaming: Gerçek Zamanlı Veri Pipeline'ları</a><li class="text-truncate lh-lg"> <a href="/posts/git-is-akisi-branch-stratejileri/">Git İş Akışı ve Branch Stratejileri: GitFlow, Trunk-Based, GitHub Flow</a><li class="text-truncate lh-lg"> <a href="/posts/python-context-managers-kaynak-yonetimi/">Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices</a><li class="text-truncate lh-lg"> <a href="/posts/modern-web-arayuzu-css-javascript/">Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript</a><li class="text-truncate lh-lg"> <a href="/posts/python-ile-eposta-otomasyonu/">Python ile E-posta Otomasyonu</a></ul></section><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div class="toc-border-cover z-3"></div><section id="toc-wrapper" class="invisible position-sticky ps-0 pe-4 pb-4"><h2 class="panel-heading ps-3 pb-2 mb-0">İçindekiler</h2><nav id="toc"></nav></section></aside></div><div class="row"><div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4"><aside id="related-posts" aria-labelledby="related-label"><h3 class="mb-4" id="related-label">Benzer Gönderiler</h3><nav class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4"><article class="col"> <a href="/posts/systemd-python-servis-yonetimi/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1736661600" data-df="DD/MM/YYYY" > 12/01/2025 </time><h4 class="pt-0 my-2">Systemd ile Python Servis Yönetimi</h4><div class="text-muted"><p>Python uygulamalarını systemd ile production servis haline getirme rehberi. Unit file yapılandırması, journald logging, watchdog, socket activation ve deployment.</p></div></div></a></article><article class="col"> <a href="/posts/mongodb-nosql-veri-yonetimi/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1736056800" data-df="DD/MM/YYYY" > 05/01/2025 </time><h4 class="pt-0 my-2">MongoDB ile NoSQL Veri Yönetimi</h4><div class="text-muted"><p>Python ile MongoDB kullanarak NoSQL veri yönetimi rehberi. PyMongo ve Motor ile CRUD işlemleri, aggregation pipeline, indexing stratejileri ve best practices.</p></div></div></a></article><article class="col"> <a href="/posts/django-kripto-portfolio-takip-uygulamasi/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1731652200" data-df="DD/MM/YYYY" > 15/11/2024 </time><h4 class="pt-0 my-2">Django ile Kripto Portfolio Takip Uygulaması Geliştirme</h4><div class="text-muted"><p>Django ile tam özellikli kripto portfolio takip uygulaması. REST API, Celery ile asenkron işlemler, Redis cache ve gerçek zamanlı fiyat takibi.</p></div></div></a></article></nav></aside><nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation"> <a href="/posts/mysql-sqlalchemy-veritabani-yonetimi/" class="btn btn-outline-primary" aria-label="Geri" ><p>MySQL ve SQLAlchemy ile Veritabanı Yönetimi</p></a> <a href="/posts/mongodb-nosql-veri-yonetimi/" class="btn btn-outline-primary" aria-label="İleri" ><p>MongoDB ile NoSQL Veri Yönetimi</p></a></nav><footer aria-label="Site Info" class=" d-flex flex-column justify-content-center text-muted flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3 " ><p>© <time>2025</time> <a href="https://twitter.com/furkankoykiran">Furkan Köykıran</a>. <span data-bs-toggle="tooltip" data-bs-placement="top" title="Aksi belirtilmediği sürece, bu sitedeki gönderiler Creative Commons Atıf 4.0 Uluslararası (CC BY 4.0) Lisansı altındadır. Kısaca sayfa linkini vererek değiştirebilir / paylaşabilirsiniz." >Bazı hakları saklıdır.</span></p><p><a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> ve <a data-bs-toggle="tooltip" data-bs-placement="top" title="v7.4.1" href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener" >Chirpy</a> teması</p></footer></div></div><div id="search-result-wrapper" class="d-flex justify-content-center d-none"><div class="col-11 content"><div id="search-hints"><section><h2 class="panel-heading">Yükselen Etiketler</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/python/">python</a> <a class="post-tag btn btn-outline-primary" href="/tags/ethereum/">ethereum</a> <a class="post-tag btn btn-outline-primary" href="/tags/blockchain/">blockchain</a> <a class="post-tag btn btn-outline-primary" href="/tags/smart-contracts/">smart-contracts</a> <a class="post-tag btn btn-outline-primary" href="/tags/performance/">performance</a> <a class="post-tag btn btn-outline-primary" href="/tags/web3/">web3</a> <a class="post-tag btn btn-outline-primary" href="/tags/api/">api</a> <a class="post-tag btn btn-outline-primary" href="/tags/automation/">automation</a> <a class="post-tag btn btn-outline-primary" href="/tags/devops/">devops</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><aside aria-label="Scroll to Top"> <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow"> <i class="fas fa-angle-up"></i> </button></aside></div><div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div><script> document.addEventListener('DOMContentLoaded', () => { SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<article class="px-1 px-sm-2 px-lg-4 px-xl-0"><header><h2><a href="{url}">{title}</a></h2><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div></header><p>{content}</p></article>', noResultsText: '<p class="mt-5">Hop! Öyle bir şey bulamadım.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); }); </script>
