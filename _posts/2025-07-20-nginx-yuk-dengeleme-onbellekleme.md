@@ -1,5 +1,6 @@
 ---
 title: "Nginx ile Yük Dengeleme ve Önbellekleme: Performans Optimizasyonu"
+description: "Nginx ile production-grade reverse proxy, load balancing ve caching. Round-robin, least-conn, weighted algoritmaları, SSL/TLS, rate limiting ve güvenlik best practices."
 date: 2025-07-20 11:00:00 +0300
 categories: [Infrastructure, Performance]
 tags: [nginx, load-balancing, caching, reverse-proxy, performance]
@@ -27,6 +28,7 @@ Nginx (engine-x olarak okunur), Igor Sysoev tarafından 2004 yılında geliştir
 # Düşük bellek kullanımı
 # 50.000+ eşzamanlı bağlantı
 ```
+{: .nolineno }
 
 ### Nginx Kurulumu
 
@@ -49,14 +51,13 @@ sudo systemctl enable nginx
 sudo systemctl status nginx
 sudo nginx -t  # Config test
 ```
+{: .nolineno }
 
 ## Temel Nginx Yapılandırması
 
 ### Ana Yapılandırma Dosyası
 
 ```nginx
-# /etc/nginx/nginx.conf
-
 user www-data;
 worker_processes auto;  # CPU core sayısı kadar worker
 pid /run/nginx.pid;
@@ -102,11 +103,11 @@ http {
     include /etc/nginx/sites-enabled/*;
 }
 ```
+{: file="/etc/nginx/nginx.conf" }
 
 ### Basit Web Sunucusu
 
 ```nginx
-# /etc/nginx/sites-available/mysite
 server {
     listen 80;
     listen [::]:80;
@@ -127,6 +128,7 @@ server {
     }
 }
 ```
+{: file="/etc/nginx/sites-available/mysite" }
 
 ```bash
 # Site'ı aktifleştirme
@@ -134,13 +136,16 @@ sudo ln -s /etc/nginx/sites-available/mysite /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 ```
+{: .nolineno }
 
 ## Reverse Proxy Yapılandırması
 
 Nginx'i backend uygulama sunucularının önüne koyarak güvenlik ve performans artırılır.
 
+> Reverse proxy kullanımı backend sunucuları doğrudan internete maruz kalmaktan korur ve tek bir noktadan SSL, rate limiting ve logging yapılabilir.
+{: .prompt-tip }
+
 ```nginx
-# /etc/nginx/sites-available/app-proxy
 server {
     listen 80;
     server_name api.example.com;
@@ -183,17 +188,16 @@ server {
     }
 }
 ```
+{: file="/etc/nginx/sites-available/app-proxy" }
 
 ## Yük Dengeleme (Load Balancing)
 
-![Nginx Load Balancing](/assets/img/posts/nginx-load-balancing-diagram.png)
+![Nginx Load Balancing](/assets/img/posts/nginx-load-balancing-diagram.png){: w="700" h="400" .shadow }
 _Nginx load balancing algoritmaları_
 
 ### Upstream Tanımlama
 
 ```nginx
-# /etc/nginx/conf.d/upstream.conf
-
 # Round Robin (varsayılan)
 upstream backend_roundrobin {
     server 10.0.0.1:8080;
@@ -231,10 +235,11 @@ upstream backend_advanced {
     server 10.0.0.3:8080 backup;  # Sadece diğerleri fail olursa
 }
 ```
+{: file="/etc/nginx/conf.d/upstream.conf" }
 
 ### Load Balancer Yapılandırması
 
-![Nginx Load Balancer Architecture](/assets/img/posts/nginx-load-balancer-architecture.png)
+![Nginx Load Balancer Architecture](/assets/img/posts/nginx-load-balancer-architecture.png){: w="800" h="500" }
 _Gelişmiş load balancing mimarisi_
 
 ```nginx
@@ -263,14 +268,16 @@ server {
     }
 }
 ```
+{: file="/etc/nginx/sites-available/load-balancer" }
+
+> IP Hash algoritması sticky session'lar için idealdir ancak load distribution dengesizliğe neden olabilir. Modern uygulamalarda stateless session management tercih edilmelidir.
+{: .prompt-info }
 
 ## Önbellekleme (Caching)
 
 ### Proxy Cache Yapılandırması
 
 ```nginx
-# /etc/nginx/nginx.conf içinde (http bloğu)
-
 # Cache zone tanımlama
 proxy_cache_path /var/cache/nginx/proxy
     levels=1:2
@@ -321,11 +328,14 @@ server {
     # }
 }
 ```
+{: file="/etc/nginx/conf.d/cache.conf" }
+
+> Cache key dikkatli seçilmelidir. Kullanıcıya özel içerik cache'lenmemelidir! Cookie, Authorization header gibi değerler cache_bypass koşuluna eklenmelidir.
+{: .prompt-warning }
 
 ### FastCGI Cache (PHP)
 
 ```nginx
-# FastCGI cache zone
 fastcgi_cache_path /var/cache/nginx/fastcgi
     levels=1:2
     keys_zone=php_cache:10m
@@ -356,8 +366,12 @@ server {
     }
 }
 ```
+{: file="/etc/nginx/sites-available/php-cache" }
 
 ## SSL/TLS Yapılandırması
+
+> Eski TLS versiyonları (TLSv1.0, TLSv1.1) güvenlik açıkları içerir! Sadece TLSv1.2 ve TLSv1.3 kullanın. Weak ciphers'ları devre dışı bırakın.
+{: .prompt-danger }
 
 ```nginx
 server {
@@ -404,11 +418,14 @@ server {
     return 301 https://$server_name$request_uri;
 }
 ```
+{: file="/etc/nginx/sites-available/ssl-site" }
 
 ## Rate Limiting
 
+> Rate limiting DDoS koruması için kritik öneme sahiptir. burst parametresi ani trafik artışlarını absorbe eder, nodelay ise kullanıcı deneyimini iyileştirir.
+{: .prompt-tip }
+
 ```nginx
-# Rate limit zones
 http {
     # IP bazlı rate limiting
     limit_req_zone $binary_remote_addr zone=ip_limit:10m rate=10r/s;
@@ -433,6 +450,7 @@ http {
     }
 }
 ```
+{: file="/etc/nginx/conf.d/rate-limit.conf" }
 
 ## Güvenlik Yapılandırması
 
@@ -479,6 +497,7 @@ server {
     }
 }
 ```
+{: file="/etc/nginx/sites-available/secure-site" }
 
 ## Performans Optimizasyonu
 
@@ -538,6 +557,10 @@ http {
     postpone_output 1460;
 }
 ```
+{: file="/etc/nginx/nginx.conf" }
+
+> worker_processes auto değeri CPU core sayısına göre otomatik ayarlama yapar. worker_connections * worker_processes = maksimum eşzamanlı bağlantı sayısı.
+{: .prompt-info }
 
 ## Monitoring ve Logging
 
@@ -572,8 +595,10 @@ http {
         access_log /var/log/nginx/access.log main if=$loggable;
     }
 }
+```
+{: file="/etc/nginx/nginx.conf" }
 
-# Nginx status endpoint
+```nginx
 server {
     listen 8080;
     server_name localhost;
@@ -586,6 +611,7 @@ server {
     }
 }
 ```
+{: file="/etc/nginx/sites-available/status" }
 
 ```bash
 # Status kontrolü
@@ -595,11 +621,11 @@ curl http://localhost:8080/nginx_status
 #  45 45 123
 # Reading: 0 Writing: 1 Waiting: 1
 ```
+{: .nolineno }
 
 ## Docker ile Nginx
 
 ```dockerfile
-# Dockerfile
 FROM nginx:1.25-alpine
 
 # Custom config
@@ -613,9 +639,9 @@ EXPOSE 80 443
 
 CMD ["nginx", "-g", "daemon off;"]
 ```
+{: file="Dockerfile" }
 
 ```yaml
-# docker-compose.yml
 version: '3.8'
 
 services:
@@ -642,6 +668,7 @@ services:
 volumes:
   nginx_cache:
 ```
+{: file="docker-compose.yml" }
 
 ## Sonuç
 
