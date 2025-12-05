@@ -1,10 +1,11 @@
 ---
 title: "Modern Web Arayüzü Geliştirme: CSS Grid, Flexbox ve Vanilla JavaScript"
+description: "CSS Grid ve Flexbox ile modern responsive layout'lar oluşturun. Vanilla JavaScript ile DOM manipülasyonu, event handling ve component geliştirme teknikleri. CSS Variables ve performans optimizasyonu."
 date: "2025-11-15 10:00:00 +0300"
 categories: [Web Development, Frontend]
 tags: [css, javascript, flexbox, grid, dom-manipulation, responsive-design, web-development, frontend]
 image:
-  src: /assets/img/posts/css-flexbox-grid-comparison.jpeg
+  path: /assets/img/posts/css-flexbox-grid-comparison.jpeg
   alt: "CSS Flexbox ve Grid Karşılaştırması"
 ---
 
@@ -93,8 +94,13 @@ CSS Grid, satır ve sütunlarla çalışan iki boyutlu bir layout sistemidir. Ka
     }
 }
 ```
+{: file="grid-layout.css" }
 
-![CSS Flexbox ve Grid Karşılaştırması](/assets/img/posts/css-flexbox-grid-comparison.jpeg)
+![CSS Flexbox ve Grid Karşılaştırması](/assets/img/posts/css-flexbox-grid-comparison.jpeg){: w="800" h="450" .shadow }
+_CSS Grid ve Flexbox karşılaştırması - layout sistemleri_
+
+> CSS Grid iki boyutlu (satır ve sütun) layout için idealdir. Karmaşık sayfa düzenlerinde Grid, basit tek yönlü hizalamalarda Flexbox tercih edilmelidir.
+{: .prompt-tip }
 
 ### CSS Flexbox: Tek Boyutlu Layout
 
@@ -137,6 +143,7 @@ Flexbox, öğeleri tek bir yönde (satır veya sütun) hizalamak için idealdir.
     color: #3498db;
 }
 ```
+{: file="navbar.css" }
 
 **Card Layout ile Flexbox:**
 
@@ -182,6 +189,7 @@ Flexbox, öğeleri tek bir yönde (satır veya sütun) hizalamak için idealdir.
     align-items: center;
 }
 ```
+{: file="card-layout.css" }
 
 ## CSS Variables (Custom Properties)
 
@@ -237,8 +245,10 @@ CSS değişkenleri, tema yönetimi ve dinamik stillendirme için güçlü bir ar
     font-size: var(--font-size-base);
 }
 ```
+{: file="variables.css" }
 
-![CSS Variables Theming](/assets/img/posts/css-variables-theming.png)
+![CSS Variables Theming](/assets/img/posts/css-variables-theming.png){: w="700" h="400" .shadow }
+_CSS Variables ile dinamik tema yönetimi_
 
 **JavaScript ile Tema Değiştirme:**
 
@@ -266,12 +276,17 @@ const primaryColor = getComputedStyle(document.documentElement)
     .getPropertyValue('--primary-color');
 console.log(primaryColor); // #3498db
 ```
+{: file="theme-toggle.js" }
+
+> CSS Variables (Custom Properties) ile tema yönetimi, runtime'da JavaScript ile kolayca değiştirilebilir. Dark mode/light mode toggle için ideal bir yöntemdir.
+{: .prompt-tip }
 
 ## Vanilla JavaScript ile DOM Manipulation
 
 Modern web uygulamalarında, framework kullanmadan vanilla JavaScript ile DOM manipülasyonu yapmak performans ve kontrol açısından avantajlar sağlar.
 
-![Vanilla JavaScript DOM Manipulation](/assets/img/posts/vanilla-javascript-dom-manipulation.jpg)
+![Vanilla JavaScript DOM Manipulation](/assets/img/posts/vanilla-javascript-dom-manipulation.jpg){: w="700" h="400" .shadow }
+_Vanilla JavaScript ile DOM manipülasyon teknikleri_
 
 ### Element Seçme ve Oluşturma
 
@@ -344,6 +359,7 @@ document.addEventListener('userLoggedIn', (e) => {
     console.log('User logged in:', e.detail);
 });
 ```
+{: file="event-handling.js" }
 
 ### Dinamik Liste Oluşturma
 
@@ -439,6 +455,10 @@ class TodoList {
 // Kullanım
 const todoList = new TodoList('#app');
 ```
+{: file="todo-list.js" }
+
+> Vanilla JavaScript ile class-based component yazımı, React benzeri yapılar oluşturmanıza olanak tanır. State yönetimi ve re-rendering için render() metodunu kullanın.
+{: .prompt-tip }
 
 ### Fetch API ile Veri Yükleme
 
@@ -993,6 +1013,10 @@ const items = Array.from({ length: 1000 }, (_, i) =>
 ).join('');
 document.querySelector('ul').innerHTML = items;
 ```
+{: file="dom-optimization.js" }
+
+> Büyük listeler için DocumentFragment veya innerHTML kullanımı, tek tek appendChild() çağrılarından çok daha hızlıdır. Reflow/repaint sayısını minimize edin.
+{: .prompt-tip }
 
 ## Sonuç
 
