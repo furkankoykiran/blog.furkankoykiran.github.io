@@ -1,5 +1,6 @@
 ---
 title: "Python Loglama En İyi Uygulamaları - Production Logging Rehberi"
+description: "Production-ready Python logging stratejileri. Structured logging, JSON formatı, log rotation, ELK Stack entegrasyonu ve monitoring best practices."
 date: 2025-02-22 09:00:00 +0300
 categories: [Python, Observability]
 tags: [python, logging, elk, structured-logging, json, log-rotation, monitoring, debugging, production, best-practices]
