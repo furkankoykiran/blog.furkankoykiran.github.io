@@ -176,6 +176,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
 # Başlangıç komutu
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
+{: file="Dockerfile" }
 
 Image build etme:
 
@@ -224,6 +225,7 @@ EXPOSE 8000
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
+{: file="Dockerfile.multistage" }
 
 Bu yaklaşım, final image boyutunu önemli ölçüde küçültür.
 
@@ -237,7 +239,6 @@ Docker Compose, birden fazla konteyneri tek bir YAML dosyası ile yönetmemizi s
 ### Basit Docker Compose Örneği
 
 ```yaml
-# docker-compose.yml
 version: '3.8'
 
 services:
@@ -299,6 +300,7 @@ networks:
   app-network:
     driver: bridge
 ```
+{: file="docker-compose.yml" }
 
 ### Docker Compose Komutları
 
