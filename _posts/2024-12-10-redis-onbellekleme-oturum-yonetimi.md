@@ -134,6 +134,7 @@ networks:
   app-network:
     driver: bridge
 ```
+{: file="docker-compose.yml" }
 
 ## Redis Temel Komutlar
 
@@ -338,6 +339,7 @@ _Redis Veri Yapıları: String, Hash, List, Set, Sorted Set_
 ```bash
 pip install redis redis-py-cluster
 ```
+{: file="bash" }
 
 ```python
 import redis
@@ -382,6 +384,7 @@ try:
 except redis.ConnectionError:
     print("Redis'e bağlanılamıyor!")
 ```
+{: file="redis_connection.py" }
 
 ### Cache Wrapper Sınıfı
 
@@ -485,6 +488,7 @@ user = get_user_from_db(1)
 # İkinci çağrı: Cache'den gelir (milisaniyeler)
 user = get_user_from_db(1)
 ```
+{: file="cache_wrapper.py" }
 
 ### FastAPI ile Cache Entegrasyonu
 
@@ -579,6 +583,7 @@ async def flush_cache(redis: aioredis.Redis = Depends(get_redis)):
     await redis.flushdb()
     return {"message": "Cache flushed"}
 ```
+{: file="fastapi_cache.py" }
 
 ![Redis Session Management](/assets/img/posts/redis-session-management.png)
 _Redis ile Mikroservislerde Session Yönetimi_
@@ -638,6 +643,7 @@ def logout():
     session.clear()
     return {'message': 'Logged out successfully'}
 ```
+{: file="flask_session.py" }
 
 ### Custom Session Manager
 
@@ -735,6 +741,7 @@ class SessionManager:
         
         return count
 ```
+{: file="session_manager.py" }
 
 ## Rate Limiting
 
@@ -843,6 +850,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 # Kullanım
 app.add_middleware(RateLimitMiddleware, redis_client=r)
 ```
+{: file="rate_limiter.py" }
 
 ## Production Best Practices
 
@@ -876,6 +884,7 @@ databases 16
 loglevel notice
 logfile /var/log/redis/redis-server.log
 ```
+{: file="redis.conf" }
 
 ### 2. Monitoring
 
@@ -901,6 +910,7 @@ def get_redis_info(redis_client: Redis) -> Dict:
         ) if (info['keyspace_hits'] + info['keyspace_misses']) > 0 else 0
     }
 ```
+{: file="redis_monitoring.py" }
 
 ### 3. Connection Pooling
 
@@ -921,6 +931,7 @@ pool = redis.ConnectionPool(
 
 r = redis.Redis(connection_pool=pool)
 ```
+{: file="connection_pool.py" }
 
 ### 4. Error Handling
 
@@ -953,6 +964,7 @@ def safe_redis_operation(func):
 def get_from_cache(key: str):
     return r.get(key)
 ```
+{: file="error_handling.py" }
 
 ## Sonuç
 
