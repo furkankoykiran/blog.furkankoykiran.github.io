@@ -1,5 +1,6 @@
 ---
 title: "Python ile Görüntü İşleme ve Computer Vision: Pillow ve OpenCV Kullanımı"
+description: "Python Pillow ve OpenCV ile görüntü işleme rehberi. Resize, crop, filter uygulama, filigran ekleme, otomatik görsel optimizasyon teknikleri."
 date: 2025-06-28 09:00:00 +0300
 categories: [Image Processing, Computer Vision]
 tags: [python, pillow, image-processing, opencv, manipulation, automation]
@@ -25,7 +26,8 @@ Görüntü işleme, dijital görüntüler üzerinde çeşitli operasyonlar gerç
 
 ## Pillow ve OpenCV Karşılaştırması
 
-![Python Görüntü İşleme Araçları](/assets/img/posts/image-processing-tools-python.png)
+![Python Görüntü İşleme Araçları](/assets/img/posts/image-processing-tools-python.png){: w="700" h="400" .shadow }
+_Python görüntü işleme kütüphaneleri karşılaştırması_
 _Python ekosistemindeki popüler görüntü işleme araçları_
 
 ### Pillow (PIL Fork)
@@ -143,7 +145,8 @@ processor.save('output.jpg', quality=90)
 
 ### Görüntü Boyutlandırma
 
-![Görüntü Resize, Crop ve Filter İşlemleri](/assets/img/posts/image-resize-crop-filters.jpg)
+![Görüntü Resize, Crop ve Filter İşlemleri](/assets/img/posts/image-resize-crop-filters.jpg){: w="700" h="400" .shadow }
+_Görüntü boyutlandırma, kırpma ve filtre uygulama_
 _Görüntü üzerinde temel dönüşüm operasyonları_
 
 ```python
@@ -641,7 +644,8 @@ watermarked_image = add_image_watermark(
 
 ## OpenCV ile Gelişmiş Görüntü İşleme
 
-![Python Görüntü Manipülasyon Teknikleri](/assets/img/posts/python-image-manipulation.png)
+![Python Görüntü Manipülasyon Teknikleri](/assets/img/posts/python-image-manipulation.png){: w="700" h="400" .shadow }
+_Python ile görsel manipülasyon yöntemleri_
 _OpenCV ile gelişmiş görüntü işleme teknikleri_
 
 ### OpenCV Kurulumu ve Temel Kullanım
@@ -1243,7 +1247,7 @@ from PIL import Image
 img = Image.open('huge_image.jpg')
 width, height = img.size
 
-# ✅ DOĞRU: Sadece metadata okunur
+# DOĞRU: Sadece metadata okunur
 with Image.open('huge_image.jpg') as img:
     width, height = img.size
     format = img.format
@@ -1273,7 +1277,7 @@ from PIL import Image
 img = Image.open('huge.jpg')  # 20MB
 img.thumbnail((200, 200))
 
-# ✅ DOĞRU: Draft mode kullan
+# DOĞRU: Draft mode kullan
 img = Image.open('huge.jpg')
 img.draft('RGB', (200, 200))  # Hızlı ve hafif
 img.thumbnail((200, 200))
