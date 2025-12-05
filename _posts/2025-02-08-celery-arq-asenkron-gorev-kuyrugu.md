@@ -1,5 +1,6 @@
 ---
 title: "Asenkron Görev Kuyruğu - Celery ve ARQ Karşılaştırması"
+description: "Python asenkron task queue sistemleri. Celery vs ARQ karşılaştırması, Redis/RabbitMQ entegrasyonu, worker scaling ve production best practices."
 date: 2025-02-08 09:00:00 +0300
 categories: [Python, Asynchronous]
 tags: [python, celery, arq, redis, rabbitmq, task-queue, async, distributed, workers, background-jobs]
