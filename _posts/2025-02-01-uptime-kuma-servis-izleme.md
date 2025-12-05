@@ -1,10 +1,11 @@
 ---
 title: "Uptime Kuma ile Servis İzleme"
+description: "Self-hosted uptime monitoring aracı Uptime Kuma. Docker kurulumu, HTTP/TCP/Ping monitoring, 90+ bildirim kanalı ve public status page oluşturma."
 date: "2025-02-01 09:00:00 +0300"
 categories: [DevOps, Monitoring]
 tags: [monitoring, docker, alerting, status-page, devops]
 image:
-  src: /assets/img/posts/uptime-kuma-dashboard.png
+  path: /assets/img/posts/uptime-kuma-dashboard.png
   alt: "Uptime Kuma Dashboard Interface"
 ---
 
@@ -27,7 +28,7 @@ Uptime Kuma, JavaScript (Node.js + Vue.js) ile yazılmış, self-hosted bir upti
 - **Docker Support**: Tek container ile çalışır
 - **Free & Open Source**: Tamamen ücretsiz
 
-![Uptime Kuma Docker Setup](/assets/img/posts/uptime-kuma-docker-setup.png)
+![Uptime Kuma Docker Setup](/assets/img/posts/uptime-kuma-docker-setup.png){: w="700" h="400" .shadow }
 _Docker ile Uptime Kuma kurulumu_
 
 ## Docker ile Kurulum
@@ -322,7 +323,7 @@ Web sayfasında belirli bir keyword aramak için:
 }
 ```
 
-![Uptime Kuma Notifications](/assets/img/posts/uptime-kuma-notifications.png)
+![Uptime Kuma Notifications](/assets/img/posts/uptime-kuma-notifications.png){: w="800" h="500" .shadow }
 _Çoklu bildirim kanalları konfigürasyonu_
 
 ## Bildirim Kanalları (Notifications)
@@ -528,7 +529,7 @@ tags = {
 }
 ```
 
-![Uptime Kuma Status Page](/assets/img/posts/uptime-kuma-status-page.png)
+![Uptime Kuma Status Page](/assets/img/posts/uptime-kuma-status-page.png){: w="800" h="500" .shadow }
 _Public status page örneği_
 
 ## Status Page Oluşturma
