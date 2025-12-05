@@ -117,13 +117,13 @@ module.exports = {
   }
 };
 ```
+{: file="hardhat.config.js" }
 
 ## Sample Smart Contract
 
 Let's create a token contract to test:
 
 ```solidity
-// contracts/Token.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
@@ -181,13 +181,13 @@ contract Token {
     }
 }
 ```
+{: file="contracts/Token.sol" }
 
 ## Basic Unit Tests
 
 ### Test Structure
 
 ```javascript
-// test/Token.test.js
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
@@ -343,7 +343,6 @@ describe("Token Contract", function () {
 ### Testing Time-Dependent Contracts
 
 ```solidity
-// contracts/TimeLock.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
@@ -371,9 +370,9 @@ contract TimeLock {
     }
 }
 ```
+{: file="contracts/TimeLock.sol" }
 
 ```javascript
-// test/TimeLock.test.js
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { time } = require("@nomicfoundation/hardhat-network-helpers");
@@ -448,7 +447,6 @@ describe("TimeLock", function () {
 ### Testing Access Control
 
 ```solidity
-// contracts/Owned.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
@@ -473,9 +471,9 @@ contract Owned {
     }
 }
 ```
+{: file="contracts/Owned.sol" }
 
 ```javascript
-// test/Owned.test.js
 describe("Owned", function () {
   let owned;
   let owner;
@@ -529,7 +527,6 @@ describe("Owned", function () {
 ## Testing Contract Interactions
 
 ```solidity
-// contracts/DEX.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
@@ -565,9 +562,9 @@ contract DEX {
     }
 }
 ```
+{: file="contracts/DEX.sol" }
 
 ```javascript
-// test/DEX.test.js
 describe("DEX", function () {
   let dex;
   let tokenA;
@@ -657,11 +654,11 @@ describe("DEX", function () {
   });
 });
 ```
+{: file="test/DEX.test.js" }
 
 ## Gas Optimization Testing
 
 ```javascript
-// test/GasOptimization.test.js
 describe("Gas Optimization", function () {
   let token;
   let owner;
@@ -709,6 +706,7 @@ describe("Gas Optimization", function () {
   });
 });
 ```
+{: file="test/GasOptimization.test.js" }
 
 ## Snapshot and Revert Testing
 
@@ -749,6 +747,7 @@ describe("Using Fixtures", function () {
   });
 });
 ```
+{: file="test/Fixtures.test.js" }
 
 ## Coverage Reporting
 
@@ -812,6 +811,7 @@ jobs:
       with:
         files: ./coverage/coverage-final.json
 ```
+{: file=".github/workflows/test.yml" }
 
 ## Best Practices
 
@@ -933,4 +933,4 @@ Comprehensive testing is non-negotiable in smart contract development. With Hard
 - [Chai Matchers](https://ethereum-waffle.readthedocs.io/en/latest/matchers.html)
 - [Hardhat Network Helpers](https://hardhat.org/hardhat-network-helpers)
 
-Happy testing! 🧪
+Happy testing!
