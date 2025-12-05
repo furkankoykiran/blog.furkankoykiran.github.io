@@ -81,6 +81,7 @@ class DataFeed:
                 print(f"Ticker error: {e}")
                 time.sleep(1)
 ```
+{: file="data_feed.py" }
 
 ### 2. Strategy Engine
 
@@ -171,6 +172,7 @@ class MACrossoverStrategy(TradingStrategy):
         
         return False
 ```
+{: file="strategy.py" }
 
 ### 3. Risk Management
 
@@ -238,6 +240,7 @@ class RiskManager:
         
         return True, "Trade validated"
 ```
+{: file="risk_manager.py" }
 
 ### 4. Order Execution
 
@@ -326,6 +329,7 @@ class OrderExecutor:
             print(f"Order modification failed: {e}")
             return None
 ```
+{: file="order_executor.py" }
 
 ### 5. Portfolio Management
 
@@ -438,6 +442,7 @@ class Portfolio:
             'return_pct': ((self.current_capital - self.initial_capital) / self.initial_capital) * 100
         }
 ```
+{: file="portfolio.py" }
 
 ## Building the Trading Bot
 
@@ -663,6 +668,7 @@ class TradingBot:
             'statistics': stats
         }
 ```
+{: file="trading_bot.py" }
 
 ## Backtesting Your Strategy
 
@@ -765,6 +771,7 @@ class Backtester:
             'final_capital': final_capital
         }
 ```
+{: file="backtester.py" }
 
 ## Deployment and Monitoring
 
@@ -809,6 +816,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+{: file="main.py" }
 
 ### Logging and Monitoring
 
@@ -845,6 +853,7 @@ def setup_logging():
     
     return logger
 ```
+{: file="logging_setup.py" }
 
 ## Best Practices
 
@@ -860,17 +869,18 @@ def setup_alerts(bot):
     def check_drawdown():
         stats = bot.portfolio.get_statistics()
         if stats.get('return_pct', 0) < -10:
-            send_alert(f"⚠️ Drawdown exceeded 10%: {stats['return_pct']:.2f}%")
+            send_alert(f"WARNING: Drawdown exceeded 10%: {stats['return_pct']:.2f}%")
     
     def check_win_rate():
         stats = bot.portfolio.get_statistics()
         if stats.get('total_trades', 0) > 20 and stats.get('win_rate', 100) < 40:
-            send_alert(f"⚠️ Low win rate: {stats['win_rate']:.2f}%")
+            send_alert(f"WARNING: Low win rate: {stats['win_rate']:.2f}%")
     
     # Run checks periodically
     schedule.every(1).hours.do(check_drawdown)
     schedule.every(1).hours.do(check_win_rate)
 ```
+{: file="alerts.py" }
 
 ### 3. Implement Circuit Breakers
 Automatically stop trading if losses exceed a threshold:
@@ -903,6 +913,7 @@ class CircuitBreaker:
         
         return False, "OK"
 ```
+{: file="circuit_breaker.py" }
 
 ### 4. Version Control Your Strategies
 Keep track of strategy versions and their performance:
@@ -939,6 +950,7 @@ class StrategyVersion:
             'metrics_comparison': self_metrics - other_metrics
         }
 ```
+{: file="strategy_version.py" }
 
 ## Common Pitfalls to Avoid
 
