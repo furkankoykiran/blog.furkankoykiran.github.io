@@ -1,5 +1,6 @@
 ---
 title: "Zarif Kapanış ve Sinyal İşleme - Graceful Shutdown Rehberi"
+description: "Python uygulamalarında graceful shutdown implementasyonu. SIGTERM/SIGINT handling, Kubernetes lifecycle hooks, systemd integration ve cleanup best practices."
 date: 2025-02-15 09:00:00 +0300
 categories: [Python, DevOps]
 tags: [python, signals, graceful-shutdown, sigterm, sigint, kubernetes, systemd, lifecycle, cleanup, production]
