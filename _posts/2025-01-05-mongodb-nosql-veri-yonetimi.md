@@ -1,10 +1,11 @@
 ---
 title: "MongoDB ile NoSQL Veri Yönetimi"
+description: "Python ile MongoDB kullanarak NoSQL veri yönetimi rehberi. PyMongo ve Motor ile CRUD işlemleri, aggregation pipeline, indexing stratejileri ve best practices."
 date: "2025-01-05 09:00:00 +0300"
 categories: [Database, NoSQL]
 tags: [mongodb, nosql, pymongo, motor, database, aggregation, indexing, python]
 image:
-  src: /assets/img/posts/mongodb-architecture-diagram.png
+  path: /assets/img/posts/mongodb-architecture-diagram.png
   alt: "MongoDB Architecture"
 ---
 
@@ -350,6 +351,9 @@ users_collection.replace_one(
 
 #### Delete (Silme)
 
+> Delete işlemlerinde dikkatli olun! delete_many({}) tüm collection'ı siler ve geri alınamaz. Production'da mutlaka backup alın.
+{: .prompt-danger }
+
 ```python
 # Tek document silme
 result = users_collection.delete_one({"username": "test_user"})
@@ -359,7 +363,7 @@ print(f"Deleted: {result.deleted_count}")
 result = users_collection.delete_many({"is_active": False})
 print(f"Deleted {result.deleted_count} documents")
 
-# Tüm collection'ı silme (DİKKATLİ!)
+# Tüm collection'ı silme
 result = users_collection.delete_many({})
 
 # Collection'ı drop etme
@@ -369,8 +373,8 @@ users_collection.drop()
 
 ## Motor ile Async Operations
 
-![Motor Async Python](/assets/img/posts/motor-async-python-logo.png)
-*Motor - Async MongoDB driver for Python*
+![Motor Async Python](/assets/img/posts/motor-async-python-logo.png){: w="700" h="400" }
+_Motor - Async MongoDB driver for Python_
 
 ### Motor Setup
 
@@ -455,8 +459,8 @@ async def create_user_endpoint(user: UserCreate):
 
 ## Aggregation Framework
 
-![MongoDB Aggregation Pipeline](/assets/img/posts/mongodb-aggregation-pipeline.png)
-*MongoDB aggregation pipeline stages*
+![MongoDB Aggregation Pipeline](/assets/img/posts/mongodb-aggregation-pipeline.png){: w="800" h="500" .shadow }
+_MongoDB aggregation pipeline stages_
 
 ### Temel Aggregation Stages
 
@@ -514,6 +518,7 @@ pipeline = [
     }}
 ]
 ```
+{: file="aggregation_stages.py" }
 
 ### Gerçek Dünya Aggregation Örnekleri
 
@@ -679,10 +684,13 @@ def search_posts(search_term: str):
 
 ## Indexing ve Performans
 
-![MongoDB Indexing](/assets/img/posts/mongodb-indexing-performance.png)
-*MongoDB indexing impact on query performance*
+![MongoDB Indexing](/assets/img/posts/mongodb-indexing-performance.png){: w="800" h="500" .shadow }
+_MongoDB indexing impact on query performance_
 
 ### Index Tipleri
+
+> Sık kullandığınız query field'larına index ekleyerek performansı 10-100 kat artırabilirsiniz. Ancak her index write performansını düşürür, dengeli kullanın.
+{: .prompt-tip }
 
 ```python
 # Single field index
@@ -745,8 +753,12 @@ users_collection.drop_indexes()
 # Index adı belirtme
 users_collection.create_index("email", name="unique_email_idx", unique=True)
 ```
+{: file="index_management.py" }
 
 ### Query Performance Analysis
+
+> Query performansını düzenli olarak analiz edin. explain() methodu ile hangi index'lerin kullanıldığını ve kaç document'in incelendiğini görebilirsiniz.
+{: .prompt-info }
 
 ```python
 # Explain kullanımı
@@ -766,7 +778,7 @@ def analyze_query_performance(collection, query):
     
     # Index kullanımı kontrolü
     if stats['totalDocsExamined'] > stats['nReturned'] * 10:
-        print("⚠️ Warning: Consider adding an index!")
+        print("Warning: Consider adding an index!")
     
     return stats
 
@@ -779,6 +791,9 @@ analyze_query_performance(
 {: file="query_performance.py" }
 
 ## Transactions
+
+> Transaction'lar MongoDB 4.0+ ve replica set kurulumu gerektirir. Single server'da çalışmaz. Production'da mutlaka replica set kullanın.
+{: .prompt-info }
 
 ```python
 # Transaction kullanımı (MongoDB 4.0+)
@@ -979,6 +994,9 @@ client = MongoClient(
 
 ### Error Handling
 
+> MongoDB işlemlerinde her zaman error handling kullanın. DuplicateKeyError, ConnectionFailure gibi yaygın hataları yakalayarak uygulamanızın stabil kalmasını sağlayın.
+{: .prompt-tip }
+
 ```python
 from pymongo.errors import (
     ConnectionFailure,
@@ -1005,8 +1023,12 @@ def safe_insert_user(user_data: dict):
         print(f"Operation failed: {e}")
         return None
 ```
+{: file="error_handling.py" }
 
 ### Security Best Practices
+
+> MongoDB connection string'lerini ve credential'ları asla kodunuza hard-code etmeyin. Environment variables kullanın ve .gitignore'a ekleyin.
+{: .prompt-warning }
 
 ```python
 # 1. Environment variables kullan
@@ -1018,7 +1040,7 @@ MONGODB_URI = os.getenv('MONGODB_URI')
 
 # 2. User input sanitization
 def sanitize_input(user_input):
-    """SQL injection benzeri saldırıları önle"""
+    """NoSQL injection saldırılarını önle"""
     # NoSQL injection önleme
     if isinstance(user_input, dict):
         # Dict içinde operatör varsa reddet
@@ -1066,9 +1088,9 @@ MongoDB ve Python kombinasyonu, modern uygulamalarda güçlü ve esnek bir NoSQL
 
 ### Kaynaklar
 
-- [MongoDB Documentation](https://docs.mongodb.com/)
-- [PyMongo Documentation](https://pymongo.readthedocs.io/)
-- [Motor Documentation](https://motor.readthedocs.io/)
-- [MongoDB University](https://university.mongodb.com/)
+- [MongoDB Documentation](https://docs.mongodb.com/) - Resmi MongoDB dokümantasyonu
+- [PyMongo Documentation](https://pymongo.readthedocs.io/) - Python MongoDB driver
+- [Motor Documentation](https://motor.readthedocs.io/) - Async MongoDB driver
+- [MongoDB University](https://university.mongodb.com/) - Ücretsiz MongoDB eğitimleri
 
 Bir sonraki yazımızda **Systemd ile Python Servis Yönetimi** konusunu işleyeceğiz!
