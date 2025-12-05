@@ -1,5 +1,6 @@
 ---
 title: "Kubernetes ile Container Orkestrasyon: Pod, Service ve Deployment Yönetimi"
+description: "Kubernetes ile production-grade container orkestrasyon. Pod, Service, Deployment, ConfigMap, Secret yönetimi, HPA autoscaling, monitoring ve debugging best practices."
 date: 2025-07-08 10:00:00 +0300
 categories: [DevOps, Kubernetes]
 tags: [kubernetes, k8s, docker, container, orchestration, deployment]
@@ -54,10 +55,11 @@ spec:
         ports:
         - containerPort: 8080
 ```
+{: file="deployment.yaml" }
 
 ## Kubernetes Mimarisi
 
-![Kubernetes Bileşenleri](/assets/img/posts/kubernetes-components-architecture.svg)
+![Kubernetes Bileşenleri](/assets/img/posts/kubernetes-components-architecture.svg){: w="800" h="500" }
 _Kubernetes temel bileşenleri ve etkileşimleri_
 
 Kubernetes cluster'ı iki ana bileşenden oluşur:
@@ -84,7 +86,7 @@ Uygulamaların çalıştığı fiziksel veya sanal makinelerdir.
 - **kube-proxy**: Network proxy, service'lerin network kurallarını yönetir
 - **Container Runtime**: Docker, containerd, CRI-O gibi container engine'leri
 
-![Kubernetes Cluster Mimarisi](/assets/img/posts/kubernetes-cluster-architecture.svg)
+![Kubernetes Cluster Mimarisi](/assets/img/posts/kubernetes-cluster-architecture.svg){: w="800" h="500" }
 _Detaylı Kubernetes cluster mimarisi_
 
 ## Temel Kubernetes Kavramları
@@ -94,7 +96,6 @@ _Detaylı Kubernetes cluster mimarisi_
 Pod, Kubernetes'te deploy edilebilecek en küçük birimdir. Bir veya daha fazla container içerir.
 
 ```yaml
-# simple-pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -116,6 +117,7 @@ spec:
         memory: "128Mi"
         cpu: "500m"
 ```
+{: file="simple-pod.yaml" }
 
 **Pod'ları Yönetme:**
 
@@ -141,11 +143,11 @@ kubectl exec -it nginx-pod -- /bin/bash  # Interactive shell
 # Pod'u silme
 kubectl delete pod nginx-pod
 ```
+{: .nolineno }
 
 ### Multi-Container Pod Örneği
 
 ```yaml
-# multi-container-pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -174,13 +176,13 @@ spec:
   - name: shared-logs
     emptyDir: {}
 ```
+{: file="multi-container-pod.yaml" }
 
 ### 2. Deployment - Deklaratif Uygulama Yönetimi
 
 Deployment, pod'ların desired state'ini tanımlar ve otomatik olarak bu state'i korur.
 
 ```yaml
-# nginx-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -240,6 +242,7 @@ spec:
             memory: "256Mi"
             cpu: "500m"
 ```
+{: file="nginx-deployment.yaml" }
 
 **Deployment Yönetimi:**
 
@@ -276,12 +279,16 @@ kubectl rollout resume deployment/nginx-deployment
 # Deployment'ı silme
 kubectl delete deployment nginx-deployment
 ```
+{: .nolineno }
 
 ### 3. Service - Network Abstraction
 
 Service, pod'lara erişim için sabit bir endpoint sağlar. Pod'lar ephemeral (geçici) olduğu için IP adresleri değişebilir, Service bu sorunu çözer.
 
-![Kubernetes Container Orchestration](/assets/img/posts/kubernetes-container-orchestration.png)
+> Pod'lar her yeniden başlatıldığında yeni IP adresi alır. Bu nedenle pod IP adreslerine doğrudan bağlanmak yerine Service kullanmak kritik önem taşır.
+{: .prompt-tip }
+
+![Kubernetes Container Orchestration](/assets/img/posts/kubernetes-container-orchestration.png){: w="700" h="400" .shadow }
 _Container orchestration ve service networking_
 
 #### ClusterIP Service (Varsayılan)
@@ -289,7 +296,6 @@ _Container orchestration ve service networking_
 Cluster içinden erişilebilen internal service.
 
 ```yaml
-# clusterip-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -303,13 +309,13 @@ spec:
     port: 80        # Service port'u
     targetPort: 80  # Container port'u
 ```
+{: file="clusterip-service.yaml" }
 
 #### NodePort Service
 
 Her node'un belirli bir port'undan erişilebilen service.
 
 ```yaml
-# nodeport-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -324,13 +330,13 @@ spec:
     targetPort: 80
     nodePort: 30080  # 30000-32767 arasında olmalı
 ```
+{: file="nodeport-service.yaml" }
 
 #### LoadBalancer Service
 
 Cloud provider'ın load balancer'ını kullanarak external erişim sağlar.
 
 ```yaml
-# loadbalancer-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -344,6 +350,10 @@ spec:
     port: 80
     targetPort: 80
 ```
+{: file="loadbalancer-service.yaml" }
+
+> LoadBalancer service tipi sadece cloud provider'larda (AWS, GCP, Azure) çalışır. Local cluster'larda MetalLB gibi alternatifler kullanılabilir.
+{: .prompt-info }
 
 **Service Yönetimi:**
 
@@ -364,6 +374,7 @@ kubectl get endpoints nginx-clusterip
 # Service'i silme
 kubectl delete service nginx-clusterip
 ```
+{: .nolineno }
 
 ### 4. ConfigMap ve Secret - Yapılandırma Yönetimi
 
@@ -372,7 +383,6 @@ kubectl delete service nginx-clusterip
 Uygulama yapılandırmasını kod dışında tutmak için kullanılır.
 
 ```yaml
-# app-config.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -394,6 +404,7 @@ data:
       }
     }
 ```
+{: file="app-config.yaml" }
 
 **ConfigMap Kullanımı:**
 
@@ -435,6 +446,9 @@ spec:
 
 Hassas verileri (şifreler, token'lar) güvenli şekilde saklar.
 
+> Secret'lar base64 ile encode edilir ancak encrypt edilmez! Production ortamında mutlaka etcd encryption at rest kullanın veya external secret management (Vault, AWS Secrets Manager) tercih edin.
+{: .prompt-warning }
+
 ```bash
 # Secret oluşturma (imperative)
 kubectl create secret generic db-credentials \
@@ -446,9 +460,9 @@ kubectl create secret generic tls-secret \
   --from-file=tls.crt=cert.pem \
   --from-file=tls.key=key.pem
 ```
+{: .nolineno }
 
 ```yaml
-# secret.yaml (declarative)
 apiVersion: v1
 kind: Secret
 metadata:
@@ -459,6 +473,7 @@ data:
   username: YWRtaW4=
   password: c3VwZXItc2VjcmV0LXBhc3N3b3Jk
 ```
+{: file="secret.yaml" }
 
 **Secret Kullanımı:**
 
@@ -502,7 +517,6 @@ spec:
 Pod'lar geçici olduğu için, kalıcı veri storage çözümü gerekir.
 
 ```yaml
-# persistent-volume.yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -517,9 +531,9 @@ spec:
   hostPath:
     path: /mnt/data/postgres
 ```
+{: file="persistent-volume.yaml" }
 
 ```yaml
-# persistent-volume-claim.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -532,6 +546,7 @@ spec:
       storage: 10Gi
   storageClassName: standard
 ```
+{: file="persistent-volume-claim.yaml" }
 
 **PVC Kullanımı:**
 
@@ -567,17 +582,16 @@ spec:
 ### 1. Namespace Oluşturma
 
 ```yaml
-# namespace.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
   name: myapp-production
 ```
+{: file="namespace.yaml" }
 
 ### 2. PostgreSQL Database
 
 ```yaml
-# postgres-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -631,11 +645,11 @@ spec:
   - port: 5432
     targetPort: 5432
 ```
+{: file="postgres-deployment.yaml" }
 
 ### 3. Backend API
 
 ```yaml
-# backend-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -703,11 +717,11 @@ spec:
   - port: 8080
     targetPort: 8080
 ```
+{: file="backend-deployment.yaml" }
 
 ### 4. Frontend Web App
 
 ```yaml
-# frontend-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -752,11 +766,11 @@ spec:
   - port: 80
     targetPort: 80
 ```
+{: file="frontend-deployment.yaml" }
 
 ### 5. Redis Cache
 
 ```yaml
-# redis-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -797,12 +811,12 @@ spec:
   - port: 6379
     targetPort: 6379
 ```
+{: file="redis-deployment.yaml" }
 
 ### Deployment Script
 
 ```bash
 #!/bin/bash
-# deploy.sh
 
 # Namespace oluştur
 kubectl apply -f namespace.yaml
@@ -841,13 +855,13 @@ kubectl wait --for=condition=available --timeout=300s \
 echo "Deployment completed!"
 kubectl get all -n myapp-production
 ```
+{: file="deploy.sh" }
 
 ## Horizontal Pod Autoscaler (HPA)
 
 Yük bazlı otomatik ölçeklendirme için HPA kullanılır.
 
 ```yaml
-# hpa.yaml
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -887,6 +901,10 @@ spec:
         value: 100
         periodSeconds: 30
 ```
+{: file="hpa.yaml" }
+
+> HPA için metrics-server'in cluster'da kurulu olması gerekir. Minikube'da `minikube addons enable metrics-server` komutuyla aktifleştirebilirsiniz.
+{: .prompt-info }
 
 ```bash
 # HPA oluşturma
@@ -900,6 +918,7 @@ kubectl describe hpa backend-hpa -n myapp-production
 kubectl top pods -n myapp-production
 kubectl top nodes
 ```
+{: .nolineno }
 
 ## İzleme ve Debugging
 
@@ -937,6 +956,7 @@ kubectl get all -n myapp-production
 # Events izleme
 kubectl get events -n myapp-production --sort-by='.lastTimestamp'
 ```
+{: .nolineno }
 
 ### Pod Sorun Giderme
 
@@ -960,13 +980,16 @@ kubectl describe pod <pod-name> | grep -A 5 "Events:"
 kubectl describe pod <pod-name>
 kubectl describe nodes
 ```
+{: .nolineno }
 
 ## Best Practices
 
 ### 1. Resource Requests ve Limits
 
+> Her pod için mutlaka resource requests ve limits tanımlayın. Tanımsız pod'lar tüm node kaynaklarını tüketebilir ve diğer pod'ları etkileyebilir.
+{: .prompt-tip }
+
 ```yaml
-# Her zaman resource tanımla
 resources:
   requests:
     memory: "256Mi"  # Minimum gereksinim
@@ -978,8 +1001,10 @@ resources:
 
 ### 2. Health Checks
 
+> Liveness probe yanlış yapılandırılırsa pod'lar sürekli restart olur (crash loop). initialDelaySeconds değerini uygulaamanın başlatma süresinden uzun ayarlayın.
+{: .prompt-warning }
+
 ```yaml
-# Liveness ve readiness probe'ları mutlaka kullan
 livenessProbe:
   httpGet:
     path: /health
@@ -1013,8 +1038,10 @@ metadata:
 
 ### 4. Security
 
+> Container'ları asla root olarak çalıştırmayın! runAsNonRoot: true ayarı kritik güvenlik önlemidir. allowPrivilegeEscalation: false ile privilege escalation'u engelleyin.
+{: .prompt-danger }
+
 ```yaml
-# SecurityContext kullan
 securityContext:
   runAsNonRoot: true
   runAsUser: 1000
