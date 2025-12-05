@@ -166,7 +166,6 @@ docker network prune            # Kullanılmayan network'leri temizle
 Öncelikle basit bir Flask uygulaması oluşturalım:
 
 ```python
-# app.py
 from flask import Flask, jsonify
 import os
 import socket
@@ -205,18 +204,18 @@ if __name__ == '__main__':
     debug_mode = os.getenv('ENVIRONMENT') == 'development'
     app.run(host='0.0.0.0', port=5000, debug=debug_mode)
 ```
+{: file="app.py" }
 
-```python
-# requirements.txt
+```txt
 Flask==3.0.0
 gunicorn==21.2.0
 python-dotenv==1.0.0
 ```
+{: file="requirements.txt" }
 
 ### Basit Dockerfile
 
 ```dockerfile
-# Dockerfile (basit versiyon)
 # Base image olarak Python 3.11 kullan
 FROM python:3.11-slim
 
@@ -241,6 +240,7 @@ ENV ENVIRONMENT=production
 # Uygulamayı başlat
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "app:app"]
 ```
+{: file="Dockerfile" }
 
 ### Image Oluşturma ve Çalıştırma
 
@@ -302,8 +302,6 @@ Multi-stage build, Docker'ın en güçlü özelliklerinden biridir. Birden fazla
 ### Multi-Stage Dockerfile
 
 ```dockerfile
-# Dockerfile (multi-stage optimized version)
-
 # ==========================================
 # STAGE 1: Builder - Bağımlılıkları derle
 # ==========================================
@@ -366,6 +364,7 @@ EXPOSE 5000
 ENTRYPOINT ["gunicorn"]
 CMD ["--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "60", "app:app"]
 ```
+{: file="Dockerfile" }
 
 ### Image Boyutu Karşılaştırması
 
@@ -462,6 +461,7 @@ logs/
 .DS_Store
 Thumbs.db
 ```
+{: file=".dockerignore" }
 
 ## Docker Compose ile Multi-Container Uygulamalar
 
@@ -473,7 +473,6 @@ Docker Compose, birden fazla container'dan oluşan uygulamaları tanımlamak ve 
 ### Kapsamlı Docker Compose Örneği
 
 ```yaml
-# docker-compose.yml
 version: '3.8'
 
 services:
@@ -654,6 +653,7 @@ volumes:
   pgadmin-data:
     driver: local
 ```
+{: file="docker-compose.yml" }
 
 ### Docker Compose Komutları
 
@@ -746,6 +746,7 @@ CORS_ORIGINS=http://localhost:3000,https://example.com
 LOG_LEVEL=INFO
 SENTRY_DSN=https://your-sentry-dsn
 ```
+{: file=".env" }
 
 ```python
 # config.py - Environment variable yönetimi
