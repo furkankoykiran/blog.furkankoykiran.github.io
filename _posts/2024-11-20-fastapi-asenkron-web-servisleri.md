@@ -83,6 +83,7 @@ async def read_item(item_id: int, q: str | None = None):
         result.update({"q": q})
     return result
 ```
+{: file="main.py" }
 
 Uygulamayı çalıştırmak için:
 
@@ -157,6 +158,7 @@ async def async_endpoint():
         "type": "asynchronous"
     }
 ```
+{: file="sync_vs_async.py" }
 
 Bu örnekte, sync endpoint her istek için yaklaşık 1 saniye beklerse toplamda 3 saniye sürerken, async endpoint tüm istekleri paralel başlattığı için sadece 1 saniye sürer.
 
@@ -290,6 +292,7 @@ async def list_users(
     users = result.scalars().all()
     return users
 ```
+{: file="database.py" }
 
 ### Database Connection Pooling
 
@@ -310,6 +313,7 @@ engine = create_async_engine(
     poolclass=QueuePool  # Default pool class
 )
 ```
+{: file="database_config.py" }
 
 ## WebSocket ile Gerçek Zamanlı İletişim
 
