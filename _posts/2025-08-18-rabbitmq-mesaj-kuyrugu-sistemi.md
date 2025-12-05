@@ -1,5 +1,6 @@
 ---
 title: "RabbitMQ ile Mesaj Kuyruğu Sistemleri: Producer, Consumer ve Routing"
+description: "RabbitMQ ile production-grade message queuing. Exchange types (direct, fanout, topic), routing, durability, DLX, priority queue, RPC pattern ve best practices."
 date: 2025-08-18 09:00:00 +0300
 categories: [Backend, Message-Queue]
 tags: [rabbitmq, message-queue, amqp, microservices, async]
@@ -54,6 +55,7 @@ Consumer (Tüketici)
 - Stream processing
 - ETL processes
 ```
+{: .nolineno }
 
 ## Kurulum ve Başlangıç
 
@@ -72,12 +74,17 @@ docker run -d \
 # Management UI: http://localhost:15672
 # Credentials: admin / admin123
 ```
+{: .nolineno }
 
 ### Python ile RabbitMQ (pika)
 
 ```bash
 pip install pika
 ```
+{: .nolineno }
+
+> Her zaman connection pooling kullanın ve connection'ları doğru şekilde kapatın. Heartbeat timeout ayarları network kesimleri için kritik öneme sahiptir.
+{: .prompt-tip }
 
 ```python
 import pika
@@ -144,6 +151,7 @@ def send_message(queue_name: str, message: dict):
 # Kullanım
 send_message('tasks', {'task_id': 1, 'action': 'send_email'})
 ```
+{: file="producer.py" }
 
 ### Simple Consumer
 
@@ -196,11 +204,18 @@ def start_consumer(queue_name: str):
 # Kullanım
 start_consumer('tasks')
 ```
+{: file="consumer.py" }
+
+> auto_ack=False kullanın ve manuel ACK yapın! auto_ack=True durumunda mesaj işleme hatası olsa bile mesaj kaybolur. prefetch_count ile eşzamanlı mesaj sayısını kontrol edin.
+{: .prompt-warning }
 
 ## Exchange Types
 
-![RabbitMQ Exchange Routing](/assets/img/posts/rabbitmq-exchanges-routing.png)
+![RabbitMQ Exchange Routing](/assets/img/posts/rabbitmq-exchanges-routing.png){: w="800" h="500" }
 _RabbitMQ exchange türleri: Direct, Fanout, Topic, Headers_
+
+> Direct: Routing key exact match. Fanout: Tüm queue'lara broadcast. Topic: Pattern matching (* bir kelime, # sıfır veya daha fazla kelime). Headers: Header attributes ile routing.
+{: .prompt-info }
 
 ### Direct Exchange
 
@@ -547,13 +562,17 @@ rabbitmq.declare_queue('tasks')
 rabbitmq.publish({'task_id': 1}, routing_key='tasks')
 rabbitmq.close()
 ```
+{: file="rabbitmq_manager.py" }
 
 ## İleri Seviye Özellikler
 
-![RabbitMQ Integration Patterns](/assets/img/posts/rabbitmq-integration-patterns.png)
+![RabbitMQ Integration Patterns](/assets/img/posts/rabbitmq-integration-patterns.png){: w="700" h="400" .shadow }
 _RabbitMQ entegrasyon pattern'leri ve kullanım senaryoları_
 
 ### Dead Letter Exchange (DLX)
+
+> DLX (Dead Letter Exchange) hatalı, expire olmuş veya reject edilen mesajları toplamak için kullanılır. Production'da mutlaka DLX tanımlayın ve monitoring yapın!
+{: .prompt-tip }
 
 ```python
 def setup_dlx():
@@ -639,6 +658,9 @@ send_priority_message({'task': 'low'}, priority=1)
 ```
 
 ### Message TTL (Time To Live)
+
+> TTL ile expire olan mesajlar kayıp olur! Kritik mesajlar için DLX ile birlikte kullanın. Queue-level TTL tüm queue için, message-level TTL her mesaj için ayrı ayrı geçerlidir.
+{: .prompt-danger }
 
 ```python
 def send_with_ttl(message: dict, ttl_ms: int):
@@ -753,6 +775,11 @@ print("RPC istek gönderiliyor...")
 response = rpc.call(10)
 print(f"Response: {response}")
 ```
+{: file="rpc_pattern.py" }
+
+> RPC pattern senkron işlem gerektiğinde kullanılır ancak RabbitMQ'
+un asenkron doğasına aykırıdır. Mümkünse asenkron callback pattern tercih edin.
+{: .prompt-info }
 
 ## Best Practices
 
@@ -792,6 +819,7 @@ class ConnectionPool:
             conn = self.pool.get()
             conn.close()
 ```
+{: file="connection_pool.py" }
 
 ### Retry Mechanism
 
@@ -832,6 +860,7 @@ def publish_with_retry(message: dict):
     
     connection.close()
 ```
+{: file="retry_helper.py" }
 
 ## Monitoring
 
