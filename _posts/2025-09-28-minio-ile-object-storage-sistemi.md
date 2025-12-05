@@ -1,5 +1,6 @@
 ---
 title: "MinIO ile Object Storage Sistemi"
+description: "MinIO ile S3-uyumlu self-hosted object storage kurulumu. Docker deployment, Python entegrasyonu, bucket policies, versioning ve production best practices."
 date: 2025-09-28 09:00:00 +0300
 categories: [Storage, Cloud]
 tags: [minio, object-storage, s3, python, cloud-storage, backup]
@@ -50,7 +51,7 @@ MinIO, Kubernetes-native, yüksek performanslı object storage sistemidir. AWS S
 - **Kubernetes entegrasyonu**: Cloud-native mimari
 - **Açık kaynak**: Apache License 2.0
 
-![MinIO S3 Compatible Storage](/assets/img/posts/minio-s3-compatible-storage.svg)
+![MinIO S3 Compatible Storage](/assets/img/posts/minio-s3-compatible-storage.svg){: w="700" h="400" }
 _MinIO S3 uyumlu object storage_
 
 ## MinIO Kurulumu
@@ -712,7 +713,7 @@ async def create_bucket(bucket_name: str):
         raise HTTPException(status_code=500, detail=str(e))
 ```
 
-![MinIO Object Locking](/assets/img/posts/minio-object-locking.svg)
+![MinIO Object Locking](/assets/img/posts/minio-object-locking.svg){: w="700" h="400" }
 _MinIO object locking ve versioning_
 
 ## İleri Seviye Özellikler
