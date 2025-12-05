@@ -1,5 +1,6 @@
 ---
 title: "Python ile PDF İşlemleri: Oluşturma, Düzenleme ve Otomasyon"
+description: "Python ile PDF oluşturma, okuma ve düzenleme rehberi. ReportLab, PyPDF2, pdfplumber kullanımı, form doldurma ve watermark ekleme."
 date: 2025-03-29 10:00:00 +0300
 categories: [Python, PDF Processing]
 tags: [python, pdf, pypdf2, reportlab, pdfplumber, pdf-generation, pdf-extraction, automation, document-processing, fpdf]
@@ -49,6 +50,10 @@ pip install pikepdf borb
 # Tüm araçlar
 pip install reportlab pypdf pdfplumber pikepdf Pillow
 ```
+{: .nolineno }
+
+> PDF kütüphaneleri sık güncellenir. `pypdf` (PyPDF2'nin modern fork'u) kullanmanızı öneririz.
+{: .prompt-tip }
 
 ## PyPDF2/pypdf ile PDF Okuma
 
@@ -110,7 +115,8 @@ for page_num, text in texts.items():
     print(text[:500])  # İlk 500 karakter
 ```
 
-![PDF Text Extraction with Python](/assets/img/posts/pdf-text-extraction-python.png)
+![PDF Text Extraction with Python](/assets/img/posts/pdf-text-extraction-python.png){: w="700" h="400" .shadow }
+_Python ile PDF metin çıkarma işlemi_
 
 ### PDF Şifreleme ve Şifre Çözme
 
@@ -280,7 +286,8 @@ split_pdf("document.pdf", "pages/")
 split_by_range("document.pdf", "extract.pdf", 5, 15)
 ```
 
-![PDF Merge Split Watermark Operations](/assets/img/posts/pdf-merge-split-watermark.png)
+![PDF Merge Split Watermark Operations](/assets/img/posts/pdf-merge-split-watermark.png){: w="700" h="400" .shadow }
+_PDF birleştirme, ayırma ve watermark işlemleri_
 
 ## Watermark ve Overlay
 
@@ -599,7 +606,8 @@ create_pdf_with_table("sales_report.pdf")
 
 ## PDF Form İşlemleri
 
-![PDF Form Filling Automation](/assets/img/posts/pdf-form-filling-automation.png)
+![PDF Form Filling Automation](/assets/img/posts/pdf-form-filling-automation.png){: w="700" h="400" .shadow }
+_PDF form doldurma otomasyonu akışı_
 
 ### Form Alanlarını Okuma
 
@@ -1216,4 +1224,4 @@ Python ile PDF işlemleri, belgelerinizi tamamen otomatikleştirebileceğiniz g�
 - [pdfplumber Documentation](https://github.com/jsvine/pdfplumber)
 - [PyPDF2 Tutorial](https://realpython.com/pdf-python/)
 
-PDF otomasyonu ile iş süreçlerinizi hızlandırın ve verimliliğinizi artırın! 🚀
+PDF otomasyonu ile iş süreçlerinizi hızlandırın ve verimliliğinizi artırın!
