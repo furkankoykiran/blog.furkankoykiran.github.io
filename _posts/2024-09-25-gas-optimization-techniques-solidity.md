@@ -58,6 +58,7 @@ contract GasCostExample {
     }
 }
 ```
+{: file="GasCostExample.sol" }
 
 ### Key Gas Metrics
 
@@ -111,6 +112,7 @@ contract HighlyOptimized {
     address owner;      // slot 2 (20 bytes)
 }
 ```
+{: file="StoragePacking.sol" }
 
 ### Strategic Variable Ordering
 
@@ -148,6 +150,7 @@ contract BestOrdering {
     uint128 updatedAt;    // slot 2
 }
 ```
+{: file="VariableOrdering.sol" }
 
 ### Constants and Immutables
 
@@ -174,6 +177,7 @@ contract ConstantOptimization {
     }
 }
 ```
+{: file="ConstantOptimization.sol" }
 
 ### Mappings vs Arrays
 
@@ -218,6 +222,7 @@ contract CollectionOptimization {
     }
 }
 ```
+{: file="CollectionOptimization.sol" }
 
 ## Memory vs Storage vs Calldata
 
@@ -274,6 +279,7 @@ contract DataLocationOptimization {
     }
 }
 ```
+{: file="DataLocation.sol" }
 
 ### String and Bytes Optimization
 
@@ -322,6 +328,7 @@ contract StringOptimization {
     }
 }
 ```
+{: file="StringOptimization.sol" }
 
 ## Function Optimization
 
@@ -364,6 +371,7 @@ contract FunctionOptimization {
     }
 }
 ```
+{: file="FunctionOptimization.sol" }
 
 ### Function Modifiers
 
@@ -405,6 +413,7 @@ contract ModifierOptimization {
     }
 }
 ```
+{: file="ModifierOptimization.sol" }
 
 ### Custom Errors vs Require Strings
 
@@ -446,6 +455,7 @@ contract ErrorOptimization {
     }
 }
 ```
+{: file="ErrorOptimization.sol" }
 
 ### Short-Circuiting
 
@@ -506,6 +516,7 @@ contract ShortCircuitOptimization {
     }
 }
 ```
+{: file="ShortCircuit.sol" }
 
 ## Loop Optimization
 
@@ -600,6 +611,7 @@ contract LoopOptimization {
     }
 }
 ```
+{: file="LoopOptimization.sol" }
 
 ### Loop Unrolling
 
@@ -637,6 +649,7 @@ contract LoopUnrolling {
     }
 }
 ```
+{: file="LoopUnrolling.sol" }
 
 ## Advanced Optimization Techniques
 
