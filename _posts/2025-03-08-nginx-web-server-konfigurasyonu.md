@@ -1,5 +1,6 @@
 ---
 title: "Nginx ile Web Server Konfigürasyonu: Profesyonel Rehber"
+description: "Production Nginx konfigürasyonu rehberi. Reverse proxy, load balancing, SSL/TLS, caching stratejileri ve performance tuning best practices."
 date: 2025-03-08 10:00:00 +0300
 categories: [DevOps, Web Server]
 tags: [nginx, web-server, reverse-proxy, load-balancing, ssl, https, caching, performance, linux, devops, virtual-host, security]
