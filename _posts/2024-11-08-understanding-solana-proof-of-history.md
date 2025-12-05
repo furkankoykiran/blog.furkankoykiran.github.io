@@ -61,7 +61,6 @@ PoH creates a verifiable sequence of events by using a cryptographic function th
 At the core of PoH is a sequential hashing process similar to a Verifiable Delay Function:
 
 ```python
-# Simplified PoH concept
 import hashlib
 import time
 
@@ -105,6 +104,7 @@ for idx, event in enumerate(events):
     print("-" * 60)
     previous = new_hash
 ```
+{: file="proof_of_history_simple.py" }
 
 ### The PoH Process
 
@@ -225,6 +225,7 @@ print("\n" + "=" * 70)
 print(f"Chain Valid: {poh_chain.verify_chain()}")
 print(f"Total Entries: {len(poh_chain.entries)}")
 ```
+{: file="poh_chain.py" }
 
 ## PoH Combined with Proof of Stake
 
@@ -321,6 +322,7 @@ print(f"\nAt slot {current_slot}, validator is locked out from:")
 for lock in locked_slots:
     print(f"  Slot {lock['slot']} (until slot {lock['locked_until']})")
 ```
+{: file="tower_bft_validator.py" }
 
 ### Leader Schedule
 
@@ -397,6 +399,7 @@ for slot in range(10):
     leader = schedule.get_leader(slot)
     print(f"  Slot {slot}: {leader}")
 ```
+{: file="leader_schedule.py" }
 
 ## Advantages of Proof of History
 
@@ -453,6 +456,7 @@ def compare_latency():
 
 compare_latency()
 ```
+{: file="latency_comparison.py" }
 
 ### 3. Energy Efficiency
 
