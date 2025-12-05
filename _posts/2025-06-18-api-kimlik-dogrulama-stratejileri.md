@@ -1,5 +1,6 @@
 ---
 title: "API Kimlik Doğrulama Stratejileri: JWT, OAuth2 ve Güvenlik En İyi Uygulamaları"
+description: "JWT, OAuth2, API Key gibi kimlik doğrulama yöntemleri. FastAPI ile güvenli API geliştirme, RBAC, rate limiting ve güvenlik best practices."
 date: 2025-06-18 10:00:00 +0300
 categories: [Security, API Development]
 tags: [api, authentication, jwt, oauth, api-key, security, fastapi]
@@ -314,7 +315,8 @@ if __name__ == "__main__":
 
 ## Refresh Token ile Token Yenileme
 
-![API Refresh Token Akışı](/assets/img/posts/api-refresh-token-flow.png)
+![API Refresh Token Akışı](/assets/img/posts/api-refresh-token-flow.png){: w="700" h="400" .shadow }
+_API refresh token akış diyagramı_
 _Refresh token kullanarak access token yenileme süreci_
 
 Güvenlik ve kullanıcı deneyimi dengesini sağlamak için, kısa ömürlü access token'lar ve uzun ömürlü refresh token'lar kullanılır.
@@ -644,7 +646,8 @@ print(response.json())
 
 ## OAuth2 ile Yetkilendirme
 
-![OAuth2 Akış Rolleri](/assets/img/posts/api-oauth-flow-roles.png)
+![OAuth2 Akış Rolleri](/assets/img/posts/api-oauth-flow-roles.png){: w="700" h="400" .shadow }
+_OAuth2 authorization flow rolleri ve etkileşimleri_
 _OAuth2 protokolünde rol ve etkileşimler_
 
 OAuth2, üçüncü taraf uygulamaların kullanıcı kaynaklarına erişim yetkisi alması için tasarlanmış bir yetkilendirme framework'üdür.
@@ -906,7 +909,8 @@ async def revoke_api_key(key_name: str, key_info: dict = Depends(get_api_key)):
 
 ## API Güvenliği En İyi Uygulamaları
 
-![API Güvenlik En İyi Uygulamaları](/assets/img/posts/api-security-best-practices.jpg)
+![API Güvenlik En İyi Uygulamaları](/assets/img/posts/api-security-best-practices.jpg){: w="700" h="400" .shadow }
+_API güvenlik en iyi uygulamaları özeti_
 _API güvenliği için kritik uygulamalar_
 
 ### 1. HTTPS Kullanımı
@@ -1052,7 +1056,7 @@ async def get_user(username: str, db: Session = Depends(get_db)):
     Güvenli kullanıcı sorgusu - SQL injection'a karşı korumalı
     
     ❌ YANLIŞ: f"SELECT * FROM users WHERE username = '{username}'"
-    ✅ DOĞRU: Parametreli sorgular kullanarak
+    DOĞRU: Parametreli sorgular kullanarak
     """
     # SQLAlchemy ORM otomatik olarak parametreli sorgu kullanır
     user = db.query(User).filter(User.username == username).first()
@@ -1166,29 +1170,29 @@ app.add_middleware(AuditMiddleware)
 API güvenliği için mutlaka uygulanması gereken kontrol listesi:
 
 ### Kimlik Doğrulama ve Yetkilendirme
-- ✅ Güçlü kimlik doğrulama mekanizması kullanın (JWT, OAuth2)
-- ✅ Şifreleri asla düz metin olarak saklamayın (bcrypt, argon2 kullanın)
-- ✅ Token'ları güvenli şekilde saklayın (HTTP-only cookie'ler)
-- ✅ Refresh token rotation uygulayın
-- ✅ Role-based access control (RBAC) implementasyonu yapın
+- Güçlü kimlik doğrulama mekanizması kullanın (JWT, OAuth2)
+- Şifreleri asla düz metin olarak saklamayın (bcrypt, argon2 kullanın)
+- Token'ları güvenli şekilde saklayın (HTTP-only cookie'ler)
+- Refresh token rotation uygulayın
+- Role-based access control (RBAC) implementasyonu yapın
 
 ### İletişim Güvenliği
-- ✅ Her zaman HTTPS kullanın
-- ✅ TLS 1.2 veya üstü sürüm kullanın
-- ✅ Certificate pinning kullanın (mobile app'lerde)
-- ✅ HSTS header'ı ekleyin
+- Her zaman HTTPS kullanın
+- TLS 1.2 veya üstü sürüm kullanın
+- Certificate pinning kullanın (mobile app'lerde)
+- HSTS header'ı ekleyin
 
 ### Input Validation
-- ✅ Tüm kullanıcı girişlerini validate edin
-- ✅ SQL injection'a karşı parametreli sorgular kullanın
-- ✅ XSS saldırılarına karşı output encoding yapın
-- ✅ File upload'larda tip ve boyut kontrolü yapın
+- Tüm kullanıcı girişlerini validate edin
+- SQL injection'a karşı parametreli sorgular kullanın
+- XSS saldırılarına karşı output encoding yapın
+- File upload'larda tip ve boyut kontrolü yapın
 
 ### Rate Limiting ve DoS Koruması
-- ✅ Endpoint bazlı rate limiting uygulayın
-- ✅ IP bazlı rate limiting ekleyin
-- ✅ Request size limitleri belirleyin
-- ✅ Timeout değerlerini ayarlayın
+- Endpoint bazlı rate limiting uygulayın
+- IP bazlı rate limiting ekleyin
+- Request size limitleri belirleyin
+- Timeout değerlerini ayarlayın
 
 ### Logging ve Monitoring
 - ✅ Tüm authentication attemptlerini loglayin
