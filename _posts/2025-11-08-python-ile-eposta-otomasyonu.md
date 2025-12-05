@@ -1,10 +1,11 @@
 ---
 title: "Python ile E-posta Otomasyonu"
+description: "Python ile SMTP, HTML şablonları ve e-posta servisleri kullanarak profesyonel e-posta otomasyon sistemleri geliştirme. Jinja2 template'leri, toplu gönderim, SendGrid/Mailgun entegrasyonu ve best practices."
 date: "2025-11-08 09:00:00 +0300"
 categories: [Python, Automation]
 tags: [python, email, smtp, automation, notification, alert, jinja2, html-email, mailgun, sendgrid]
 image:
-  src: /assets/img/posts/python-smtp-email-workflow.png
+  path: /assets/img/posts/python-smtp-email-workflow.png
   alt: "Python SMTP E-posta Workflow Diyagramı"
 ---
 
@@ -35,10 +36,11 @@ def send_simple_email():
         smtp.login('gonderici@example.com', 'uygulama_sifresi')
         smtp.send_message(msg)
         print("E-posta başarıyla gönderildi!")
-
-# Gmail için uygulama şifresi oluşturma:
-# https://myaccount.google.com/apppasswords
 ```
+{: file="send_email.py" }
+
+> Gmail ile e-posta göndermek için normal şifre yerine uygulama şifresi (app password) kullanmalısınız. [Google Hesabı Güvenliği](https://myaccount.google.com/apppasswords) sayfasından oluşturabilirsiniz.
+{: .prompt-tip }
 
 ### Çoklu Alıcı ve CC/BCC
 
@@ -85,12 +87,17 @@ def send_multi_recipient_email():
     
     print(f"E-posta {len(all_recipients)} kişiye gönderildi")
 ```
+{: file="send_multi_recipient.py" }
+
+> BCC (Blind Carbon Copy) alıcıları e-posta başlığında görünmez, ancak `send_message()` fonksiyonunun `to_addrs` parametresine eklenmelidir.
+{: .prompt-info }
 
 ## HTML E-posta ve Template Rendering
 
 Profesyonel e-postalar için HTML içerik ve template engine kullanımı önemlidir.
 
-![Jinja2 Email Template Rendering](/assets/img/posts/jinja2-email-template-rendering.jpg)
+![Jinja2 Email Template Rendering](/assets/img/posts/jinja2-email-template-rendering.jpg){: w="700" h="400" .shadow }
+_Jinja2 ile e-posta template rendering süreci_
 
 ### Jinja2 ile HTML Template
 
@@ -250,6 +257,7 @@ context = {
 
 send_html_email('ahmet@example.com', context)
 ```
+{: file="email_template.py" }
 
 ## Ek Dosya (Attachment) Gönderimi
 
@@ -346,10 +354,16 @@ def send_dataframe_as_excel(to_email, df, filename='report.xlsx'):
         smtp.login('analytics@company.com', 'app_password')
         smtp.send_message(msg)
 ```
+{: file="send_with_attachments.py" }
+
+> Büyük ek dosyalar (>10MB) gönderirken SMTP sunucularının boyut limitlerini kontrol edin. Gerekirse dosyaları sıkıştırın veya cloud storage linki gönderin.
+{: .prompt-warning }
 
 ## Toplu E-posta Gönderimi
 
-![Email Automation Architecture](/assets/img/posts/email-automation-python-architecture.png)
+![Email Automation Architecture](/assets/img/posts/email-automation-python-architecture.png){: w="800" h="500" .shadow }
+_Python ile e-posta otomasyon mimarisi_
+_Python ile e-posta otomasyon mimarisi_
 
 ```python
 import smtplib
@@ -602,6 +616,7 @@ result = sendgrid.send_simple(
     html_content='<h1>Aramıza hoş geldiniz!</h1>'
 )
 ```
+{: file="sendgrid_integration.py" }
 
 ### Mailgun Entegrasyonu
 
@@ -689,6 +704,10 @@ result = mailgun.send_email(
     attachments=['report.pdf']
 )
 ```
+{: file="mailgun_integration.py" }
+
+> SendGrid ve Mailgun gibi e-posta servisleri, SMTP'ye göre daha yüksek deliverability, detaylı analytics ve template yönetimi sunar. Production ortamları için önerilir.
+{: .prompt-tip }
 
 ## Error Handling ve Retry Logic
 
@@ -824,6 +843,10 @@ try:
 except EmailSendError as e:
     logger.error(f"Could not send email: {str(e)}")
 ```
+{: file="robust_email_sender.py" }
+
+> SMTP sunucuları geçici olarak kullanılamayabilir. Retry logic ve fallback sunucu konfigürasyonu ile sistem güvenilirliğini artırın.
+{: .prompt-warning }
 
 ## Production Best Practices
 
@@ -968,6 +991,7 @@ def email_worker(queue, sender):
             logger.error(f"Worker error: {str(e)}")
             time.sleep(1)
 ```
+{: file="email_queue.py" }
 
 ### 2. Email Analytics ve Tracking
 
@@ -1062,6 +1086,10 @@ class EmailTracker:
             )
         }
 ```
+{: file="email_tracker.py" }
+
+> E-posta tracking için 1x1 piksel görsel kullanımı yaygındır. Ancak bazı e-posta istemcileri görselleri otomatik yüklemez, bu durumda açılış oranları gerçek değerin altında olabilir.
+{: .prompt-info }
 
 ## Sonuç
 
