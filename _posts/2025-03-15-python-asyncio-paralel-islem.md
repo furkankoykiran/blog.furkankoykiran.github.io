@@ -1,5 +1,6 @@
 ---
 title: "Python asyncio ile Paralel İşlem: Asenkron Programlama Rehberi"
+description: "Python asyncio modülü ile asenkron programlama. Event loop, coroutines, async/await syntax, task yönetimi ve performans optimizasyonu teknikleri."
 date: 2025-03-15 10:00:00 +0300
 categories: [Python, Async Programming]
 tags: [python, asyncio, async-await, coroutines, concurrency, event-loop, parallelism, performance, optimization, aiohttp]
@@ -52,6 +53,8 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+{: file="sync_example.py" }
+```
 
 ### Asenkron Yaklaşım
 
@@ -89,8 +92,11 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+{: file="async_example.py" }
+```
 
-![Async/Await Concurrency Visualization](/assets/img/posts/async-await-concurrency-visualization.png)
+![Async/Await Concurrency Visualization](/assets/img/posts/async-await-concurrency-visualization.png){: w="700" h="400" .shadow }
+_Asenkron ve senkron işlemlerin karşılaştırmalı görselleştirmesi_
 
 ## Event Loop Nedir?
 
@@ -115,6 +121,8 @@ def show_loop_info():
     print(f"Debug mode: {loop.get_debug()}")
 
 asyncio.run(show_loop_info())
+```
+{: file="event_loop_info.py" }
 ```
 
 ### Event Loop Yaşam Döngüsü
@@ -175,6 +183,8 @@ async def hello_world():
 result = asyncio.run(hello_world())
 print(result)  # "Tamamlandı"
 ```
+{: file="simple_coroutine.py" }
+```
 
 ### Coroutine Zincirleme
 
@@ -212,7 +222,8 @@ async def main():
 asyncio.run(main())
 ```
 
-![Python Coroutine Execution Flow](/assets/img/posts/python-coroutine-execution-flow.png)
+![Python Coroutine Execution Flow](/assets/img/posts/python-coroutine-execution-flow.png){: w="700" h="400" .shadow }
+_Python coroutine çalışma akışı diyagramı_
 
 ### Paralel Coroutine Çalıştırma
 
@@ -335,8 +346,11 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="task_management.py" }
+```
 
-![Asyncio Task Queue Processing](/assets/img/posts/asyncio-task-queue-processing.png)
+![Asyncio Task Queue Processing](/assets/img/posts/asyncio-task-queue-processing.png){: w="700" h="400" .shadow }
+_Asyncio task queue işleme süreci_
 
 ### Task İptali
 
@@ -422,6 +436,8 @@ async def main_gather():
 
 asyncio.run(main_gather())
 ```
+{: file="gather_example.py" }
+```
 
 ### asyncio.wait
 
@@ -452,6 +468,8 @@ async def main_wait():
         task.cancel()
 
 asyncio.run(main_wait())
+```
+{: file="wait_example.py" }
 ```
 
 ### gather vs wait Karşılaştırma
@@ -511,6 +529,11 @@ async def compare_gather_wait():
 
 asyncio.run(compare_gather_wait())
 ```
+{: file="gather_vs_wait.py" }
+
+> `asyncio.gather()` basit paralel işlemler için, `asyncio.wait()` ise esnek kontrol gereken durumlar için uygundur.
+{: .prompt-tip }
+```
 
 ## Timeout İşlemleri
 
@@ -537,6 +560,8 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="timeout_example.py" }
+```
 
 ### Timeout Context Manager
 
@@ -558,6 +583,8 @@ async def main():
     print(result)  # "Timeout: https://example.com"
 
 asyncio.run(main())
+```
+{: file="timeout_context.py" }
 ```
 
 ## Asenkron Context Managers
@@ -592,6 +619,8 @@ async def main():
         print(f"Sonuçlar: {results}")
 
 asyncio.run(main())
+```
+{: file="async_context_manager.py" }
 ```
 
 ### Asenkron File Operations
@@ -630,6 +659,8 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="async_file_operations.py" }
+```
 
 ## Asenkron Generators ve Iterators
 
@@ -651,6 +682,8 @@ async def main():
         print(f"Number: {num}")
 
 asyncio.run(main())
+```
+{: file="async_generator.py" }
 ```
 
 ### Asenkron Iterator
@@ -683,6 +716,8 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="async_iterator.py" }
+```
 
 ### Asenkron Comprehension
 
@@ -708,6 +743,8 @@ async def main():
     }
 
 asyncio.run(main())
+```
+{: file="async_comprehension.py" }
 ```
 
 ## Queue ile Producer-Consumer Pattern
@@ -771,6 +808,8 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="producer_consumer.py" }
+```
 
 ### Priority Queue
 
@@ -817,6 +856,8 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="priority_queue.py" }
+```
 
 ## Semaphore ve Lock
 
@@ -845,6 +886,11 @@ async def main():
     await asyncio.gather(*tasks)
 
 asyncio.run(main())
+```
+{: file="semaphore_example.py" }
+
+> Semaphore ile API rate limiting ve kaynak yönetimi yapabilirsiniz. Maksimum eşzamanlı işlem sayısını sınırlayın.
+{: .prompt-tip }
 ```
 
 ### Lock ile Mutex
@@ -911,6 +957,8 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="aiohttp_basic.py" }
+```
 
 ### Paralel HTTP İstekleri
 
@@ -956,6 +1004,8 @@ async def main():
     print(f"\nTotal time: {elapsed:.2f}s")
 
 asyncio.run(main())
+```
+{: file="parallel_http.py" }
 ```
 
 ### Retry ve Error Handling
@@ -1006,6 +1056,11 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="retry_mechanism.py" }
+
+> HTTP isteklerinde exponential backoff ile retry mekanizması kullanarak API'lara aşırı yük bindirmeyin.
+{: .prompt-tip }
+```
 
 ## Veritabanı İşlemleri (asyncpg, motor)
 
@@ -1045,6 +1100,8 @@ async def fetch_users():
 
 asyncio.run(fetch_users())
 ```
+{: file="asyncpg_example.py" }
+```
 
 ### MongoDB (motor)
 
@@ -1078,6 +1135,8 @@ async def fetch_documents():
     client.close()
 
 asyncio.run(fetch_documents())
+```
+{: file="motor_example.py" }
 ```
 
 ## CPU-Bound İşlemler ve asyncio
@@ -1113,6 +1172,11 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="cpu_bound_async.py" }
+
+> CPU-bound işlemler için ProcessPoolExecutor kullanın. Asyncio sadece I/O-bound işlemler için verimlidir.
+{: .prompt-warning }
+```
 
 ### ThreadPoolExecutor ile Blocking I/O
 
@@ -1146,6 +1210,8 @@ async def main():
         print(f"{result['name']}: {result['followers']} followers")
 
 asyncio.run(main())
+```
+{: file="thread_pool_async.py" }
 ```
 
 ## Best Practices ve Anti-Patterns
@@ -1189,6 +1255,8 @@ async with aiohttp.ClientSession() as session:
     # Session tüm isteklerde yeniden kullanılır
     pass
 ```
+{: file="best_practices.py" }
+```
 
 ### ❌ Anti-Patterns
 
@@ -1224,6 +1292,8 @@ tasks = [task1(), task2()]
 await asyncio.gather(*tasks, return_exceptions=False)  # ❌ İlk hata tümünü iptal eder
 await asyncio.gather(*tasks, return_exceptions=True)  # ✅ Tüm sonuçları topla
 ```
+{: file="anti_patterns.py" }
+```
 
 ## Performance Monitoring
 
@@ -1256,6 +1326,8 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="profiling.py" }
+```
 
 ### Task Monitoring
 
@@ -1282,6 +1354,8 @@ async def main():
 
 asyncio.run(main())
 ```
+{: file="task_monitoring.py" }
+```
 
 ## Sonuç
 
@@ -1299,4 +1373,4 @@ Python asyncio, I/O-bound işlemlerde muazzam performans kazanımları sağlar. 
 - [Real Python: Async IO in Python](https://realpython.com/async-io-python/)
 - [asyncpg Documentation](https://magicstack.github.io/asyncpg/)
 
-Asyncio öğrenme eğrisi başta dik olabilir, ancak doğru kullanıldığında Python uygulamalarınızın performansını çarpıcı şekilde artırır! 🚀
+Asyncio öğrenme eğrisi başta dik olabilir, ancak doğru kullanıldığında Python uygulamalarınızın performansını çarpıcı şekilde artırır!
