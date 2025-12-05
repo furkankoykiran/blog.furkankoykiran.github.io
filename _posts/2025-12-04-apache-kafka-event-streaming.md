@@ -1,10 +1,11 @@
 ---
 title: "Apache Kafka ile Event Streaming: Gerçek Zamanlı Veri Pipeline'ları"
+description: "Apache Kafka ile gerçek zamanlı event streaming. Topic, partition, producer/consumer patterns, Python kafka-python entegrasyonu, fault tolerance ve distributed systems best practices."
 date: "2025-12-04 14:00:00 +0300"
 categories: [Data Engineering, Streaming]
 tags: [kafka, event-streaming, python, kafka-python, real-time, data-pipeline, distributed-systems, messaging]
 image:
-  src: /assets/img/posts/kafka-architecture-producer-consumer.png
+  path: /assets/img/posts/kafka-architecture-producer-consumer.png
   alt: "Apache Kafka Architecture - Producer Consumer Model"
 ---
 
@@ -20,7 +21,11 @@ Kafka, LinkedIn tarafından geliştirilip Apache Software Foundation'a bağışl
 - **Scalable**: Yatay olarak ölçeklenebilir
 - **Persistent**: Mesajlar disk'te saklanır
 
-![Kafka Architecture](/assets/img/posts/kafka-architecture-producer-consumer.png)
+![Kafka Architecture](/assets/img/posts/kafka-architecture-producer-consumer.png){: w="800" h="500" .shadow }
+_Apache Kafka mimarisi - Producer, Broker, Consumer modeli_
+
+> Kafka, geleneksel message queue'lardan farklı olarak mesajları siler değil, belirli bir süre saklar (retention policy). Aynı mesajlar birden fazla consumer tarafından okunabilir.
+{: .prompt-tip }
 
 ### Kafka Temel Kavramları
 
@@ -82,7 +87,6 @@ user-events
 ### Docker ile Hızlı Kurulum
 
 ```yaml
-# docker-compose.yml
 version: '3.8'
 
 services:
