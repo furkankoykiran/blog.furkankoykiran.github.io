@@ -1,10 +1,11 @@
 ---
 title: "gRPC ile Yüksek Performanslı API'ler"
+description: "gRPC ve Protocol Buffers ile yüksek performanslı API geliştirme. Python implementasyonu, streaming, interceptors, load balancing ve microservice best practices."
 date: "2025-10-22 09:00:00 +0300"
 categories: [Backend, API]
 tags: [grpc, protobuf, microservices, api, python, performance, rest, rpc, streaming, http2]
 image:
-  src: /assets/img/posts/grpc-architecture-workflow.png
+  path: /assets/img/posts/grpc-architecture-workflow.png
   alt: "gRPC Architecture ve Workflow Diyagramı"
 ---
 
