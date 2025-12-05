@@ -1,5 +1,6 @@
 ---
 title: "Python Performans Profiling ve Optimizasyon: Kapsamlı Rehber"
+description: "Python kod optimizasyonu ve profiling teknikleri. cProfile, memory_profiler, py-spy, line_profiler kullanımı ve bottleneck tespiti stratejileri."
 date: 2025-03-01 10:00:00 +0300
 categories: [Python, Performance]
 tags: [python, profiling, optimization, cprofile, memory-profiler, performance, line-profiler, py-spy, flame-graph, bottleneck, scalability]
