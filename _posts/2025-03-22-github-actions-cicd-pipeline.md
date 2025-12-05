@@ -1,5 +1,6 @@
 ---
 title: "GitHub Actions ile CI/CD Pipeline: Otomatik Test ve Deployment"
+description: "GitHub Actions ile CI/CD pipeline oluşturma rehberi. Otomatik test, Docker build, multi-environment deployment ve güvenlik best practices."
 date: 2025-03-22 10:00:00 +0300
 categories: [DevOps, CI/CD]
 tags: [github-actions, ci-cd, automation, testing, deployment, docker, workflows, yaml, devops, continuous-integration]
@@ -87,6 +88,10 @@ jobs:
           echo "Branch: ${{ github.ref }}"
           echo "Actor: ${{ github.actor }}"
 ```
+{: file=".github/workflows/hello-world.yml" }
+
+> `workflow_dispatch` event'i ile GitHub UI'dan manuel olarak workflow tetikleyebilirsiniz.
+{: .prompt-tip }
 
 ### Python Projesi için CI
 
@@ -140,8 +145,10 @@ jobs:
           file: ./coverage.xml
           fail_ci_if_error: true
 ```
+{: file=".github/workflows/python-ci.yml" }
 
-![CI/CD Deployment Automation Flow](/assets/img/posts/cicd-deployment-automation-flow.png)
+![CI/CD Deployment Automation Flow](/assets/img/posts/cicd-deployment-automation-flow.png){: w="700" h="400" .shadow }
+_CI/CD deployment otomasyonu akış diyagramı_
 
 ## Node.js/JavaScript CI/CD
 
@@ -358,7 +365,8 @@ EXPOSE 3000
 CMD ["node", "dist/index.js"]
 ```
 
-![GitHub Actions Workflow YAML Configuration](/assets/img/posts/github-actions-workflow-yaml.png)
+![GitHub Actions Workflow YAML Configuration](/assets/img/posts/github-actions-workflow-yaml.png){: w="700" h="400" .shadow }
+_GitHub Actions workflow YAML konfigürasyon örneği_
 
 ## Matrix Testing
 
@@ -451,8 +459,12 @@ jobs:
           echo "Testing with ${{ matrix.database }}"
           # Test komutları
 ```
+{: file=".github/workflows/matrix-testing.yml" }
 
 ## Secrets Yönetimi
+
+> API key'leri, şifreleri ve token'ları asla GitHub repository'nizde saklamayın! GitHub Secrets kullanarak güvenli şekilde yönetin.
+{: .prompt-danger }
 
 ### Repository Secrets
 
@@ -537,7 +549,8 @@ jobs:
           echo "Deploying to production..."
 ```
 
-![CI/CD Pipeline Stages Diagram](/assets/img/posts/cicd-pipeline-stages-diagram.png)
+![CI/CD Pipeline Stages Diagram](/assets/img/posts/cicd-pipeline-stages-diagram.png){: w="700" h="400" .shadow }
+_CI/CD pipeline aşamaları detaylı diyagram_
 
 ## Caching Stratejileri
 
@@ -1150,13 +1163,13 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ Deployment successful!",
+              "text": "Deployment successful!",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*✅ Deployment Successful*\nRepository: ${{ github.repository }}\nCommit: ${{ github.sha }}"
+                    "text": "*Deployment Successful*\nRepository: ${{ github.repository }}\nCommit: ${{ github.sha }}"
                   }
                 }
               ]
@@ -1391,4 +1404,4 @@ GitHub Actions ile CI/CD pipeline'larınızı tamamen otomatikleştirebilir, kod
 - [Awesome Actions](https://github.com/sdras/awesome-actions)
 - [GitHub Actions Best Practices](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
 
-CI/CD pipeline'ınızı kurarken güvenlik, performans ve maintainability'yi öncelik olarak görün! 🚀
+CI/CD pipeline'ınızı kurarken güvenlik, performans ve maintainability'yi öncelik olarak görün!
