@@ -1,5 +1,6 @@
 ---
 title: "Prometheus ve Grafana ile İzleme"
+description: "Prometheus ve Grafana ile kapsamlı izleme sistemi kurulumu. Metrik toplama, PromQL sorguları, alert yönetimi, dashboard oluşturma ve Python entegrasyonu."
 date: 2025-09-01 09:00:00 +0300
 categories: [Monitoring, Observability]
 tags: [prometheus, grafana, monitoring, metrics, alerting, observability, devops]
@@ -34,7 +35,7 @@ Grafana, farklı veri kaynaklarından gelen verileri görselleştirmek için kul
 - **Uyarı yönetimi**: Dashboard'lardan doğrudan uyarı oluşturma
 - **Kullanıcı yönetimi**: Ekip bazlı erişim kontrolü
 
-![Prometheus ve Grafana Entegrasyonu](/assets/img/posts/prometheus-grafana-integration-architecture.png)
+![Prometheus ve Grafana Entegrasyonu](/assets/img/posts/prometheus-grafana-integration-architecture.png){: w="800" h="500" .shadow }
 _Prometheus ve Grafana entegrasyon mimarisi_
 
 ## Prometheus Kurulumu
@@ -50,6 +51,10 @@ cd /opt/prometheus
 
 # Temel prometheus.yml dosyası oluştur
 cat > config/prometheus.yml <<EOF
+```
+{: .nolineno }
+
+```yaml
 global:
   scrape_interval: 15s  # Her 15 saniyede metrik topla
   evaluation_interval: 15s  # Kuralları her 15 saniyede değerlendir
@@ -92,7 +97,10 @@ scrape_configs:
           app: 'backend'
           version: 'v1.0'
 EOF
+```
+{: file="config/prometheus.yml" }
 
+```bash
 # Prometheus'u Docker ile çalıştır
 docker run -d \
   --name prometheus \
@@ -106,13 +114,13 @@ docker run -d \
   --storage.tsdb.retention.time=30d \
   --web.enable-lifecycle
 ```
+{: .nolineno }
 
 ### Docker Compose ile Tam Stack Kurulumu
 
 Prometheus, Grafana ve Exporter'ları bir arada çalıştırmak için Docker Compose kullanın:
 
 ```yaml
-# docker-compose.yml
 version: '3.8'
 
 services:
@@ -191,6 +199,7 @@ networks:
   monitoring:
     driver: bridge
 ```
+{: file="docker-compose.yml" }
 
 ```bash
 # Stack'i başlat
@@ -199,6 +208,8 @@ docker-compose up -d
 # Logları kontrol et
 docker-compose logs -f prometheus grafana
 ```
+{: .nolineno }
+{: .nolineno }
 
 ## Python Uygulamasında Prometheus Entegrasyonu
 
@@ -208,11 +219,11 @@ Python uygulamalarınıza Prometheus metrikleri eklemek için `prometheus_client
 # Prometheus client kütüphanesini yükle
 pip install prometheus-client
 ```
+{: .nolineno }
 
 ### FastAPI ile Prometheus Metrikleri
 
 ```python
-# app.py - FastAPI uygulaması ile Prometheus entegrasyonu
 from fastapi import FastAPI, Request
 from prometheus_client import Counter, Histogram, Gauge, generate_latest, CONTENT_TYPE_LATEST
 from fastapi.responses import Response
@@ -327,13 +338,13 @@ async def delete_user(user_id: int):
     active_users.dec()  # Aktif kullanıcı sayısını azalt
     return {"message": "User deleted"}
 ```
+{: file="app.py" }
 
 ### Özel Metrik Sınıfı
 
 Daha organize metrik yönetimi için özel sınıf kullanın:
 
 ```python
-# metrics.py - Merkezi metrik yönetimi
 from prometheus_client import Counter, Histogram, Gauge, Info
 from typing import Dict, Optional
 import time
@@ -466,6 +477,7 @@ async def create_user(username: str, email: str) -> Dict:
         "created": True
     }
 ```
+{: file="metrics.py" }
 
 ## PromQL Sorgu Örnekleri
 
@@ -517,7 +529,6 @@ avg_over_time(
 Uyarıları yönetmek için Alertmanager yapılandırması:
 
 ```yaml
-# alertmanager/config/alertmanager.yml
 global:
   # SMTP ayarları
   smtp_smarthost: 'smtp.gmail.com:587'
@@ -597,11 +608,11 @@ inhibit_rules:
       severity: 'warning'
     equal: ['alertname', 'cluster', 'service']
 ```
+{: file="alertmanager/config/alertmanager.yml" }
 
 ### Uyarı Kuralları Tanımlama
 
 ```yaml
-# prometheus/config/alerts/application.yml
 groups:
   - name: application_alerts
     interval: 30s
@@ -667,10 +678,11 @@ groups:
           summary: "Servis çalışmıyor: {{ $labels.job }}"
           description: "{{ $labels.instance }} servisi 1 dakikadır erişilebilir değil"
 ```
+{: file="prometheus/config/alerts/application.yml" }
 
 ## Grafana Kurulumu ve Yapılandırması
 
-![Grafana Dashboard](/assets/img/posts/grafana-dashboard-visualization.png)
+![Grafana Dashboard](/assets/img/posts/grafana-dashboard-visualization.png){: w="700" h="400" .shadow }
 _Grafana dashboard örneği_
 
 ### Grafana Provisioning
@@ -678,7 +690,6 @@ _Grafana dashboard örneği_
 Grafana'yı kod ile yapılandırmak için provisioning kullanın:
 
 ```yaml
-# grafana/provisioning/datasources/prometheus.yml
 apiVersion: 1
 
 datasources:
@@ -693,9 +704,9 @@ datasources:
       queryTimeout: "60s"
       httpMethod: "POST"
 ```
+{: file="grafana/provisioning/datasources/prometheus.yml" }
 
 ```yaml
-# grafana/provisioning/dashboards/default.yml
 apiVersion: 1
 
 providers:
@@ -709,11 +720,11 @@ providers:
     options:
       path: /etc/grafana/provisioning/dashboards
 ```
+{: file="grafana/provisioning/dashboards/default.yml" }
 
 ### Python Script ile Dashboard Oluşturma
 
 ```python
-# create_dashboard.py - Programatik dashboard oluşturma
 import json
 import requests
 from typing import Dict, List
@@ -857,8 +868,9 @@ if __name__ == "__main__":
         panels=panels
     )
     
-    print(f"Dashboard oluşturuldu: {result}")
+    print("Dashboard oluşturuldu: {}".format(result))
 ```
+{: file="create_dashboard.py" }
 
 ## Best Practices
 
@@ -878,6 +890,9 @@ response_time  # Birim yok
 
 ### 2. Label Kullanımı
 
+> Yüksek kardinalite label'ları kullanmaktan kaçının! User ID, session ID gibi benzersiz değerleri label olarak eklemek Prometheus'un performansını ciddi şekilde düşürür.
+{: .prompt-warning }
+
 ```python
 # Doğru label kullanımı - Düşük kardinalite
 http_requests_total{method="GET", endpoint="/api/users", status="200"}
@@ -888,6 +903,9 @@ http_requests_total{user_id="12345"}  # YANLIŞ!
 ```
 
 ### 3. Metrik Toplama Sıklığı
+
+> Scrape interval'ı sisteminizin ihtiyaçlarına göre ayarlayın. Çok sık toplama (5s) fazla kaynak tüketir, çok seyrek toplama (60s+) önemli olayları kaçırabilir.
+{: .prompt-tip }
 
 ```yaml
 # Optimal scrape interval
@@ -904,11 +922,15 @@ scrape_configs:
 
 ### 4. Veri Saklama
 
+> Prometheus yerel depolama için tasarlanmıştır. Uzun süreli saklama için Thanos, Cortex veya VictoriaMetrics gibi çözümler kullanın.
+{: .prompt-info }
+
 ```bash
 # Prometheus başlatırken retention policy belirle
 --storage.tsdb.retention.time=30d  # 30 gün tut
 --storage.tsdb.retention.size=50GB  # Maksimum 50GB
 ```
+{: .nolineno }
 
 ## Sonuç
 
