@@ -162,6 +162,7 @@ contract BasicERC20 {
     }
 }
 ```
+{: file="contracts/BasicERC20.sol" }
 
 ### Understanding the Implementation
 
@@ -366,6 +367,7 @@ contract MyToken is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit {
     }
 }
 ```
+{: file="contracts/MyToken.sol" }
 
 ### Key Features Explained
 
@@ -401,7 +403,6 @@ Comprehensive testing is crucial for token security.
 ### Hardhat Test Suite
 
 ```javascript
-// test/MyToken.test.js
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
@@ -645,6 +646,7 @@ describe("MyToken", function () {
     });
 });
 ```
+{: file="test/MyToken.test.js" }
 
 ### Running Tests
 
