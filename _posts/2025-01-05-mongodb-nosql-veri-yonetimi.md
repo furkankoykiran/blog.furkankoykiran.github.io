@@ -74,6 +74,7 @@ sudo systemctl status mongod
 # MongoDB shell'e bağlanma
 mongosh
 ```
+{: file="bash" }
 
 ### Python Kütüphaneleri
 
@@ -88,6 +89,7 @@ pip install motor
 pip install dnspython  # MongoDB Atlas için
 pip install python-dotenv  # Environment variables
 ```
+{: file="bash" }
 
 ## PyMongo ile Temel İşlemler
 
@@ -128,6 +130,7 @@ db = client['myapp_db']
 users_collection = db['users']
 posts_collection = db['posts']
 ```
+{: file="mongodb_connection.py" }
 
 ### CRUD İşlemleri
 
@@ -191,6 +194,7 @@ post_data = {
 
 posts_collection.insert_one(post_data)
 ```
+{: file="crud_create.py" }
 
 #### Read (Okuma)
 
@@ -260,6 +264,7 @@ users = users_collection.find()\
 total_users = users_collection.count_documents({})
 active_users_count = users_collection.count_documents({"is_active": True})
 ```
+{: file="crud_read.py" }
 
 #### Update (Güncelleme)
 
@@ -341,6 +346,7 @@ users_collection.replace_one(
     }
 )
 ```
+{: file="crud_update.py" }
 
 #### Delete (Silme)
 
@@ -359,6 +365,7 @@ result = users_collection.delete_many({})
 # Collection'ı drop etme
 users_collection.drop()
 ```
+{: file="crud_delete.py" }
 
 ## Motor ile Async Operations
 
@@ -394,6 +401,7 @@ async def shutdown_db_client():
     app.mongodb_client.close()
     print("Closed MongoDB connection")
 ```
+{: file="motor_setup.py" }
 
 ### Async CRUD Operations
 
@@ -443,6 +451,7 @@ async def create_user_endpoint(user: UserCreate):
     user_id = await create_user(user_data)
     return {"id": user_id, "message": "User created"}
 ```
+{: file="async_crud.py" }
 
 ## Aggregation Framework
 
@@ -666,6 +675,7 @@ def search_posts(search_term: str):
     
     return list(posts_collection.aggregate(pipeline))
 ```
+{: file="aggregation_examples.py" }
 
 ## Indexing ve Performans
 
@@ -712,6 +722,7 @@ users_collection.create_index(
 # Sparse index
 users_collection.create_index("phone", sparse=True)
 ```
+{: file="indexing.py" }
 
 ### Index Yönetimi
 
@@ -765,6 +776,7 @@ analyze_query_performance(
     {"age": {"$gte": 25}, "is_active": True}
 )
 ```
+{: file="query_performance.py" }
 
 ## Transactions
 
@@ -839,6 +851,7 @@ async def async_transfer_credits(from_user_id, to_user_id, amount):
                 await session.abort_transaction()
                 return False
 ```
+{: file="transactions.py" }
 
 ## Schema Validation
 
@@ -900,6 +913,7 @@ db.command({
     "validationAction": "error"   # error, warn
 })
 ```
+{: file="schema_validation.py" }
 
 ## Change Streams (Real-time Updates)
 
@@ -940,6 +954,7 @@ async def async_watch_changes():
             print(change)
             # Process change asynchronously
 ```
+{: file="change_streams.py" }
 
 ## Best Practices ve Güvenlik
 
@@ -960,6 +975,7 @@ client = MongoClient(
     journal=True
 )
 ```
+{: file="connection_pool.py" }
 
 ### Error Handling
 
@@ -1027,6 +1043,7 @@ users_collection.insert_one(
     j=True  # Journal'a yazıldığında confirm et
 )
 ```
+{: file="security_best_practices.py" }
 
 ## Sonuç
 
