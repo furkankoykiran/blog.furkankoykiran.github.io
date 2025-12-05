@@ -1,10 +1,11 @@
 ---
 title: "Webhook Handler ile Olay Güdümlü Mimari"
+description: "FastAPI ile production-ready webhook handler sistemi. Event-driven mimari, signature verification, retry mechanism, idempotency ve async processing."
 date: "2025-01-25 09:00:00 +0300"
 categories: [Python, Backend Development]
 tags: [webhooks, event-driven, fastapi, async, integration, api]
 image:
-  src: /assets/img/posts/webhook-architecture-diagram.png
+  path: /assets/img/posts/webhook-architecture-diagram.png
   alt: "Webhook Architecture Diagram"
 ---
 
@@ -47,7 +48,7 @@ async def handle_order_completion(request: Request):
 
 Webhook yaklaşımı gereksiz API çağrılarını ortadan kaldırarak bandwidth tasarrufu sağlar ve gerçek zamanlı tepki verme imkanı sunar.
 
-![FastAPI Webhook Event-Driven Architecture](/assets/img/posts/fastapi-webhook-event-driven.png)
+![FastAPI Webhook Event-Driven Architecture](/assets/img/posts/fastapi-webhook-event-driven.png){: w="800" h="500" .shadow }
 _FastAPI ile event-driven webhook sistemi_
 
 ## FastAPI ile Webhook Endpoint Oluşturma
@@ -219,7 +220,7 @@ async def handle_order_created(data: dict):
         await send_alert(f"Webhook processing failed: {e}")
 ```
 
-![Webhook Retry Mechanism](/assets/img/posts/webhook-retry-mechanism.png)
+![Webhook Retry Mechanism](/assets/img/posts/webhook-retry-mechanism.png){: w="800" h="500" .shadow }
 _Webhook retry ve error handling mekanizması_
 
 ## Retry Logic ve Hata Yönetimi
@@ -598,7 +599,7 @@ async def processor_health():
     }
 ```
 
-![Webhook Idempotency Pattern](/assets/img/posts/webhook-idempotency-pattern.png)
+![Webhook Idempotency Pattern](/assets/img/posts/webhook-idempotency-pattern.png){: w="700" h="400" .shadow }
 _Idempotency pattern ile duplicate webhook handling_
 
 ## Idempotency - Aynı Webhook'u Tekrar İşlememe
