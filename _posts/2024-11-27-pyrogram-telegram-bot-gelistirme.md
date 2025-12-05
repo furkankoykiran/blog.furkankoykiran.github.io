@@ -137,6 +137,7 @@ if __name__ == "__main__":
     print("Bot başlatılıyor...")
     app.run()
 ```
+{: file="bot.py" }
 
 Botu çalıştırmak için:
 
@@ -220,6 +221,7 @@ long_message_filter = filters.create(custom_filter)
 async def long_message_handler(client: Client, message: Message):
     await message.reply("Uzun bir mesaj yazdınız! 📝")
 ```
+{: file="filters_example.py" }
 
 ![Telegram Bot Workflow](/assets/img/posts/telegram-bot-workflow-automation.png)
 _Telegram Bot İş Akışı ve Otomasyon Mimarisi_
@@ -348,6 +350,7 @@ async def list_command(client: Client, message: Message):
     text = "**Liste:**\n\n" + "\n".join(current_items)
     await message.reply_text(text, reply_markup=keyboard)
 ```
+{: file="inline_keyboard.py" }
 
 ## Grup Yönetimi ve Admin Komutları
 
