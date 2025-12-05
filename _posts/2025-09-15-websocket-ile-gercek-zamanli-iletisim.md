@@ -1,5 +1,6 @@
 ---
 title: "WebSocket ile Gerçek Zamanlı İletişim"
+description: "FastAPI ile WebSocket kullanarak gerçek zamanlı uygulamalar geliştirme. Bidirectional iletişim, connection management, broadcasting ve production best practices."
 date: 2025-09-15 09:00:00 +0300
 categories: [Real-Time, Web Development]
 tags: [websocket, python, fastapi, real-time, socket-io, bidirectional]
@@ -42,11 +43,11 @@ FastAPI, WebSocket desteği ile birlikte gelir ve kullanımı oldukça kolaydır
 # Gerekli paketleri yükle
 pip install fastapi uvicorn websockets python-multipart
 ```
+{: .nolineno }
 
 ### Basit WebSocket Sunucusu
 
 ```python
-# simple_websocket.py - Temel WebSocket sunucusu
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 import asyncio
@@ -112,13 +113,15 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         print("İstemci bağlantıyı kapattı")
 ```
+{: file="simple_websocket.py" }
 
 ```bash
 # Sunucuyu başlat
 uvicorn simple_websocket:app --reload
 ```
+{: .nolineno }
 
-![WebSocket Real-Time Architecture](/assets/img/posts/websocket-realtime-architecture.png)
+![WebSocket Real-Time Architecture](/assets/img/posts/websocket-realtime-architecture.png){: w="800" h="500" .shadow }
 _WebSocket ile gerçek zamanlı mimari_
 
 ## Gelişmiş WebSocket Yönetimi
@@ -126,7 +129,6 @@ _WebSocket ile gerçek zamanlı mimari_
 Gerçek dünya uygulamalarında, birden fazla istemciyi yönetmek, oda konsepti oluşturmak ve hata işlemeyi düzgün yapmak gerekir:
 
 ```python
-# connection_manager.py - WebSocket bağlantı yöneticisi
 from typing import Dict, List, Set
 from fastapi import WebSocket, WebSocketDisconnect
 import json
@@ -292,11 +294,11 @@ class ConnectionManager:
 # Singleton instance
 manager = ConnectionManager()
 ```
+{: file="connection_manager.py" }
 
 ### Sohbet Uygulaması
 
 ```python
-# chat_app.py - Gerçek zamanlı sohbet uygulaması
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Query
 from connection_manager import manager
 from datetime import datetime
@@ -413,8 +415,9 @@ async def get_stats():
     """Sunucu istatistikleri"""
     return manager.get_stats()
 ```
+{: file="chat_app.py" }
 
-![FastAPI WebSocket Implementation](/assets/img/posts/fastapi-websocket-implementation.png)
+![FastAPI WebSocket Implementation](/assets/img/posts/fastapi-websocket-implementation.png){: w="700" h="400" .shadow }
 _FastAPI WebSocket implementasyonu_
 
 ## WebSocket Client Implementasyonu
@@ -422,7 +425,6 @@ _FastAPI WebSocket implementasyonu_
 ### Python Client
 
 ```python
-# websocket_client.py - Python WebSocket client
 import asyncio
 import websockets
 import json
@@ -550,6 +552,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+{: file="websocket_client.py" }
 
 ### JavaScript Client
 
@@ -748,6 +751,7 @@ document.getElementById('message-input').oninput = () => {
     typingTimer = setTimeout(() => {}, 1000);
 };
 ```
+{: file="websocket_client.js" }
 
 ## Performans ve Ölçeklendirme
 
@@ -756,7 +760,6 @@ document.getElementById('message-input').oninput = () => {
 Birden fazla sunucu instance'ı çalıştırırken Redis Pub/Sub kullanarak mesajları senkronize edin:
 
 ```python
-# redis_manager.py - Redis destekli WebSocket yönetimi
 import redis.asyncio as redis
 import json
 from typing import Optional
@@ -838,10 +841,14 @@ class RedisConnectionManager(ConnectionManager):
         
         return [json.loads(msg) for msg in messages]
 ```
+{: file="redis_manager.py" }
 
 ## Best Practices
 
 ### 1. Heartbeat/Ping-Pong
+
+> WebSocket bağlantılarının canlı olup olmadığını kontrol etmek için düzenli ping-pong mekanizması kullanın. Timeout süreleri ile ölü bağlantıları tespit edin.
+{: .prompt-tip }
 
 ```python
 # Bağlantının canlı olduğunu kontrol et
@@ -907,6 +914,9 @@ async def robust_websocket(websocket: WebSocket):
 
 ### 3. Mesaj Boyutu Limiti
 
+> Büyük mesajları filtreleyerek DoS saldırılarını önleyin. Makul bir mesaj boyutu limiti belirleyin (örn. 64KB).
+{: .prompt-warning }
+
 ```python
 # Büyük mesajları engelle
 MAX_MESSAGE_SIZE = 64 * 1024  # 64KB
@@ -925,6 +935,9 @@ async def receive_with_limit(websocket: WebSocket):
 ```
 
 ### 4. Rate Limiting
+
+> Rate limiting uygulamadan production'a çıkmayın! İstemci başına mesaj sayısını sınırlayarak sunucu kaynaklarını koruyun.
+{: .prompt-danger }
 
 ```python
 # Hız sınırlama
