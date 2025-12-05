@@ -1,10 +1,11 @@
 ---
 title: "pytest ile İleri Seviye Test Teknikleri"
+description: "pytest ile ileri seviye Python test teknikleri. Fixtures, parametrize, mocking, coverage, plugins ve CI/CD entegrasyonu. TDD best practices."
 date: "2025-10-10 09:00:00 +0300"
 categories: [Python, Testing]
 tags: [pytest, testing, tdd, fixtures, mocking, python, test-automation, ci-cd, coverage, unit-testing]
 image:
-  src: /assets/img/posts/pytest-unittest-comparison-flowchart.jpg
+  path: /assets/img/posts/pytest-unittest-comparison-flowchart.jpg
   alt: "pytest vs unittest Test Framework Karşılaştırması"
 ---
 
