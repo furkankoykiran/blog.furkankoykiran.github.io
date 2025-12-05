@@ -48,6 +48,7 @@ entryPoints:
   metrics:
     address: ":8082"    # Prometheus metrics
 ```
+{: file="traefik.yml" }
 
 ### Routers
 
@@ -64,6 +65,7 @@ http:
       tls:
         certResolver: letsencrypt
 ```
+{: file="traefik.yml" }
 
 ### Services
 
@@ -78,6 +80,7 @@ http:
           - url: "http://192.168.1.10:8000"
           - url: "http://192.168.1.11:8000"
 ```
+{: file="traefik.yml" }
 
 ### Middlewares
 
@@ -96,6 +99,7 @@ http:
         average: 100
         burst: 50
 ```
+{: file="traefik.yml" }
 
 ![Reverse Proxy Routing](/assets/img/posts/reverse-proxy-routing-diagram.png)
 _Reverse Proxy ile Request Routing_
@@ -190,6 +194,7 @@ global:
   checkNewVersion: true
   sendAnonymousUsage: false
 ```
+{: file="traefik/traefik.yml" }
 
 ### Docker Compose Setup
 
@@ -237,6 +242,7 @@ networks:
   traefik-public:
     external: true
 ```
+{: file="docker-compose.yml" }
 
 ### Network Oluşturma ve Permissions
 
@@ -257,6 +263,7 @@ docker compose up -d
 # Logları kontrol et
 docker compose logs -f traefik
 ```
+{: file="bash" }
 
 ## Application Container'larını Traefik ile Bağlama
 
@@ -286,6 +293,7 @@ networks:
   traefik-public:
     external: true
 ```
+{: file="docker-compose.yml" }
 
 ### Example 2: FastAPI Application with Middleware
 
@@ -329,6 +337,7 @@ networks:
   traefik-public:
     external: true
 ```
+{: file="docker-compose.yml" }
 
 ![Traefik Load Balancer](/assets/img/posts/traefik-docker-load-balancer.png)
 _Traefik ile Load Balancing ve Canary Deployment_
@@ -379,6 +388,7 @@ networks:
   traefik-public:
     external: true
 ```
+{: file="docker-compose.yml" }
 
 ![Let's Encrypt SSL](/assets/img/posts/traefik-letsencrypt-ssl.png)
 _Traefik ile Otomatik Let's Encrypt SSL Sertifika Yönetimi_
@@ -509,6 +519,7 @@ http:
           interval: "10s"
           timeout: "3s"
 ```
+{: file="traefik/dynamic/config.yml" }
 
 ## Gelişmiş Senaryolar
 
@@ -552,6 +563,7 @@ networks:
   traefik-public:
     external: true
 ```
+{: file="docker-compose.yml" }
 
 ### 2. Path-based Routing
 
@@ -593,6 +605,7 @@ networks:
   traefik-public:
     external: true
 ```
+{: file="docker-compose.yml" }
 
 ### 3. OAuth/OIDC Authentication (Authelia)
 
@@ -633,6 +646,7 @@ networks:
   traefik-public:
     external: true
 ```
+{: file="docker-compose.yml" }
 
 ## Monitoring ve Debugging
 
@@ -645,6 +659,7 @@ scrape_configs:
     static_configs:
       - targets: ['traefik:8082']
 ```
+{: file="prometheus.yml" }
 
 ### Dashboard Access
 
@@ -681,6 +696,7 @@ accessLog:
     headers:
       defaultMode: keep
 ```
+{: file="traefik.yml" }
 
 ## Production Best Practices
 
@@ -702,6 +718,7 @@ services:
       - NET_BIND_SERVICE
     user: "1000:1000"  # Non-root user
 ```
+{: file="docker-compose.yml" }
 
 ### 2. Rate Limiting Strategy
 
@@ -725,6 +742,7 @@ http:
           ipStrategy:
             depth: 1  # X-Forwarded-For header'daki depth
 ```
+{: file="traefik/dynamic/config.yml" }
 
 ### 3. SSL/TLS Configuration
 
@@ -753,6 +771,7 @@ tls:
         - CurveP384
       sniStrict: true
 ```
+{: file="traefik.yml" }
 
 ### 4. Backup Strategy
 
@@ -772,6 +791,7 @@ tar czf "backup/traefik-config-$(date +%Y%m%d).tar.gz" \
 find backup/ -name "*.json" -mtime +7 -delete
 find backup/ -name "*.tar.gz" -mtime +7 -delete
 ```
+{: file="backup-traefik.sh" }
 
 ### 5. High Availability Setup
 
@@ -801,6 +821,7 @@ volumes:
       o: addr=nfs-server.local,rw
       device: ":/traefik/certs"
 ```
+{: file="docker-compose.yml" }
 
 ## Troubleshooting
 
