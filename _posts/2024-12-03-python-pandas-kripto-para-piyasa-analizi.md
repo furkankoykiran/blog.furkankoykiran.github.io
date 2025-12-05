@@ -61,6 +61,7 @@ data = {
 df = pd.DataFrame(data)
 print(df)
 ```
+{: file="pandas_basics.py" }
 
 ## Kripto Veri Kaynakları
 
@@ -107,6 +108,7 @@ print(btc_data.head())
 print(f"\nVeri şekli: {btc_data.shape}")
 print(f"Eksik veri: {btc_data.isnull().sum().sum()}")
 ```
+{: file="fetch_binance_data.py" }
 
 ### 2. CoinGecko API ile Veri
 
@@ -147,6 +149,7 @@ eth_market = fetch_coingecko_data('ethereum', 90)
 print("Bitcoin Market Data:")
 print(btc_market.tail())
 ```
+{: file="fetch_coingecko_data.py" }
 
 ### 3. Çoklu Exchange Karşılaştırma
 
@@ -177,6 +180,7 @@ exchange_data = fetch_multi_exchange_data()
 for exchange, df in exchange_data.items():
     print(f"\n{exchange.upper()} - Son fiyat: ${df['close'].iloc[-1]:.2f}")
 ```
+{: file="multi_exchange_comparison.py" }
 
 ## Veri Temizleme ve Hazırlama
 
@@ -224,6 +228,7 @@ def clean_crypto_data(df):
 btc_clean = clean_crypto_data(btc_data)
 print(f"\nTemizlenmiş veri şekli: {btc_clean.shape}")
 ```
+{: file="clean_crypto_data.py" }
 
 ### Veri Resampling
 
