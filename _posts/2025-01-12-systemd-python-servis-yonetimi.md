@@ -1,10 +1,11 @@
 ---
 title: "Systemd ile Python Servis Yönetimi"
+description: "Python uygulamalarını systemd ile production servis haline getirme rehberi. Unit file yapılandırması, journald logging, watchdog, socket activation ve deployment."
 date: "2025-01-12 09:00:00 +0300"
 categories: [Linux, DevOps]
 tags: [systemd, python, linux, service, daemon, journald, devops, deployment]
 image:
-  src: /assets/img/posts/systemd-components-architecture.png
+  path: /assets/img/posts/systemd-components-architecture.png
   alt: "Systemd Architecture"
 ---
 
@@ -25,8 +26,8 @@ Systemd, modern Linux dağıtımlarında (Ubuntu 16.04+, CentOS 7+, Debian 8+) v
 
 ## Unit File Yapısı
 
-![Systemd Unit File Structure](/assets/img/posts/systemd-unit-file-visual-guide.png)
-*Systemd unit file sections and structure*
+![Systemd Unit File Structure](/assets/img/posts/systemd-unit-file-visual-guide.png){: w="800" h="500" .shadow }
+_Systemd unit file sections and structure_
 
 ### Temel Unit File Anatomisi
 
@@ -54,6 +55,7 @@ StandardError=journal
 [Install]
 WantedBy=multi-user.target
 ```
+{: file="/etc/systemd/system/myapp.service" }
 
 ### Section Açıklamaları
 
@@ -161,8 +163,8 @@ Also=myapp-worker.service
 
 ## Python Daemon Oluşturma
 
-![Python Daemon with Systemd](/assets/img/posts/python-daemon-systemd-service.png)
-*Python application running as systemd service*
+![Python Daemon with Systemd](/assets/img/posts/python-daemon-systemd-service.png){: w="700" h="400" .shadow }
+_Python application running as systemd service_
 
 ### Basit Web Server Servisi
 
@@ -290,6 +292,9 @@ WantedBy=multi-user.target
 
 ### Kurulum ve Başlatma
 
+> Her systemd servisi için ayrı bir sistem kullanıcısı oluşturun. Root yetkisiyle servis çalıştırmak güvenlik riski oluşturur.
+{: .prompt-tip }
+
 ```bash
 # Kullanıcı oluştur
 sudo useradd -r -s /bin/false www-data
@@ -322,6 +327,7 @@ sudo systemctl start python-webserver.service
 # Durum kontrol
 sudo systemctl status python-webserver.service
 ```
+{: .nolineno }
 
 ## FastAPI Production Setup
 
@@ -542,10 +548,13 @@ WantedBy=multi-user.target
 
 ## Journald ile Log Yönetimi
 
-![Journald Logging Architecture](/assets/img/posts/journald-logging-architecture.png)
-*Systemd journald logging system architecture*
+![Journald Logging Architecture](/assets/img/posts/journald-logging-architecture.png){: w="800" h="500" .shadow }
+_Systemd journald logging system architecture_
 
 ### Journalctl Komutları
+
+> journalctl ile logları filter ederken --since ve --until parametrelerini kullanarak disk I/O'yu azaltın. Structured logging ile custom field'lara göre arama yapabilirsiniz.
+{: .prompt-tip }
 
 ```bash
 # Bir servisin loglarını göster
@@ -583,6 +592,7 @@ sudo journalctl --vacuum-size=500M  # 500MB'dan fazlasını sil
 # Birden fazla servis
 sudo journalctl -u fastapi-app.service -u celery-worker.service
 ```
+{: .nolineno }
 
 ### Python'dan Journald'ye Log Gönderme
 
@@ -628,6 +638,9 @@ send(
 
 ### Temel İşlemler
 
+> Unit file değiştirdikten sonra mutlaka daemon-reload çalıştırın. Aksi halde değişiklikler aktif olmaz.
+{: .prompt-warning }
+
 ```bash
 # Servisi başlat
 sudo systemctl start myapp.service
@@ -660,6 +673,7 @@ sudo systemctl unmask myapp.service
 # Daemon reload (unit files değiştiğinde)
 sudo systemctl daemon-reload
 ```
+{: .nolineno }
 
 ### Bilgi ve İzleme
 
@@ -690,10 +704,14 @@ systemd-analyze
 systemd-analyze blame
 systemd-analyze critical-chain
 ```
+{: .nolineno }
 
 ## Gelişmiş Özellikler
 
 ### Watchdog (Healthcheck)
+
+> Watchdog kullanarak servisinizin donup donmadığını kontrol edin. WatchdogSec süresinde WATCHDOG=1 notify gönderilmezse systemd servisi restart eder.
+{: .prompt-info }
 
 ```python
 # app_with_watchdog.py
@@ -761,6 +779,9 @@ WantedBy=multi-user.target
 ```
 
 ### Socket Activation
+
+> Socket activation ile servisi sadece ilk bağlantı geldiğinde başlatabilirsiniz. Kaynak kullanımını optimize eder.
+{: .prompt-info }
 
 ```python
 # socket_activated_app.py
@@ -832,6 +853,7 @@ sudo systemctl start myapp.socket
 # İlk bağlantıda servis otomatik başlayacak
 curl http://localhost:8080
 ```
+{: .nolineno }
 
 ### Timer (Cron Alternative)
 
@@ -882,10 +904,14 @@ systemctl list-timers
 # Son çalışma zamanı
 systemctl status backup.timer
 ```
+{: .nolineno }
 
 ## Deployment Workflow
 
 ### Deployment Script
+
+> Deployment sırasında mutlaka health check yapın. Yeni version başarısız olursa otomatik rollback mekanizması ekleyin.
+{: .prompt-warning }
 
 ```bash
 #!/bin/bash
@@ -943,6 +969,7 @@ else
     exit 1
 fi
 ```
+{: file="deploy.sh" }
 
 ### Blue-Green Deployment
 
@@ -976,8 +1003,12 @@ sudo systemctl stop myapp-$CURRENT.service
 
 echo "Deployment complete!"
 ```
+{: file="blue-green-deploy.sh" }
 
 ## Troubleshooting
+
+> Servis sorunlarını debug ederken önce journalctl loglarına bakın. SELinux/AppArmor aktifse audit loglarını kontrol edin.
+{: .prompt-tip }
 
 ### Common Issues
 
@@ -1020,10 +1051,14 @@ MemoryMax=1.5G
 sudo lsof -i :8000
 sudo netstat -tulpn | grep 8000
 ```
+{: .nolineno }
 
 ## Best Practices
 
 ### 1. Security Hardening
+
+> Production ortamında mutlaka security hardening uygulayın. ProtectSystem, NoNewPrivileges ve CapabilityBoundingSet ile saldırı yüzeyini minimize edin.
+{: .prompt-warning }
 
 ```ini
 [Service]
@@ -1053,8 +1088,12 @@ AmbientCapabilities=CAP_NET_BIND_SERVICE
 SystemCallFilter=@system-service
 SystemCallFilter=~@privileged
 ```
+{: file="/etc/systemd/system/myapp.service" }
 
 ### 2. Resource Management
+
+> Resource limits ile bir servisin tüm sistem kaynaklarını tüketmesini engelleyin. Memory ve CPU quotaları production'da kritik öneme sahiptir.
+{: .prompt-tip }
 
 ```ini
 [Service]
@@ -1077,6 +1116,7 @@ IOWeight=500
 # Disk quota
 TasksMax=1024
 ```
+{: file="/etc/systemd/system/myapp.service" }
 
 ### 3. Monitoring Integration
 
@@ -1132,8 +1172,8 @@ Systemd ile Python uygulamalarınızı production-ready servisler olarak çalı�
 
 ### Kaynaklar
 
-- [Systemd Documentation](https://www.freedesktop.org/software/systemd/man/)
-- [python-systemd](https://github.com/systemd/python-systemd)
-- [systemd.service Manual](https://www.freedesktop.org/software/systemd/man/systemd.service.html)
+- [Systemd Documentation](https://www.freedesktop.org/software/systemd/man/) - Resmi systemd dokümantasyonu
+- [python-systemd](https://github.com/systemd/python-systemd) - Python systemd kütüphanesi
+- [systemd.service Manual](https://www.freedesktop.org/software/systemd/man/systemd.service.html) - Service unit dosya referansı
 
 Bir sonraki yazımızda **Python ile Hız Sınırlama ve API Throttling** konusunu işleyeceğiz!
