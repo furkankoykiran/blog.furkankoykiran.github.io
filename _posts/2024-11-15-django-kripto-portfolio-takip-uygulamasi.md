@@ -126,6 +126,7 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 ```
+{: file="crypto_portfolio/settings.py" }
 
 ## Database Modelleri
 
@@ -381,6 +382,7 @@ class PriceAlert(models.Model):
     def __str__(self):
         return f"{self.cryptocurrency.symbol} - {self.alert_type} - ${self.target_price}"
 ```
+{: file="portfolio/models.py" }
 
 ### Migrations Oluşturma ve Uygulama
 
@@ -585,6 +587,7 @@ class PriceAlertSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['user', 'triggered', 'created_at', 'triggered_at']
 ```
+{: file="portfolio/serializers.py" }
 
 ### Views (portfolio/views.py)
 
