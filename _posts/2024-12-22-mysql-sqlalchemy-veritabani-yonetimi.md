@@ -57,6 +57,7 @@ pip install alembic
 # Async desteği için (opsiyonel)
 pip install asyncio aiomysql
 ```
+{: file="bash" }
 
 ### MySQL Bağlantı Kurulumu
 
@@ -85,6 +86,7 @@ SessionLocal = sessionmaker(
     bind=engine
 )
 ```
+{: file="database.py" }
 
 ## Model Tanımlama ve İlişkiler
 
@@ -124,6 +126,7 @@ class User(Base):
             "created_at": self.created_at.isoformat() if self.created_at else None,
         }
 ```
+{: file="models.py" }
 
 ### One-to-Many İlişkisi
 
@@ -159,6 +162,7 @@ class Post(Base):
 # User modeline eklenmesi gereken ilişki
 User.posts = relationship("Post", back_populates="user", cascade="all, delete-orphan")
 ```
+{: file="models.py" }
 
 ### Many-to-Many İlişkisi
 
@@ -212,6 +216,7 @@ class Comment(Base):
     def __repr__(self):
         return f"<Comment(post_id={self.post_id}, user_id={self.user_id})>"
 ```
+{: file="models.py" }
 
 ## CRUD İşlemleri
 
@@ -287,6 +292,7 @@ try:
 finally:
     db.close()
 ```
+{: file="crud.py" }
 
 ### Read (Okuma)
 
@@ -357,6 +363,7 @@ def get_popular_tags(db, limit: int = 10):
         .limit(limit)\
         .all()
 ```
+{: file="crud.py" }
 
 ### Update (Güncelleme)
 
@@ -408,6 +415,7 @@ try:
 finally:
     db.close()
 ```
+{: file="crud.py" }
 
 ### Delete (Silme)
 
@@ -447,6 +455,7 @@ def bulk_delete_old_posts(db, days: int = 365):
     db.commit()
     return deleted_count
 ```
+{: file="crud.py" }
 
 ## Alembic ile Database Migrations
 
@@ -534,6 +543,7 @@ if context.is_offline_mode():
 else:
     run_migrations_online()
 ```
+{: file="alembic/env.py" }
 
 ### Migration Oluşturma ve Uygulama
 
@@ -602,6 +612,7 @@ def downgrade():
     op.drop_index('ix_posts_view_count', 'posts')
     op.drop_column('posts', 'view_count')
 ```
+{: file="alembic/versions/001_add_view_count.py" }
 
 ## Connection Pooling ve Performans
 
@@ -662,6 +673,7 @@ def get_pool_stats(engine):
 print(get_pool_stats(engine))
 # Output: {'size': 10, 'checked_in': 8, 'checked_out': 2, 'overflow': 0, 'total': 10}
 ```
+{: file="database.py" }
 
 ### Context Manager ile Güvenli Session Yönetimi
 
@@ -686,6 +698,7 @@ with get_db_session() as db:
     user = create_user(db, "jane_doe", "jane@example.com", "password123")
     print(f"User created: {user.username}")
 ```
+{: file="database.py" }
 
 ### Dependency Injection (FastAPI ile)
 
@@ -725,6 +738,7 @@ def get_user_endpoint(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return user.to_dict()
 ```
+{: file="main.py" }
 
 ## Query Optimizasyonu
 
@@ -760,6 +774,7 @@ posts = db.query(Post)\
     .options(selectinload(Post.tags))\
     .all()
 ```
+{: file="queries.py" }
 
 ### Indexleme ve Performans
 
@@ -799,6 +814,7 @@ def explain_query(db, query):
 query = db.query(Post).filter(Post.is_published == True)
 explain_query(db, query)
 ```
+{: file="models.py" }
 
 ### Batch Operations
 
@@ -825,6 +841,7 @@ db.bulk_insert_mappings(
 )
 db.commit()
 ```
+{: file="bulk_operations.py" }
 
 ## İleri Seviye Teknikler
 
@@ -896,6 +913,7 @@ user = user_repo.create({
 
 users = user_repo.search("alice")
 ```
+{: file="repositories.py" }
 
 ### Transaction Management
 
@@ -944,6 +962,7 @@ def receive_after_transaction_end(session, transaction):
     """Transaction sonrası hook"""
     print(f"Transaction ended: {transaction}")
 ```
+{: file="transactions.py" }
 
 ### Hybrid Properties ve Expressions
 
@@ -992,6 +1011,7 @@ print(user.full_name)  # "John Doe"
 users = db.query(User).filter(User.full_name == "John Doe").all()
 old_users = db.query(User).filter(User.is_older_than(365)).all()
 ```
+{: file="models.py" }
 
 ## Best Practices ve Güvenlik
 
@@ -1016,6 +1036,7 @@ result = db.execute(
     {"username": username}
 )
 ```
+{: file="security.py" }
 
 ### Connection String Güvenliği
 
@@ -1038,6 +1059,7 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 ```
+{: file="config.py" }
 
 ### Session Lifecycle Management
 
@@ -1075,6 +1097,7 @@ async def db_session_middleware(request, call_next):
         pass
     return response
 ```
+{: file="main.py" }
 
 ## Hata Yönetimi ve Logging
 
@@ -1127,6 +1150,7 @@ def before_cursor_execute(conn, cursor, statement, parameters, context, executem
     logger.debug(f"Query: {statement}")
     logger.debug(f"Parameters: {parameters}")
 ```
+{: file="error_handling.py" }
 
 ## Sonuç
 
