@@ -1,10 +1,11 @@
 ---
 title: "Veritabanı Bağlantı Havuzu ve Optimizasyon"
+description: "SQLAlchemy ve asyncpg ile veritabanı bağlantı havuzu optimizasyonu. Connection pooling, performans tuning, monitoring ve production best practices."
 date: "2025-11-01 09:00:00 +0300"
 categories: [Database, Performance]
 tags: [database, connection-pool, sqlalchemy, postgresql, mysql, performance, optimization, python, asyncpg, monitoring]
 image:
-  src: /assets/img/posts/database-connection-pooling-architecture.png
+  path: /assets/img/posts/database-connection-pooling-architecture.png
   alt: "Database Connection Pooling Mimarisi"
 ---
 
