@@ -1,10 +1,11 @@
 ---
 title: "Python Context Managers: İleri Seviye Kaynak Yönetimi ve Best Practices"
+description: "Python context managers ile otomatik kaynak yönetimi. __enter__ ve __exit__ protokolü, contextlib decorator'ları, database connection pool, file handling ve advanced patterns."
 date: "2025-11-22 11:00:00 +0300"
 categories: [Python, Software Development]
 tags: [python, context-managers, resource-management, contextlib, with-statement, clean-code, best-practices, design-patterns]
 image:
-  src: /assets/img/posts/python-context-manager-with-statement.jpg
+  path: /assets/img/posts/python-context-manager-with-statement.jpg
   alt: "Python Context Manager ve With Statement"
 ---
 
@@ -38,7 +39,11 @@ Context manager kullanmanın avantajları:
 - Daha temiz ve okunabilir kod
 - Resource leak'lerden korunma
 
-![Python Context Manager ve With Statement](/assets/img/posts/python-context-manager-with-statement.jpg)
+![Python Context Manager ve With Statement](/assets/img/posts/python-context-manager-with-statement.jpg){: w="700" h="400" .shadow }
+_Python context manager yapısı ve with statement kullanımı_
+
+> Context manager kullanımı, dosya, veritabanı bağlantısı gibi kaynakların exception durumunda bile otomatik kapatılmasını garanti eder.
+{: .prompt-tip }
 
 ## Context Manager Protocol
 
@@ -95,6 +100,7 @@ with FileManager('test.txt', 'w') as f:
 # Opening test.txt
 # Closing test.txt
 ```
+{: file="file_manager.py" }
 
 ## Database Connection Manager
 
@@ -161,12 +167,14 @@ except Exception as e:
 
 # Bağlantı otomatik olarak kapatıldı ve commit edildi
 ```
+{: file="database_manager.py" }
 
 ## contextlib ile Context Manager Oluşturma
 
 `contextlib` modülü, context manager oluşturmayı kolaylaştıran decorator'lar sağlar.
 
-![Contextlib Decorator](/assets/img/posts/python-contextlib-decorator.png)
+![Contextlib Decorator](/assets/img/posts/python-contextlib-decorator.png){: w="700" h="400" .shadow }
+_Python contextlib ile basitleştirilmiş context manager oluşturma_
 
 ### @contextmanager Decorator
 
