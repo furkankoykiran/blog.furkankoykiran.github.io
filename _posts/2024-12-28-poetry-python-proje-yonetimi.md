@@ -168,6 +168,7 @@ mypy = "^1.7.1"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 ```
+{: file="pyproject.toml" }
 
 ### Dependency Version Constraints
 
@@ -209,6 +210,7 @@ importlib-metadata = { version = "^6.0", python = "<3.10" }
 # Platform specific
 pywin32 = { version = "^306", platform = "win32" }
 ```
+{: file="pyproject.toml" }
 
 ## Dependency Management
 
@@ -537,6 +539,7 @@ packages = [
     { include = "mypackage/data", format = "sdist" }
 ]
 ```
+{: file="pyproject.toml" }
 
 ## Gerçek Dünya Örneği: FastAPI Projesi
 
@@ -648,6 +651,7 @@ disallow_untyped_defs = true
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 ```
+{: file="pyproject.toml" }
 
 ### Ana Uygulama Dosyası
 
@@ -703,6 +707,7 @@ def run_dev():
 if __name__ == "__main__":
     run_dev()
 ```
+{: file="myapi/main.py" }
 
 ### Konfigürasyon Yönetimi
 
@@ -740,6 +745,7 @@ def get_settings() -> Settings:
 
 settings = get_settings()
 ```
+{: file="myapi/config.py" }
 
 ### Testing Setup
 
@@ -813,6 +819,7 @@ def test_create_user(client):
     assert data["email"] == user_data["email"]
     assert "id" in data
 ```
+{: file="tests/test_users.py" }
 
 ## Docker ile Entegrasyon
 
@@ -848,6 +855,7 @@ EXPOSE 8000
 # Uygulamayı çalıştırma
 CMD ["poetry", "run", "uvicorn", "myapi.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
+{: file="Dockerfile" }
 
 ### docker-compose.yml
 
@@ -888,6 +896,7 @@ services:
 volumes:
   postgres_data:
 ```
+{: file="docker-compose.yml" }
 
 ## Poetry vs Diğer Araçlar
 
@@ -1022,6 +1031,7 @@ repos:
     hooks:
       - id: flake8
 ```
+{: file=".pre-commit-config.yaml" }
 
 ```bash
 # Pre-commit kurulumu
@@ -1085,6 +1095,7 @@ jobs:
         with:
           file: ./coverage.xml
 ```
+{: file=".github/workflows/test.yml" }
 
 ## Sorun Giderme
 
