@@ -3,6 +3,7 @@ title: "Elasticsearch ile Tam Metin Arama: Index, Query ve Aggregation"
 date: 2025-08-05 10:00:00 +0300
 categories: [Backend, Search]
 tags: [elasticsearch, full-text-search, indexing, query-dsl, aggregation]
+description: "Elasticsearch ile production-grade full-text search. Index mapping, query DSL, bool queries, aggregations, analyzer ve performance optimization best practices."
 image:
   path: /assets/img/posts/elasticsearch-components-diagram.jpg
   alt: "Elasticsearch Bileşenleri ve Mimarisi"
@@ -73,12 +74,14 @@ curl http://localhost:9200
 # Cluster health
 curl http://localhost:9200/_cluster/health?pretty
 ```
+{: .nolineno }
 
 ### Python Elasticsearch Client
 
 ```bash
 pip install elasticsearch
 ```
+{: .nolineno }
 
 ```python
 from elasticsearch import Elasticsearch
@@ -98,9 +101,12 @@ if es.ping():
     print("Elasticsearch bağlantısı başarılı!")
 ```
 
+> Elasticsearch bağlantısı kurarken mutlaka timeout ve retry mekanizmaları ekleyin. Production ortamında connection pooling kullanın.
+{: .prompt-tip }
+
 ## Index ve Mapping
 
-![Elasticsearch Internal Architecture](/assets/img/posts/elasticsearch-internal-architecture.png)
+![Elasticsearch Internal Architecture](/assets/img/posts/elasticsearch-internal-architecture.png){: w="800" h="500" }
 _Elasticsearch iç mimarisi ve indexing yapısı_
 
 ### Index Oluşturma
@@ -178,6 +184,9 @@ index_body = {
 
 es.indices.create(index='products', body=index_body)
 ```
+
+> Türkçe içerik için özel analyzer tanımlayın. Turkish stop words ve stemmer kullanımı arama kalitesini önemli ölçüde artırır.
+{: .prompt-tip }
 
 ### Mapping Types
 
@@ -285,6 +294,9 @@ actions = [
 helpers.bulk(es, actions)
 ```
 
+> Bulk operasyonlarda chunk_size ve max_chunk_bytes parametrelerini ayarlayın. Çok büyük batch'ler memory sorunlarına yol açabilir.
+{: .prompt-warning }
+
 ### Document Güncelleme ve Silme
 
 ```python
@@ -336,9 +348,12 @@ es.delete_by_query(
 )
 ```
 
+> Delete by query operasyonu geri alınamaz! Production ortamında mutlaka önce query'yi test edin ve backup alın.
+{: .prompt-danger }
+
 ## Arama Query'leri
 
-![Elasticsearch Physical Structure](/assets/img/posts/elasticsearch-physical-structure.png)
+![Elasticsearch Physical Structure](/assets/img/posts/elasticsearch-physical-structure.png){: w="800" h="500" }
 _Elasticsearch cluster yapısı: node, shard ve replica mimarisi_
 
 ### Match Query
@@ -474,6 +489,9 @@ response = es.search(
 )
 ```
 
+> Bool query'de filter context kullanmak scoring'i atlar ve cache'lenebilir. Performance için range ve term query'leri filter içinde kullanın.
+{: .prompt-tip }
+
 ### Fuzzy ve Wildcard
 
 ```python
@@ -528,6 +546,9 @@ response = es.search(
     }
 )
 ```
+
+> Wildcard ve regexp query'ler yavaştır. Prefix query veya n-gram tokenizer kullanmak daha performanslıdır.
+{: .prompt-warning }
 
 ## Aggregations
 
@@ -667,6 +688,9 @@ for category in response['aggregations']['categories']['buckets']:
     print(f"  Total Stock: {category['total_stock']['value']}")
 ```
 
+> Aggregation sonuçları cache'lenir. Sık kullanılan aggregation'ları filter context ile birleştirerek cache hit rate'i artırın.
+{: .prompt-info }
+
 ## İleri Seviye Özellikler
 
 ### Highlighting
@@ -773,6 +797,9 @@ while len(hits) > 0:
 # Clear scroll context
 es.clear_scroll(scroll_id=scroll_id)
 ```
+
+> Scroll API yerine Search After kullanmak daha verimlidir. Scroll context memory tüketir ve mutlaka clear edilmelidir.
+{: .prompt-tip }
 
 ### Percolator (Reverse Search)
 
@@ -926,6 +953,10 @@ es_client.bulk_index(products)
 # Search
 results = es_client.search({"match": {"title": "Product"}})
 ```
+{: file="elasticsearch_client.py" }
+
+> Bu helper class production kullanımı için connection pooling, retry logic ve comprehensive error handling ile genişletilebilir.
+{: .prompt-info }
 
 ## Best Practices
 
@@ -964,6 +995,10 @@ index_settings = {
     }
 }
 ```
+{: file="index_settings.py" }
+
+> Production ortamında refresh_interval'i artırarak indexing performansını iyileştirin. Ancak bu near real-time search'ü etkiler.
+{: .prompt-warning }
 
 ### Monitoring
 
@@ -983,8 +1018,12 @@ curl "localhost:9200/_nodes/hot_threads"
 # Pending tasks
 curl "localhost:9200/_cluster/pending_tasks?pretty"
 ```
+{: .nolineno }
 
 ## Sonuç
+
+> Production'da Elasticsearch kullanırken monitoring, alerting ve backup stratejisi mutlaka kurulmalıdır. Elastic Cloud veya self-managed cluster için X-Pack özellikleri kullanın.
+{: .prompt-tip }
 
 Elasticsearch, modern uygulamalarda arama ve analitik için güçlü bir araçtır. Bu yazıda ele aldığımız konular:
 
