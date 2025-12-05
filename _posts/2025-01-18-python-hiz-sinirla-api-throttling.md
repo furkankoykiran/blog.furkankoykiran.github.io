@@ -1,10 +1,11 @@
 ---
 title: "Python ile Hız Sınırlama ve API Throttling"
+description: "API güvenliği için rate limiting algoritmaları. Fixed window, sliding window, token bucket, Redis distributed solutions ve FastAPI entegrasyonu."
 date: "2025-01-18 09:00:00 +0300"
 categories: [API, Performance]
 tags: [python, rate-limiting, api, redis, throttling, fastapi, performance, security]
 image:
-  src: /assets/img/posts/rate-limiting-algorithms-comparison.png
+  path: /assets/img/posts/rate-limiting-algorithms-comparison.png
   alt: "Rate Limiting Algorithms Comparison"
 ---
 
@@ -44,8 +45,8 @@ headers = {
 
 ## Rate Limiting Algoritmaları
 
-![Rate Limiting Algorithms](/assets/img/posts/rate-limiting-algorithms-comparison.png)
-*Comparison of rate limiting algorithms*
+![Rate Limiting Algorithms](/assets/img/posts/rate-limiting-algorithms-comparison.png){: w="800" h="500" .shadow }
+_Comparison of rate limiting algorithms_
 
 ### 1. Fixed Window Counter
 
@@ -804,6 +805,9 @@ app.add_middleware(
 
 ### Tiered Rate Limiting (Plan Bazlı)
 
+> SaaS ürünlerinde farklı plan seviyelerine göre değişken rate limit uygulamak yaygındır. Free, Pro, Enterprise gibi tier'lara göre limitleri ayarlayın.
+{: .prompt-info }
+
 ```python
 from enum import Enum
 from pydantic import BaseModel
@@ -865,6 +869,9 @@ async def get_premium_data(request: Request, user: User = Depends(get_current_us
 ```
 
 ## Best Practices
+
+> Rate limit aşımında kullanıcıya açık bilgi verin. X-RateLimit-* header'ları ve Retry-After ile ne zaman yeniden deneyebileceğini bildirin.
+{: .prompt-warning }
 
 ### 1. Informative Error Responses
 
@@ -1077,9 +1084,9 @@ Python ile rate limiting, API güvenliği ve performansının temel taşlarında
 
 ### Kaynaklar
 
-- [IETF RFC 6585 - HTTP 429 Too Many Requests](https://tools.ietf.org/html/rfc6585)
-- [Redis Rate Limiting Patterns](https://redis.io/docs/manual/patterns/rate-limiting/)
-- [Stripe API Rate Limits](https://stripe.com/docs/rate-limits)
-- [FastAPI Rate Limiting](https://fastapi.tiangolo.com/)
+- [IETF RFC 6585 - HTTP 429 Too Many Requests](https://tools.ietf.org/html/rfc6585) - HTTP 429 standardı
+- [Redis Rate Limiting Patterns](https://redis.io/docs/manual/patterns/rate-limiting/) - Redis resmi rate limiting patterns
+- [Stripe API Rate Limits](https://stripe.com/docs/rate-limits) - Stripe'ın rate limiting yaklaşımı
+- [FastAPI Rate Limiting](https://fastapi.tiangolo.com/) - FastAPI middleware örnekleri
 
-Artık production-ready, scalable ve güvenli rate limiting sistemleri kurabilirsiniz! 🚀
+Artık production-ready, scalable ve güvenli rate limiting sistemleri kurabilirsiniz!
