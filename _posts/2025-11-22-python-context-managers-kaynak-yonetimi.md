@@ -1,6 +1,5 @@
----
-title: "Python Context Managers: Kaynak Yönetiminde Ustalık"
-description: "Dosya açıp kapatmanın ötesine geçin. Database Transaction'ları, Kilitler (Locks) ve Asenkron süreçleri 'with' bloğuyla yönetmek."
+title: "Python Context Managers: Kaynak Yönetimi ve 'with' Bloğu"
+description: "Python'da kaynak yönetimi (Resource Management) rehberi. Database transaction yönetimi, kilitler (Locks) ve hafıza sızıntılarını önleme teknikleri."
 date: "2025-11-22 15:00:00 +0300"
 categories: [Backend, Python]
 tags: [python, architecture, clean-code, asyncio, optimization]

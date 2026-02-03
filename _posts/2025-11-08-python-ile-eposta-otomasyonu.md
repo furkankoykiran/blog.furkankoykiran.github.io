@@ -1,6 +1,5 @@
----
-title: "Python E-Posta Otomasyonu: Teslimat Mühendisliği"
-description: "Kodunuz mail atıyor ama 'Gelen Kutusu'na düşüyor mu? Deliverability, SMTP protokolü, SPF/DKIM ve IP Reputation yönetimi."
+title: "Python E-Posta Otomasyonu: Deliverability ve SMTP Mühendisliği"
+description: "Python ile profesyonel mail gönderimi. Spam filtrelerini (Spam Filters) aşma, SPF/DKIM ayarları, Deliverability ve SMTP protokolü detayları."
 date: "2025-11-08 12:00:00 +0300"
 categories: [Backend, Automation]
 tags: [python, email, deliverability, security, smtp]
