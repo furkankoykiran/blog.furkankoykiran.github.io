@@ -82,7 +82,7 @@ Maintainer açıkça belirtmiş: "RE2 does not support constructs that require b
 
 Yani "güvenlik garantimizi bozmadan bu özelliği ekleyemeyiz."
 
-![Akademik Araştırma](/assets/img/posts/regex-academic-paper-reference.jpg)
+![Akademik Araştırma](/assets/img/posts/regex-academic-paper-reference.png)
 *Akademik araştırmalar pratik problemlere çözüm sunabiliyor*
 
 ## "İmkansız" Denen Çözümü Aramak
@@ -107,7 +107,10 @@ Hedefim basitti: Lookaround özelliğini eklemek, ama güvenlik garantilerini bo
 2. Bu mini-programları ana aramayla birlikte çalıştır
 3. Geriye bakma mesafesini sınırla (255 karakter)
 
-255 karakter sınırı neden? Çünkü pratikte çoğu kullanım senaryosunu kapsıyor ve sistemi güvenli tutuyor.
+255 karakter sınırı neden? Çünkü:
+- Pratikte çoğu kullanım senaryosunu kapsıyor
+- Sistemi güvenli tutuyor
+- Bellekte kompakt temsil sağlıyor
 
 Birkaç hafta sonra çalışan bir prototipim vardı:
 
@@ -128,7 +131,12 @@ RE2::PartialMatch("goodbye world", re2); // ✗ bulmaz
 
 ## Issue Açtım, İlginç Bir Şey Oldu
 
-Çalışan prototipimi toplulukla paylaşmak için Issue #585'i açtım. Detaylı bir açıklama yazdım: Ne yaptım, nasıl yaptım, hangi kısıtlamalar var.
+Çalışan prototipimi toplulukla paylaşmak için Issue #585'i açtım. Detaylı bir açıklama yazdım:
+
+- Ne yaptım
+- Nasıl yaptım
+- Hangi kısıtlamalar var
+- Neden 255 karakter sınırı koydum
 
 Birkaç hafta sonra beklemediğim bir yorum geldi. İsviçre'deki EPFL üniversitesinden bir araştırmacı yazdı:
 
@@ -148,7 +156,11 @@ Meğer aynı problemi, aynı dönemde, farklı yaklaşımlarla çözmeye çalı�
 | Kod değişikliği | ~280 satır | ~275 satır |
 | Yaklaşım | Pragmatik | Akademik |
 
-İkisi de güvenlik garantilerini koruyor. İkisi de teorik olarak doğru. Sadece farklı öncelikler.
+İkisi de güvenlik garantilerini koruyor. İkisi de teorik olarak doğru. Sadece farklı öncelikler:
+
+- EPFL'in çözümü matematiksel olarak daha zarif
+- Benimki daha fazla senaryoyu kapsıyor (hem ileri hem geri bakma)
+- İkisi de henüz merge edilmedi
 
 ## Bu Deneyimden Ne Öğrendim?
 
@@ -156,13 +168,17 @@ Meğer aynı problemi, aynı dönemde, farklı yaklaşımlarla çözmeye çalı�
 
 Yıllardır "yapılamaz" denilen bir şey, doğru yaklaşımla mümkün olabilir. 61 kişi istemesine rağmen 7 yıldır eklenmeyen bir özellik, birkaç haftalık çalışmayla prototip haline geldi.
 
+Önemli olan araştırmak ve denemek.
+
 ### 2. Dünyanın Bir Köşesinde Birisi Aynı Şeyi Düşünüyor
 
 Issue açmak, sadece çözüm paylaşmak değil. Aynı problem üzerinde çalışan insanlarla tanışmak için de bir fırsat. Ben İstanbul'da, onlar İsviçre'de - ama aynı soruna farklı çözümler ürettik.
 
 ### 3. Sonuç Her Zaman "Merge" Değil
 
-PR'ım henüz merge edilmedi. Belki hiç edilmeyecek. Ama bu yolculukta kazandığım deneyimler kalıcı:
+PR'ım henüz merge edilmedi. Belki hiç edilmeyecek. Google'ın kritik altyapısına değişiklik kabul etmek zor bir karar - milyonlarca kullanıcıyı etkiliyor.
+
+Ama bu yolculukta kazandığım deneyimler kalıcı:
 - Karmaşık bir kod tabanını analiz etme
 - Akademik makale okuma ve pratiğe çevirme
 - Açık kaynak toplulukla iletişim kurma
@@ -174,9 +190,13 @@ PR'ım henüz merge edilmedi. Belki hiç edilmeyecek. Ama bu yolculukta kazandı
 
 İlk açık kaynak katkınız Google'ın kritik altyapısını değiştirmek olmak zorunda değil. Bir dokümantasyon hatası düzeltmek, küçük bir bug fix göndermek veya test eklemek - hepsi değerli katkılar.
 
+Önemli olan başlamak.
+
 ## Sonuç
 
-Issue #585 hala açık. Tartışma devam ediyor. Belki bir gün merge edilir, belki edilmez. Ama "imkansız" denilen bir şeyin aslında yapılabilir olduğunu gösterdik.
+Issue #585 hala açık. Tartışma devam ediyor. Belki bir gün merge edilir, belki edilmez.
+
+Ama "imkansız" denilen bir şeyin aslında yapılabilir olduğunu gösterdik - hem ben, hem de dünyanın öbür ucundaki EPFL ekibi. Bu bile başlı başına bir kazanım.
 
 Eğer siz de bir projeye bakıp "bu özellik neden yok?" diye soruyorsanız, belki cevap sizin elinizde olabilir.
 
