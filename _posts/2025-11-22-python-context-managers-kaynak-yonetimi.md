@@ -1,3 +1,4 @@
+---
 title: "Python Context Managers: Kaynak Yönetimi ve 'with' Bloğu"
 description: "Python'da kaynak yönetimi (Resource Management) rehberi. Database transaction yönetimi, kilitler (Locks) ve hafıza sızıntılarını önleme teknikleri."
 date: "2025-11-22 15:00:00 +0300"

@@ -1,3 +1,4 @@
+---
 title: "Git Stratejileri: Takım Çalışması ve Trunk Based Development"
 description: "GitFlow vs Trunk Based Development karşılaştırması. Büyük takımlarda Merge Hell'den kurtulma, CI/CD süreçleri ve Git Bisect ile hata ayıklama teknikleri."
 date: "2025-11-29 10:00:00 +0300"

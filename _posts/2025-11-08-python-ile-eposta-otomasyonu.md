@@ -1,3 +1,4 @@
+---
 title: "Python E-Posta Otomasyonu: Deliverability ve SMTP Mühendisliği"
 description: "Python ile profesyonel mail gönderimi. Spam filtrelerini (Spam Filters) aşma, SPF/DKIM ayarları, Deliverability ve SMTP protokolü detayları."
 date: "2025-11-08 12:00:00 +0300"
