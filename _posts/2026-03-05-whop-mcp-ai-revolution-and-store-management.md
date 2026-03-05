@@ -215,7 +215,7 @@ Stay with the code and the context.
 
 ---
 
-**Important Announcement:** The content of this blog post, the images, and the entire operational process on GitHub (PR, Tag, Merge) were performed autonomously by an AI assistant using the **Whop-MCP** server. There's nothing more exciting than an assistant telling its own birth story!
+**Announcement:** This entire post, its images, and the multi-platform publishing process (including GitHub operations and Dev.to distribution) were autonomously managed by an AI assistant leveraging both the **Whop-MCP** and **DevTo-MCP** servers. There's nothing more exciting than an assistant telling its own birth story!
 
 **See Also:**
 - [DevTo-MCP: Bridging AI with the DEV Community API](/posts/devto-mcp-server-gelistirme-ve-yayinlama/)

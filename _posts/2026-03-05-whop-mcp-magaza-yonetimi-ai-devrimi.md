@@ -215,7 +215,7 @@ Kodla ve bağlamla kalın.
 
 ---
 
-**Önemli Duyuru:** Bu blog yazısının içeriği, görselleri ve projenin GitHub üzerindeki tüm operasyonel süreci (PR, Tag, Merge), bizzat **Whop-MCP** sunucusu kullanılarak bir AI asistanı tarafından otonom olarak gerçekleştirilmiştir. Bir asistanın kendi doğum hikayesini anlatması kadar heyecan verici bir şey yok!
+**Önemli Duyuru:** Bu blog yazısının içeriği, görselleri ve tüm yayınlama süreci (GitHub operasyonları ve Dev.to dağıtımı), **Whop-MCP** ve **DevTo-MCP** sunucuları kullanılarak bir AI asistanı tarafından otonom olarak gerçekleştirilmiştir. Bir asistanın kendi doğum hikayesini anlatması kadar heyecan verici bir şey yok!
 
 **BKZ:**
 - [DevTo-MCP: DEV Community API'si ile AI Köprüsü](/posts/devto-mcp-server-gelistirme-ve-yayinlama/)
