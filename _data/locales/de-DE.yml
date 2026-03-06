@@ -1,4 +1,8 @@
 # The layout text of site
+seo:
+  title: "Furkan Köykıran | Software-, KI- und Technologie-Blog"
+  description: "Persönlicher Blog von Furkan Köykıran über Softwareentwicklung, künstliche Intelligenz und Technologie."
+  keywords: "Furkan Köykıran, Software Blog, Technologie, KI, Trading Bots, Programmierung"
 
 # ----- Commons label -----
 
