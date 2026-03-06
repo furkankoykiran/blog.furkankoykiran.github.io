@@ -1,4 +1,8 @@
 # The layout text of site
+seo:
+  title: "Furkan Köykıran | Yazılım, AI ve Teknoloji Blogu"
+  description: "Furkan Köykıran'ın yazılım geliştirme, yapay zeka ve teknoloji üzerine yazılarını paylaştığı kişisel blogu."
+  keywords: "furkan köykıran, yazılım blogu, teknoloji, yapay zeka, trading bot, python, javascript, yazılım geliştirme"
 
 # ----- Commons label -----
 
