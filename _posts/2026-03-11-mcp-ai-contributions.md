@@ -9,7 +9,7 @@ image:
   alt: "MCP and AI Contributions Banner"
 ---
 
-Bu blog yazısında, Ocak ayından itibaren yoğunlaştığım Model Context Protocol (MCP) ekosistemi ve AI platformları katkılarından bahsedeceğim.
+Bu blog yazısında, Model Context Protocol (MCP) ekosistemi ve AI platformlarına yaptığım katkılardan bahsedeceğim.
 
 Bu dönemde, Playwright'de Unicode sanitization sorununu çözdüm, GitHub MCP server'ında security validation ekledim ve LobeHub platformunda onboarding crash fix'i yaptım.
 
@@ -30,7 +30,7 @@ Geçen yıl yaptığım [DevTo-MCP](https://github.com/furkankoykiran/DevTo-MCP)
 
 ### Problemi Keşfetmek
 
-Ocak ayı başında `playwright-mcp` projesinde bir issue'ya rastladım. Bir başka katkıda bulunan (frankhommers), [#1447 numaralı issue](https://github.com/microsoft/playwright-mcp/issues/1447)'de MCP responses'larında malformed Unicode (bozuk Unicode) karakterler nedeniyle JSON serialization hataları yaşandığını bildirmişti. Sonra frankhommers, [PR #1448](https://github.com/microsoft/playwright-mcp/pull/1448) ile bu sorunu çözmeye çalışmıştı, ancak bu PR transport layer'da (cli.js) çözüm sunuyordu ve kapatılmıştı.
+`playwright-mcp` projesinde bir issue'ya rastladım. Bir başka katkıda bulunan (frankhommers), [#1447 numaralı issue](https://github.com/microsoft/playwright-mcp/issues/1447)'de MCP responses'larında malformed Unicode (bozuk Unicode) karakterler nedeniyle JSON serialization hataları yaşandığını bildirmişti. Sonra frankhommers, [PR #1448](https://github.com/microsoft/playwright-mcp/pull/1448) ile bu sorunu çözmeye çalışmıştı, ancak bu PR transport layer'da (cli.js) çözüm sunuyordu ve kapatılmıştı.
 
 Sorun, web sayfalarındaki "lone surrogate" karakterlerinin (örneğin yarım kalmış emoji parçaları) JSON'a serialize edilirken hata oluşturmasıydı.
 
@@ -77,43 +77,52 @@ function sanitizeUnicode(text: string): string {
 
 ---
 
-## 2. GitHub MCP Server: Repository Owner Validation
+## 2. GitHub MCP Server: Discussions API ve Read-Only Mode
 
 ### Problemi Keşfetmek
 
-Ocak ayı sonlarında GitHub MCP server'ında bir güvenlik sorunu tespit ettim. `get_repositories` aracı kullanılırken, repository sahibi (owner) ile authenticated user arasında doğrulama yapılmıyordu. Bu durumda, bir kullanıcı başka bir kullanıcının private reposunu sorgulayabiliyordu.
+GitHub MCP server'ında iki farklı eksiklik tespit ettim. Birincisi, discussions oluşturmak için bir tool yoktu. İkincisi, `--read-only` flag'i HTTP mode'da çalışmıyordu - write tools (create_branch, create_pull_request, merge_pull_request) read-only mode'da bile erişilebiliyordu.
+
+### Çözüm: Create Discussion Tool ve Read-Only Fix
+
+[#1519 numaralı PR](https://github.com/github/github-mcp-server/pull/1519) ile create_discussion tool ekledim:
 
 ```python
-# Önceki durum - GÜVENLİK AÇIĞI!
-repos = github.get_repositories("other-user")
-# diğer kullanıcının private repoları da dönüyordu!
+# pkg/github/discussions.go
+func CreateDiscussion(ctx context.Context, client *github.Client, input DiscussionInput) (*github.Discussion, error) {
+    // GraphQL mutation ile discussion oluşturma
+    mutation := `
+        mutation {
+            createDiscussion(input: {repositoryId: $repoId, categoryId: $catId, title: $title, body: $body}) {
+                discussion { title, url, number }
+            }
+        }
+    `
+    // ...
+}
 ```
 
-### Çözüm: Owner Validation
+[#2200 numaralı PR](https://github.com/github/github-mcp-server/pull/2200) ile read-only flag fix'i yaptım:
 
-[#2200 numaralı PR](https://github.com/github/github-mcp-server/pull/2200) ile owner validation ekledim:
+```go
+// pkg/http/server.go
+type ServerConfig struct {
+    ReadOnly bool `json:"read_only"`
+}
 
-```python
-# src/githubmcptools/server.py
-def get_repositories(owner: str) -> list[dict]:
-    authenticated_user = github.get_me()["login"]
-
-    # Eğer owner farklıysa, sadece public repoları dön
-    if owner != authenticated_user:
-        query = f"user:{owner} visibility:public"
-    else:
-        query = f"user:{owner}"
-
-    return github.search_repositories(query)
+// withGlobalReadonly middleware ile write tools'u block'la
+if config.ReadOnly {
+    // create_branch, create_pull_request, merge_pull_request gizle
+}
 ```
 
 ### Öğrenilen Dersler
 
-1. **Authenticated User Kontrolü**: MCP server'larında, authenticated user ile yapılan request'in sahibi arasında doğrulama kritik.
+1. **GraphQL Mutation**: GitHub Discussions API'si GraphQL üzerinden çalışıyor.
 
-2. **Public vs Private**: Farklı bir kullanıcıyı sorgularken, sadece public repoları dönmek güvenlik best practice'i.
+2. **Middleware Pattern**: Read-only mode enforcement için middleware pattern kullanımı.
 
-3. **Error Handling**: Eğer kullanıcı yetkisiz bir repo'ya erişmeye çalışırsa, 403 Forbidden hatası yerine, boş liste dönmek daha kullanıcı dostu.
+3. **Tool Discovery**: MCP server'larında tools/list endpoint'i ile hangi tool'ların available olduğunu belirtmek.
 
 ---
 
@@ -121,7 +130,7 @@ def get_repositories(owner: str) -> list[dict]:
 
 ### Problemleri Keşfetmek
 
-Şubat ayı başında LobeHub organizasyonunda iki farklı sorun tespit ettim:
+LobeHub organizasyonunda iki farklı sorun tespit ettim:
 
 1. **High Priority Regression**: ModelSelect onboarding crash ([#12817](https://github.com/lobehub/lobehub/issues/12817))
 2. **Feature Request**: 4 MCP server'ını marketplace'e ekleme talebi ([#12805](https://github.com/lobehub/lobehub/issues/12805))
