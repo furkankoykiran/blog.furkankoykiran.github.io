@@ -5,13 +5,13 @@ date: 2026-03-11 18:00:00 +0300
 categories: [Open Source, Python, CLI]
 tags: [python, sdk, cli, typescript, deployment, openai, coinbase, notebooklm]
 image:
-  path: /assets/img/2026-03-11-python-sdk-cli/banner.png
+  path: /assets/img/2026-03-11/python-sdk-cli/banner.png
   alt: "Python SDK and CLI Development Banner"
 ---
 
 [Önceki blog yazımda](/posts/security-api-fixes/) güvenlik açıkları ve API geliştirmeleri konularını ele almıştım. Şimdi, Mart 2026'da yoğunlaştığım Python SDK geliştirme, CLI araçları oluşturma ve deployment optimizasyonu konusuna değineceğim.
 
-![Python SDK Development](/assets/img/2026-03-11-python-sdk-cli/python-sdk-development.png)
+![Python SDK Development](/assets/img/2026-03-11/python-sdk-cli/python-sdk-development.png)
 *Modern Python SDK geliştirme, type safety ve async/await pattern'leri gerektiriyor.*
 
 ---
@@ -136,7 +136,7 @@ def health(provider: tuple[str, ...]):
             click.echo(f"   ⏱️  Latency: {status.latency_ms}ms")
 ```
 
-![CLI Tools Development](/assets/img/2026-03-11-python-sdk-cli/cli-tools-development.png)
+![CLI Tools Development](/assets/img/2026-03-11/python-sdk-cli/cli-tools-development.png)
 *CLI araçları geliştirirken, user experience ve error handling kritik önem taşıyor.*
 
 ### Teknik Detaylar
@@ -294,7 +294,7 @@ Mart ayında 4 farklı projeye katkıda bulunarak, modern Python development ve 
 
 Açık kaynak projelere katkıda bulunmak, sadece kod yazmak değil, aynı zamanda community'ye değer katmak ve yeni teknolojileri öğrenmek için harika bir yol.
 
-![NotebookLM API](/assets/img/2026-03-11-python-sdk-cli/notebooklm-api.png)
+![NotebookLM API](/assets/img/2026-03-11/python-sdk-cli/notebooklm-api.png)
 *NotebookLM API'si, AI-powered notebook yönetimi için güçlü bir platform.*
 
 Eğer siz de Python SDK veya CLI araçları geliştiriyorsanız, type safety, async programming ve user experience konularına odaklanmanızı öneriyorum. Bu, projelerinizin kalitesini ve kullanılabilirliğini önemli ölçüde artıracaktır.

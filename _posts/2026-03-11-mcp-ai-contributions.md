@@ -5,7 +5,7 @@ date: 2026-03-11 16:00:00 +0300
 categories: [Open Source, MCP, AI]
 tags: [mcp, playwright, github, lobehub, ai, open-source, contribution]
 image:
-  path: /assets/img/2026-03-11-mcp-ai-contributions/banner.png
+  path: /assets/img/2026-03-11/mcp-ai-contributions/banner.png
   alt: "MCP and AI Contributions Banner"
 ---
 
@@ -13,7 +13,7 @@ Bu blog yazısında, Ocak ayından itibaren yoğunlaştığım Model Context Pro
 
 Bu dönemde, Playwright'de Unicode sanitization sorununu çözdüm, GitHub MCP server'ında security validation ekledim ve LobeHub platformunda onboarding crash fix'i yaptım.
 
-![MCP Protocol](/assets/img/2026-03-11-mcp-ai-contributions/mcp-protocol.png)
+![MCP Protocol](/assets/img/2026-03-11/mcp-ai-contributions/mcp-protocol.png)
 *Model Context Protocol (MCP), AI asistanları ve araçlar arasında standart bir iletişim katmanı sağlıyor.*
 
 ---
@@ -64,7 +64,7 @@ function sanitizeUnicode(text: string): string {
 
 [11 Mart'ta açtığım #39625 numaralı PR](https://github.com/microsoft/playwright/pull/39625) şu anda açık durumda. Core katmanında yapılan değişiklik olduğu için review süreci daha uzun sürüyor.
 
-![Playwright Testing](/assets/img/2026-03-11-mcp-ai-contributions/playwright-testing.png)
+![Playwright Testing](/assets/img/2026-03-11/mcp-ai-contributions/playwright-testing.png)
 *Playwright, modern web testing ve automation için kullanılan güçlü bir araç.*
 
 ### Öğrenilen Dersler
@@ -143,7 +143,7 @@ if (!selectedModel) {
 }
 ```
 
-![GitHub Contribution](/assets/img/2026-03-11-mcp-ai-contributions/github-contribution.png)
+![GitHub Contribution](/assets/img/2026-03-11/mcp-ai-contributions/github-contribution.png)
 *GitHub açık kaynak katkıları, kod kalitesini ve community growth'yi artırıyor.*
 
 ### Issue #12817: High Priority Regression
@@ -210,7 +210,7 @@ const server: Server = {
 
 ## LobeHub Platformu
 
-![LobeHub Platform](/assets/img/2026-03-11-mcp-ai-contributions/lobehub-platform.png)
+![LobeHub Platform](/assets/img/2026-03-11/mcp-ai-contributions/lobehub-platform.png)
 *LobeHub, AI uygulamaları için modern ve user-friendly bir platform.*
 
 LobeHub, yapay zeka uygulamaları için modern bir platform. Şubat ayında bir PR ve iki issue ile katkıda bulundum:

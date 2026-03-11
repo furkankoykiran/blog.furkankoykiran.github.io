@@ -5,7 +5,7 @@ date: 2026-03-11 17:00:00 +0300
 categories: [Open Source, Security, API]
 tags: [security, sql-injection, cypher, blockchain, openai, coinbase, api]
 image:
-  path: /assets/img/2026-03-11-security-api-fixes/banner.png
+  path: /assets/img/2026-03-11/security-api-fixes/banner.png
   alt: "Security and API Fixes Banner"
 ---
 
@@ -13,7 +13,7 @@ image:
 
 Bu dönemde, 3 kritik security fix ve API improvement yaptım: LightRAG'de Cypher injection açığını fixledim, OpenAI Python SDK'da API contract'ını düzelttim ve Coinbase Agentkit'de blockchain decimals sorununu çözdüm.
 
-![SQL Injection Prevention](/assets/img/2026-03-11-security-api-fixes/sql-injection-prevention.png)
+![SQL Injection Prevention](/assets/img/2026-03-11/security-api-fixes/sql-injection-prevention.png)
 *SQL ve Cypher injection açıkları, modern web uygulamalarının en önemli güvenlik tehditleri arasında.*
 
 ---
@@ -230,7 +230,7 @@ def withdraw(amount: float, token_address: str) -> str:
     return str(amount_wei)
 ```
 
-![OpenAI Python SDK](/assets/img/2026-03-11-security-api-fixes/openai-python-sdk.png)
+![OpenAI Python SDK](/assets/img/2026-03-11/security-api-fixes/openai-python-sdk.png)
 *OpenAI Python SDK, modern Python practices ve type safety ile geliştirilmiş bir SDK.*
 
 ### Teknik Detaylar
@@ -303,7 +303,7 @@ warnings.warn(
 
 ## [Coinbase Blockchain](https://www.coinbase.com/)
 
-![Coinbase Blockchain](/assets/img/2026-03-11-security-api-fixes/coinbase-blockchain.png)
+![Coinbase Blockchain](/assets/img/2026-03-11/security-api-fixes/coinbase-blockchain.png)
 *Coinbase, cryptocurrency trading ve blockchain development için popüler bir platform.*
 
 Coinbase Agentkit, DeFi protocol entegrasyonları için güçlü bir SDK. Bu katkım sırasında öğrendiklerim:
@@ -337,7 +337,7 @@ Mission Control projesindeki çalışmam sırasında öğrendim:
 
 Güvenlik açıkları ve API contract uyuşmazlıkları, production sistemlerde ciddi sorunlara yol açabilir. Open source projelere katkıda bulunarak, bu sorunları erken tespit etmek ve düzeltmek community için değerlidir.
 
-![Gateway VPS Deployment](/assets/img/2026-03-11-security-api-fixes/gateway-vps-deployment.png)
+![Gateway VPS Deployment](/assets/img/2026-03-11/security-api-fixes/gateway-vps-deployment.png)
 *VPS deployment'larında gateway pattern, esneklik ve scalability sağlar.*
 
 ![Furkan Köykıran](/assets/img/avatar.png)
