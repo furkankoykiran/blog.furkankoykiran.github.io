@@ -24,12 +24,14 @@ Bu dönemde, 3 kritik security fix ve API improvement yaptım: LightRAG'de Cyphe
 
 LightRAG projesinde, workspace isimleri kullanıcı inputundan doğrudan Cypher query'lerine ekleniyordu. Bu durum, klasik bir **Cypher injection** güvenlik açığı oluşturuyordu.
 
+{% raw %}
 ```python
 # Önceki durum - GÜVENLİK AÇIĞI!
 workspace_name = user_input  # "'; DROP TABLE workspace; --"
 query = f"MATCH (w:Workspace {{name: '{workspace_name}'}}) RETURN w"
 # Bu query, database'e inject edilebilir!
 ```
+{% endraw %}
 
 ### Tehlike Analizi
 
@@ -44,6 +46,7 @@ Cypher injection, SQL injection'ın Neo4j graph database versiyonudur. Attack'le
 
 [#2713 numaralı PR](https://github.com/HKUDS/LightRAG/pull/2713) ile workspace sanitization ekledim:
 
+{% raw %}
 ```python
 # lightrag/graph_query.py
 import re
@@ -85,6 +88,7 @@ def sanitize_workspace_name(workspace_name: str) -> str:
 safe_workspace = sanitize_workspace_name(user_input)
 query = f"MATCH (w:Workspace {{name: '{safe_workspace}'}}) RETURN w"
 ```
+{% endraw %}
 
 ### Teknik Detaylar
 
@@ -102,6 +106,7 @@ query = f"MATCH (w:Workspace {{name: '{safe_workspace}'}}) RETURN w"
 
 ### Security Best Practices
 
+{% raw %}
 ```python
 # ❌ YANLIŞ - Direct interpolation
 query = f"MATCH (n {{name: '{user_input}'}}) RETURN n"
@@ -114,6 +119,7 @@ params = {"name": user_input}
 safe_input = sanitize_input(user_input)
 query = f"MATCH (n {{name: '{safe_input}'}}) RETURN n"
 ```
+{% endraw %}
 
 ---
 
@@ -329,7 +335,7 @@ Mission Control projesindeki çalışmam sırasında öğrendim:
 3. **Blockchain Development**: ERC20 standard ve Web3.py integration
 4. **DeFi Protocols**: Lending protocol'leri ve token decimals
 
-Güvenlik açıkları ve API contract uyuşmazlıkları, production sistemlerde ciddi sorunlara yol açabilir. Open source projelere katkıda bulunarak, bu sorunları ve fixing etmek community için değerlidir.
+Güvenlik açıkları ve API contract uyuşmazlıkları, production sistemlerde ciddi sorunlara yol açabilir. Open source projelere katkıda bulunarak, bu sorunları erken tespit etmek ve düzeltmek community için değerlidir.
 
 ![Gateway VPS Deployment](/assets/img/2026-03-11-security-api-fixes/gateway-vps-deployment.png)
 *VPS deployment'larında gateway pattern, esneklik ve scalability sağlar.*
