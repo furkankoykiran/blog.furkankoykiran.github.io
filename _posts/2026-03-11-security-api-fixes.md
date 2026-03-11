@@ -9,9 +9,9 @@ image:
   alt: "Security and API Fixes Banner"
 ---
 
-[Önceki blog yazımda](/posts/mcp-ai-contributions/) MCP ekosistemi ve AI platformlarına yaptığım katkıları anlatmıştım. Şimdi, Şubat ayında yoğunlaştığım güvenlik açıkları ve API geliştirmeleri konusuna değineceğim.
+[Önceki blog yazımda](/posts/mcp-ai-contributions/) MCP ekosistemi ve AI platformlarına yaptığım katkıları anlatmıştım. Şimdi, yoğunlaştığım güvenlik açıkları ve API geliştirmeleri konusuna değineceğim.
 
-Bu dönemde, 3 kritik security fix ve API improvement yaptım: LightRAG'de Cypher injection açığını fixledim, OpenAI Python SDK'da API contract'ını düzelttim ve Coinbase Agentkit'de blockchain decimals sorununu çözdüm.
+Bu dönemde 3 kritik security fix ve API improvement yaptım: LightRAG'de Cypher injection açığını fixledim, OpenAI Python SDK'da API contract'ını düzelttim ve Coinbase Agentkit'de blockchain decimals sorununu çözdüm.
 
 ![SQL Injection Prevention](/assets/img/2026-03-11/security-api-fixes/sql-injection-prevention.png)
 *SQL ve Cypher injection açıkları, modern web uygulamalarının en önemli güvenlik tehditleri arasında.*
@@ -328,7 +328,7 @@ Mission Control projesindeki çalışmam sırasında öğrendim:
 
 ## Sonuç: Security ve API Best Practices
 
-Şubat ayında 3 kritik security fix ve API improvement yaptım. Öğrendiklerim:
+Bu dönemde 3 kritik security fix ve API improvement yaptım. Öğrendiklerim:
 
 1. **Input Sanitization**: Kullanıcı inputu her zaman sanitize edilmeli
 2. **API Contract Consistency**: SDK ile API arasında naming consistency
