@@ -9,7 +9,7 @@ image:
   alt: "Python SDK and CLI Development Banner"
 ---
 
-[Önceki blog yazımda](/posts/security-api-fixes/) güvenlik açıkları ve API geliştirmeleri konularını ele almıştım. Şimdi, Mart 2026'da yoğunlaştığım Python SDK geliştirme, CLI araçları oluşturma ve deployment optimizasyonu konusuna değineceğim.
+[Önceki blog yazımda](/posts/security-api-fixes/) güvenlik açıkları ve API geliştirmeleri konularını ele almıştım. Şimdi, yoğunlaştığım Python SDK geliştirme, CLI araçları oluşturma ve deployment optimizasyonu konusuna değineceğim.
 
 ![Python SDK Development](/assets/img/2026-03-11/python-sdk-cli/python-sdk-development.png)
 *Modern Python SDK geliştirme, type safety ve async/await pattern'leri gerektiriyor.*
@@ -284,7 +284,7 @@ Mission Control projesinde öğrendiklerim:
 
 ## Sonuç: Modern Python Development
 
-Mart ayında 4 farklı projeye katkıda bulunarak, modern Python development ve CLI araçları geliştirme konusunda önemli bilgiler edindim:
+4 farklı projeye katkıda bulunarak, modern Python development ve CLI araçları geliştirme konusunda önemli bilgiler edindim:
 
 1. **Type Safety**: Type hints ve data classes kullanımı
 2. **Async Programming**: Async/await pattern'leri
