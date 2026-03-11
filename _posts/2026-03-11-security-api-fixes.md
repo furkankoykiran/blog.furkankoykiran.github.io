@@ -9,7 +9,7 @@ image:
   alt: "Security and API Fixes Banner"
 ---
 
-[Önceki blog yazımda](/posts/python-sdk-cli/) Python SDK ve CLI araçları geliştirme deneyimlerimi anlatmıştım. Şimdi, Şubat ayında yoğunlaştığım güvenlik açıkları ve API geliştirmeleri konusuna değineceğim.
+[Önceki blog yazımda](/posts/mcp-ai-contributions/) MCP ekosistemi ve AI platformlarına yaptığım katkıları anlatmıştım. Şimdi, Şubat ayında yoğunlaştığım güvenlik açıkları ve API geliştirmeleri konusuna değineceğim.
 
 Bu dönemde, 3 kritik security fix ve API improvement yaptım: LightRAG'de Cypher injection açığını fixledim, OpenAI Python SDK'da API contract'ını düzelttim ve Coinbase Agentkit'de blockchain decimals sorununu çözdüm.
 
@@ -301,7 +301,7 @@ warnings.warn(
 
 ---
 
-## Coinbase Blockchain](https://www.coinbase.com/)
+## [Coinbase Blockchain](https://www.coinbase.com/)
 
 ![Coinbase Blockchain](/assets/img/2026-03-11-security-api-fixes/coinbase-blockchain.png)
 *Coinbase, cryptocurrency trading ve blockchain development için popüler bir platform.*
@@ -339,8 +339,6 @@ Güvenlik açıkları ve API contract uyuşmazlıkları, production sistemlerde 
 
 ![Gateway VPS Deployment](/assets/img/2026-03-11-security-api-fixes/gateway-vps-deployment.png)
 *VPS deployment'larında gateway pattern, esneklik ve scalability sağlar.*
-
-Bir sonraki blog yazısında, MCP (Model Context Protocol) ekosistemine yaptığım katkılardan bahsedeceğim.
 
 ![Furkan Köykıran](/assets/img/avatar.png)
 *Furkan Köykıran - Senior Software Engineer*

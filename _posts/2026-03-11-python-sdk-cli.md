@@ -9,7 +9,7 @@ image:
   alt: "Python SDK and CLI Development Banner"
 ---
 
-Bu ay (Mart 2026), Python SDK geliştirme, CLI araçları oluşturma ve deployment optimizasyonu üzerine yoğunlaştım. 4 farklı projeye katkıda bulunarak, modern Python development best practice'lerini öğrendim. Bu blog yazısında, yaptığım katkıları ve teknik detayları anlatacağım.
+[Önceki blog yazımda](/posts/security-api-fixes/) güvenlik açıkları ve API geliştirmeleri konularını ele almıştım. Şimdi, Mart 2026'da yoğunlaştığım Python SDK geliştirme, CLI araçları oluşturma ve deployment optimizasyonu konusuna değineceğim.
 
 ![Python SDK Development](/assets/img/2026-03-11-python-sdk-cli/python-sdk-development.png)
 *Modern Python SDK geliştirme, type safety ve async/await pattern'leri gerektiriyor.*
@@ -301,3 +301,10 @@ Eğer siz de Python SDK veya CLI araçları geliştiriyorsanız, type safety, as
 
 ![Furkan Köykıran](/assets/img/avatar.png)
 *Furkan Köykıran - Senior Software Engineer*
+
+---
+
+## Diğer Blog Yazılarım
+
+- [Güvenlik Açıkları ve API Geliştirmeleri: 3 Critical Fix](/posts/security-api-fixes/)
+- [MCP Ekosistemi ve AI Platformlarına Katkılarım](/posts/mcp-ai-contributions/)

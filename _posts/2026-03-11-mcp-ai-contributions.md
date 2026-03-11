@@ -9,7 +9,7 @@ image:
   alt: "MCP and AI Contributions Banner"
 ---
 
-[Önceki blog yazılarımda](/posts/security-api-fixes/) güvenlik açıkları ve API geliştirmeleri konularını ele almıştım. Şimdi, Ocak ayından itibaren yoğunlaştığım Model Context Protocol (MCP) ekosistemi ve AI platformları katkılarından bahsedeceğim.
+Bu blog yazısında, Ocak ayından itibaren yoğunlaştığım Model Context Protocol (MCP) ekosistemi ve AI platformları katkılarından bahsedeceğim.
 
 Bu dönemde, Playwright'de Unicode sanitization sorununu çözdüm, GitHub MCP server'ında security validation ekledim ve LobeHub platformunda onboarding crash fix'i yaptım.
 
