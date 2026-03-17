@@ -1,7 +1,7 @@
 ---
 title: "awesome-trending-repos: Auto-Tracking GitHub Trending"
 description: "Automated daily tracking of trending repositories with GitHub Actions"
-date: 2026-03-18 17:00:00 +0300
+date: 2026-03-17 17:00:00 +0300
 categories: [GitHub, Automation]
 tags: [github-actions, automation, nodejs, trending]
 image:

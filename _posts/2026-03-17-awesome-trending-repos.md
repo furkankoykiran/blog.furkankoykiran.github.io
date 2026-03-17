@@ -1,7 +1,7 @@
 ---
 title: "awesome-trending-repos: GitHub Trending'i Otomatik Takip Etme"
 description: "GitHub Actions ile günlük trending projeleri otomatik takip eden sistem"
-date: 2026-03-18 17:00:00 +0300
+date: 2026-03-17 17:00:00 +0300
 categories: [GitHub, Otomasyon]
 tags: [github-actions, automation, nodejs, trending]
 image:
