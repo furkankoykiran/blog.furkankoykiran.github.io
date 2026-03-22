@@ -5,13 +5,13 @@ date: 2026-03-22 21:00:00 +0300
 categories: [Open Source, Development]
 tags: [mcp, python, cli-anything, open-source, browser-automation]
 image:
-  path: /assets/img/posts/2026-03-23-browser-automation-cli/mcp-architecture-diagram.png
+  path: /assets/img/posts/2026-03-22-browser-automation-cli/mcp-architecture-diagram.png
   alt: "MCP Architecture"
 ---
 
 Tarayıcı otomasyonu gerçekten ilginç bir problem. AI ajanlarının web sitelerinde gezinebilmesi, formları doldurabilmesi artık sadece "iyi sahip olmak" değil, zorunluluk. CLI-Anything projesine yaptığım browser support katkısını burada anlatacağım.
 
-![MCP Architecture](/assets/img/posts/2026-03-23-browser-automation-cli/mcp-architecture-diagram.png)
+![MCP Architecture](/assets/img/posts/2026-03-22-browser-automation-cli/mcp-architecture-diagram.png)
 *MCP mimarisi - AI ajanları ile harici servisler arasındaki köprü.*
 
 ## Issue #90'dan PR #118'e
@@ -20,7 +20,7 @@ Her şey 16 Mart 2026'da [@apireno](https://github.com/apireno)'nin [#90 numaral
 
 [@apireno](https://github.com/apireno), [DOMShell](https://github.com/apireno/DOMShell) projesinden bahsetti. DOMShell, Chrome'un Accessibility Tree'sini sanal bir dosya sistemine çeviriyor. Ajanlar `ls`, `cd`, `grep`, `click` gibi komutlarla tarayıcıyı kontrol edebiliyor. Benchmark sonuçları ilginçti: screenshot tabanlı yaklaşıma göre %50 daha az API çağrısı.
 
-![Accessibility Tree](/assets/img/posts/2026-03-23-browser-automation-cli/accessibility-tree-view.png)
+![Accessibility Tree](/assets/img/posts/2026-03-22-browser-automation-cli/accessibility-tree-view.png)
 *Chrome DevTools'taki Accessibility Tree - aslında ekran okuyucular için yapılmış ama ajanlar için de iş görüyor.*
 
 ### Accessibility Tree Nedir?
@@ -127,7 +127,7 @@ PR'ı gönderdikten sonra [@omerarslan0](https://github.com/omerarslan0) review 
 
 Her düzeltme ayrı commit'lerde, her biri review'da belgelendi.
 
-![Browser CLI Interface](/assets/img/posts/2026-03-23-browser-automation-cli/browser-cli-interface.png)
+![Browser CLI Interface](/assets/img/posts/2026-03-22-browser-automation-cli/browser-cli-interface.png)
 *CLI interface - dosya sistemi komutlarıyla tarayıcı kontrolü.*
 
 ## Merge ve Sonuç

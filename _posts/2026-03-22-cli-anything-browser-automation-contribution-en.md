@@ -5,13 +5,13 @@ date: 2026-03-22 21:00:00 +0300
 categories: [Open Source, Development]
 tags: [mcp, python, cli-anything, open-source, browser-automation]
 image:
-  path: /assets/img/posts/2026-03-23-browser-automation-cli/mcp-architecture-diagram.png
+  path: /assets/img/posts/2026-03-22-browser-automation-cli/mcp-architecture-diagram.png
   alt: "MCP Architecture"
 ---
 
 Browser automation is genuinely interesting. AI agents navigating websites, filling forms - it's not just nice to have anymore. I recently contributed browser automation support to CLI-Anything via DOMShell's MCP server. Here's how it went.
 
-![MCP Architecture](/assets/img/posts/2026-03-23-browser-automation-cli/mcp-architecture-diagram.png)
+![MCP Architecture](/assets/img/posts/2026-03-22-browser-automation-cli/mcp-architecture-diagram.png)
 *MCP architecture - the bridge between AI agents and external services.*
 
 ## How It Started
@@ -20,7 +20,7 @@ On March 16, [@apireno](https://github.com/apireno) opened [#90](https://github.
 
 They mentioned [DOMShell](https://github.com/apireno/DOMShell), which maps Chrome's Accessibility Tree to a virtual filesystem. Agents control the browser with `ls`, `cd`, `grep`, `click` - shell commands, not DOM queries. The benchmark was solid: 50% fewer API calls than screenshot-based browsing in Claude tests.
 
-![Accessibility Tree](/assets/img/posts/2026-03-23-browser-automation-cli/accessibility-tree-view.png)
+![Accessibility Tree](/assets/img/posts/2026-03-22-browser-automation-cli/accessibility-tree-view.png)
 *Accessibility Tree in Chrome DevTools - built for screen readers, works great for agents.*
 
 ### What is the Accessibility Tree?
@@ -122,7 +122,7 @@ After submitting, [@omerarslan0](https://github.com/omerarslan0) did a thorough 
 
 Each fix was a separate commit, documented in review comments.
 
-![Browser CLI Interface](/assets/img/posts/2026-03-23-browser-automation-cli/browser-cli-interface.png)
+![Browser CLI Interface](/assets/img/posts/2026-03-22-browser-automation-cli/browser-cli-interface.png)
 *CLI interface - controlling the browser with filesystem commands.*
 
 ## Merge
