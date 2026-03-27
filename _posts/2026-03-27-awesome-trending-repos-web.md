@@ -5,8 +5,8 @@ date: 2026-03-27 18:00:00 +0300
 categories: [Web Development, GitHub, React]
 tags: [react, vite, github-pages, github-actions, tailwindcss]
 image:
-  path: /assets/img/posts/github-actions-cicd-pipeline-diagram.png
-  alt: "GitHub Actions CI/CD Pipeline"
+  path: /assets/img/posts/2026-03-27-awesome-trending-repos/og-image.png
+  alt: "Awesome Trending Repos"
 ---
 
 Önceki blog yazımda [awesome-trending-repos](https://github.com/furkankoykiran/awesome-trending-repos) projesinden bahsetmiştim. O zamanlar proje sadece README.md dosyasına veri yazıyordu. Artık things changed. Proje artık tam fonksiyonlu bir modern web uygulaması.
@@ -249,10 +249,10 @@ export default defineConfig({
 
 Proje şu anda [furkankoykiran.com.tr/awesome-trending-repos](https://furkankoykiran.com.tr/awesome-trending-repos/) adresinde yayında. Her gün otomatik olarak güncelleniyor.
 
-![Project Logo](https://furkankoykiran.com.tr/awesome-trending-repos/logo.png)
+![Project Logo](/assets/img/posts/2026-03-27-awesome-trending-repos/logo.png)
 *Proje logosu*
 
-![OG Image](https://furkankoykiran.com.tr/awesome-trending-repos/og-image.png)
+![OG Image](/assets/img/posts/2026-03-27-awesome-trending-repos/og-image.png)
 *Open Graph preview görseli*
 
 ---

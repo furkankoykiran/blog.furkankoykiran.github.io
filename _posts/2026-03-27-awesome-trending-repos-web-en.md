@@ -5,8 +5,8 @@ date: 2026-03-27 18:00:00 +0300
 categories: [Web Development, GitHub, React]
 tags: [react, vite, github-pages, github-actions, tailwindcss]
 image:
-  path: /assets/img/posts/github-actions-cicd-pipeline-diagram.png
-  alt: "GitHub Actions CI/CD Pipeline"
+  path: /assets/img/posts/2026-03-27-awesome-trending-repos/og-image.png
+  alt: "Awesome Trending Repos"
 ---
 
 In my previous blog post, I introduced the [awesome-trending-repos](https://github.com/furkankoykiran/awesome-trending-repos) project. Back then, the project only wrote data to a README.md file. Things have changed. The project is now a fully functional modern web application.
@@ -249,10 +249,10 @@ export default defineConfig({
 
 The project is currently live at [furkankoykiran.com.tr/awesome-trending-repos](https://furkankoykiran.com.tr/awesome-trending-repos/). It updates automatically every day.
 
-![Project Logo](https://furkankoykiran.com.tr/awesome-trending-repos/logo.png)
+![Project Logo](/assets/img/posts/2026-03-27-awesome-trending-repos/logo.png)
 *Project logo*
 
-![OG Image](https://furkankoykiran.com.tr/awesome-trending-repos/og-image.png)
+![OG Image](/assets/img/posts/2026-03-27-awesome-trending-repos/og-image.png)
 *Open Graph preview image*
 
 ---
